@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://v8dy0tx1hnm8"]
+
+[ext_resource type="PackedScene" uid="uid://krojh2gpdltk" path="res://scenes/projectiles/projectile.tscn" id="1_7ptey"]
+[ext_resource type="Texture2D" uid="uid://d18aq3d2awauj" path="res://assets/sprites/Destroy-Projectile-Placeholder.png" id="1_qs3on"]
+[ext_resource type="Script" path="res://scenes/projectiles/destroy_projectile.gd" id="2_06x0a"]
+
+[node name="DestroyProjectile" instance=ExtResource("1_7ptey")]
+script = ExtResource("2_06x0a")
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("1_qs3on")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
