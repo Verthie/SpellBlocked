@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://krojh2gpdltk"]
+
+[ext_resource type="Script" path="res://scenes/projectiles/projectile.gd" id="1_w21ew"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ebu42"]
+radius = 3.0
+height = 16.0
+
+[node name="Projectile" type="Area2D"]
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("1_w21ew")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_ebu42")

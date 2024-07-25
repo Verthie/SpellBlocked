@@ -47,22 +47,17 @@ position = Vector2(0, -39)
 
 [node name="Object1" parent="Objects" instance=ExtResource("4_tp7qk")]
 position = Vector2(188, -131)
-can_sleep = true
 
 [node name="Object2" parent="Objects" instance=ExtResource("4_tp7qk")]
 position = Vector2(254, -139)
-can_sleep = true
 
 [node name="Object3" parent="Objects" instance=ExtResource("4_tp7qk")]
 position = Vector2(135, -57)
-can_sleep = true
 
 [node name="Object4" parent="Objects" instance=ExtResource("4_tp7qk")]
 position = Vector2(222, -25)
-can_sleep = true
 
 [node name="Object5" parent="Objects" instance=ExtResource("4_tp7qk")]
 position = Vector2(308, -179)
-can_sleep = true
 
 [connection signal="shoot" from="Player" to="." method="_on_player_shoot"]
