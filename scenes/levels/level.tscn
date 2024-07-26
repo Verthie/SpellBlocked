@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b0qkkisnuydja"]
+[gd_scene load_steps=11 format=3 uid="uid://b0qkkisnuydja"]
 
 [ext_resource type="Texture2D" uid="uid://dbd8gsc85a740" path="res://assets/sprites/PlatformTile-Placeholder.png" id="1_vlm7r"]
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_yace1"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://c50h1gm5tnqxc" path="res://scenes/objects/object_1.tscn" id="4_tp7qk"]
 [ext_resource type="PackedScene" uid="uid://clpflpxtp3g2h" path="res://scenes/ui/ui.tscn" id="5_rj7pd"]
 [ext_resource type="PackedScene" uid="uid://blrphwohpfwgp" path="res://scenes/objects/object_2.tscn" id="5_tlwjm"]
+[ext_resource type="PackedScene" uid="uid://c3hfa17lbuxae" path="res://scenes/hazards/deathzone.tscn" id="7_546jt"]
+[ext_resource type="PackedScene" uid="uid://bkqmw36c04h36" path="res://scenes/hazards/destructionzone.tscn" id="8_x4ic2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_on6un"]
 texture = ExtResource("1_vlm7r")
@@ -42,6 +44,7 @@ layer_0/tile_data = PackedInt32Array(65535, 0, 0, 0, 0, 0, 1, 0, 0, 65534, 0, 0,
 position = Vector2(0, -39)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+limit_bottom = 55
 
 [node name="Projectiles" type="Node2D" parent="."]
 
@@ -80,5 +83,11 @@ position = Vector2(-238, -70)
 position = Vector2(-117, -35)
 
 [node name="UI" parent="." instance=ExtResource("5_rj7pd")]
+
+[node name="Deathzone" parent="." instance=ExtResource("7_546jt")]
+position = Vector2(0, 105)
+
+[node name="Destructionzone" parent="." instance=ExtResource("8_x4ic2")]
+position = Vector2(526, 106)
 
 [connection signal="shoot" from="Player" to="." method="_on_player_shoot"]
