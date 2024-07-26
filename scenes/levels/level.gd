@@ -10,7 +10,6 @@ func _on_player_shoot(pos: Vector2, type: PackedScene, create: bool, direction: 
 	$Projectiles.add_child(projectile)
 
 func _on_projectile_body_entered(pos: Vector2, type: PackedScene):
-	print(pos, type)
 	var new_object = type.instantiate() as RigidBody2D
 	new_object.position = pos
 	$Objects.call_deferred("add_child", new_object)

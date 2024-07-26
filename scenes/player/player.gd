@@ -5,19 +5,28 @@ signal shoot(pos: Vector2, type: PackedScene, create: bool, direction: Vector2)
 const SPEED: float = 300.0
 const JUMP_VELOCITY: float = -400.0
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
+# Pobieranie grawitacji z ustawień projektu
 var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
+func _process(_delta):
+	
+	# Logika odpowiadająca za przyciski numeryczne (zmiana wartości globalnych aktualnego typu obiektu)
+	if Input.is_action_just_pressed('switch_1'): Globals.current_object_type = 0
+	if Input.is_action_just_pressed('switch_2'): Globals.current_object_type = 1
+	if Input.is_action_just_pressed('switch_3'): Globals.current_object_type = 2
+	if Input.is_action_just_pressed('switch_4'): Globals.current_object_type = 3
+
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
+	
+	# Grawitacja
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	# Handle jump.
+	# Skakanie
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
-	# Get the input direction and handle the movement/deceleration.
+	# Kierunek ruchu, ruch lewo/prawo
 	var direction = Input.get_axis("move_left", "move_rigt")
 	if direction:
 		velocity.x = direction * SPEED

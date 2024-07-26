@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://b0qkkisnuydja"]
+[gd_scene load_steps=9 format=3 uid="uid://b0qkkisnuydja"]
 
 [ext_resource type="Texture2D" uid="uid://dbd8gsc85a740" path="res://assets/sprites/PlatformTile-Placeholder.png" id="1_vlm7r"]
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_yace1"]
 [ext_resource type="PackedScene" uid="uid://bqumck2g1lx6b" path="res://scenes/player/player.tscn" id="2_7aa5x"]
 [ext_resource type="PackedScene" uid="uid://c50h1gm5tnqxc" path="res://scenes/objects/object_1.tscn" id="4_tp7qk"]
+[ext_resource type="PackedScene" uid="uid://clpflpxtp3g2h" path="res://scenes/ui/ui.tscn" id="5_rj7pd"]
+[ext_resource type="PackedScene" uid="uid://blrphwohpfwgp" path="res://scenes/objects/object_2.tscn" id="5_tlwjm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_on6un"]
 texture = ExtResource("1_vlm7r")
@@ -64,5 +66,19 @@ can_sleep = true
 [node name="Object5" parent="Objects" instance=ExtResource("4_tp7qk")]
 position = Vector2(308, -179)
 can_sleep = true
+
+[node name="Object6" parent="Objects" instance=ExtResource("5_tlwjm")]
+position = Vector2(-229, -204)
+
+[node name="Object7" parent="Objects" instance=ExtResource("5_tlwjm")]
+position = Vector2(-130, -131)
+
+[node name="Object8" parent="Objects" instance=ExtResource("5_tlwjm")]
+position = Vector2(-238, -70)
+
+[node name="Object9" parent="Objects" instance=ExtResource("5_tlwjm")]
+position = Vector2(-117, -35)
+
+[node name="UI" parent="." instance=ExtResource("5_rj7pd")]
 
 [connection signal="shoot" from="Player" to="." method="_on_player_shoot"]
