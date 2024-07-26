@@ -35,6 +35,10 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
+	if Input.is_action_just_pressed('restart'):
+		get_tree().reload_current_scene()
+	
 func _on_gun_shoot(pos: Vector2, type: PackedScene, create: bool) -> void:
 	var player_direction = (get_global_mouse_position() - position).normalized()
 	shoot.emit(pos, type, create, player_direction)
+

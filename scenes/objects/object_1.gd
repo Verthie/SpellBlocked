@@ -1,4 +1,4 @@
 extends ParentObject
 
-func increment():
+func increment() -> void:
 	Globals.object_type_destroy = 0

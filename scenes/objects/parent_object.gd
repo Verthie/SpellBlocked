@@ -1,5 +1,5 @@
 extends RigidBody2D
 class_name ParentObject
 
-func destroyable():
+func destroyable() -> void:
 	queue_free()

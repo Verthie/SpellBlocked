@@ -1,6 +1,9 @@
 extends Node2D
 class_name ParentLevel
 
+func _ready():
+	Globals.object_amounts = [0,0,0,0]
+
 func _on_player_shoot(pos: Vector2, type: PackedScene, create: bool, direction: Vector2):
 	var projectile = type.instantiate() as Area2D
 	projectile.position = pos
