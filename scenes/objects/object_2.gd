@@ -1,4 +1,4 @@
 extends ParentObject
 
 func increment():
-	Globals.object_type_destroy = 0
+	Globals.object_type_destroy = 1
