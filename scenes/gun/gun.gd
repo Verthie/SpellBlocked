@@ -23,6 +23,8 @@ func _process(_delta: float):
 		shoot.emit(shoot_point.global_position, CREATE_PROJECTILE, true)
 	#TODO Wyświetlić animację na ui przy próbie wystrzału, jeżeli ilość nie jest większa niż 0
 	
-	if Input.is_action_just_pressed('shoot_destroy') and can_shoot:
+	if Input.is_action_just_pressed('shoot_destroy'):
 		var shoot_point: Marker2D = %ShootPoint
 		shoot.emit(shoot_point.global_position, DESTROY_PROJECTILE, false)
+
+#TODO Dwie różne strefy (Areas) dla różnego typu pocisków
