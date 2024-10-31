@@ -19,14 +19,3 @@ shape = SubResource("RectangleShape2D_viqeg")
 texture = ExtResource("1_cp1yy")
 
 [node name="Gun" parent="." instance=ExtResource("3_wih84")]
-
-[node name="CoyoteTimer" type="Timer" parent="."]
-wait_time = 0.08
-one_shot = true
-
-[node name="JumpBufferTimer" type="Timer" parent="."]
-wait_time = 0.05
-one_shot = true
-
-[connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
-[connection signal="timeout" from="JumpBufferTimer" to="." method="_on_buffered_timer_timeout"]
