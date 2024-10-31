@@ -11,6 +11,7 @@ size = Vector2(32, 32)
 z_index = 1
 collision_mask = 30
 script = ExtResource("1_8d035")
+gravity = 6000.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_viqeg")
@@ -21,7 +22,7 @@ texture = ExtResource("1_cp1yy")
 [node name="Gun" parent="." instance=ExtResource("3_wih84")]
 
 [node name="CoyoteTimer" type="Timer" parent="."]
-wait_time = 0.08
+wait_time = 0.2
 one_shot = true
 
 [node name="JumpBufferTimer" type="Timer" parent="."]

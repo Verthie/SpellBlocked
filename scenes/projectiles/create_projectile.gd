@@ -16,6 +16,8 @@ func _ready():
 	Globals.current_object_amount_create -= 1
 	stored_type = Globals.current_object_type
 
+#TODO Pocisk musi sprawdzać czy koliduje z wieloma obiektami, nawet gdy kolizja będzie z wieloma obiektami dalej musi tworzyć tylko jeden obiekt, a nie duplikować je
+
 func _on_body_entered(_body) -> void:
 	var projectile_position: Vector2 = $'.'.global_position
 	#print(projectile_position)

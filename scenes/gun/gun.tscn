@@ -19,7 +19,7 @@ texture = ExtResource("1_e5hp7")
 
 [node name="ShootPoint" type="Marker2D" parent="GunPivot/Sprite2D"]
 unique_name_in_owner = true
-position = Vector2(7, 0)
+position = Vector2(-15, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(25, 0)
