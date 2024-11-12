@@ -1,26 +1,212 @@
-[gd_scene load_steps=5 format=3 uid="uid://bqumck2g1lx6b"]
+[gd_scene load_steps=18 format=3 uid="uid://bqumck2g1lx6b"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_8d035"]
-[ext_resource type="Texture2D" uid="uid://qb8j0g5ob4eb" path="res://assets/sprites/Character-Placeholder.png" id="1_cp1yy"]
-[ext_resource type="PackedScene" uid="uid://bnt4duon35ck4" path="res://scenes/gun/gun.tscn" id="3_wih84"]
+[ext_resource type="Texture2D" uid="uid://dsgob0525kdso" path="res://assets/sprites/character/Merchant.png" id="2_m6wue"]
+[ext_resource type="Texture2D" uid="uid://iuo1ep5s3nlu" path="res://assets/sprites/objects/wand.png" id="3_845b8"]
+[ext_resource type="Animation" uid="uid://tgff1etphyyu" path="res://assets/animations/cast.res" id="4_8trhx"]
+[ext_resource type="Texture2D" uid="uid://cq7uhiss5hopd" path="res://assets/sprites/decorations/Emotes.png" id="4_lqivh"]
+[ext_resource type="Animation" uid="uid://ciqhirpp2my2b" path="res://assets/animations/fall.res" id="5_eeu42"]
+[ext_resource type="Animation" uid="uid://dvnp7uugcbww2" path="res://assets/animations/idle.res" id="6_7eeqf"]
+[ext_resource type="Animation" uid="uid://cwewue4vpb8yv" path="res://assets/animations/jump.res" id="7_nh2qm"]
+[ext_resource type="Animation" uid="uid://7essavmvee6v" path="res://assets/animations/land.res" id="8_jma2x"]
+[ext_resource type="Animation" uid="uid://d0wvwcie6h1ni" path="res://assets/animations/run.res" id="9_6votj"]
+[ext_resource type="Animation" uid="uid://cms5bi6p3bwcg" path="res://assets/animations/turn.res" id="10_ujvua"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_viqeg"]
-size = Vector2(32, 32)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mekin"]
+radius = 4.0
+height = 10.0
+
+[sub_resource type="Animation" id="Animation_rf8xn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprites/Wizard:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprites/WandPivot/Wand:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(5, -2)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprites/WandPivot/Wand:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprites/WandPivot/Wand:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprites/WandPivot/Wand:z_index")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lfiam"]
+_data = {
+"RESET": SubResource("Animation_rf8xn"),
+"cast": ExtResource("4_8trhx"),
+"fall": ExtResource("5_eeu42"),
+"idle": ExtResource("6_7eeqf"),
+"jump": ExtResource("7_nh2qm"),
+"land": ExtResource("8_jma2x"),
+"run": ExtResource("9_6votj"),
+"turn": ExtResource("10_ujvua")
+}
+
+[sub_resource type="Animation" id="Animation_r367f"]
+resource_name = "interaction"
+length = 0.6
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprites/Emotes:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [16, 17, 18, 19]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprites/Emotes:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_gm61l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprites/Emotes:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [16]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprites/Emotes:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_062sg"]
+_data = {
+"RESET": SubResource("Animation_gm61l"),
+"interaction": SubResource("Animation_r367f")
+}
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 collision_mask = 30
 script = ExtResource("1_8d035")
+foot_speed = 220.0
+jump_height = 40.0
 jump_time_to_peak = 0.3
-jump_time_to_descent = 0.25
+jump_time_to_descent = 0.2
+
+[node name="Sprites" type="Node2D" parent="."]
+
+[node name="Wizard" type="Sprite2D" parent="Sprites"]
+position = Vector2(0, -4)
+texture = ExtResource("2_m6wue")
+hframes = 8
+vframes = 6
+metadata/_aseprite_wizard_interface_config_ = {
+"animation_section": false,
+"layer_section": false,
+"output_section": false,
+"pending_changes": {
+"i_mode": -1,
+"keep_anim_length": false,
+"layer": "",
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"player": "",
+"slice": "",
+"source": ""
+},
+"slice_section": false
+}
+
+[node name="WandPivot" type="Marker2D" parent="Sprites"]
+
+[node name="Wand" type="Sprite2D" parent="Sprites/WandPivot"]
+position = Vector2(5, -2)
+texture = ExtResource("3_845b8")
+hframes = 3
+vframes = 2
+
+[node name="Emotes" type="Sprite2D" parent="Sprites"]
+visible = false
+position = Vector2(0, -14)
+texture = ExtResource("4_lqivh")
+hframes = 4
+vframes = 6
+frame = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_viqeg")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_cp1yy")
-
-[node name="Gun" parent="." instance=ExtResource("3_wih84")]
+visible = false
+shape = SubResource("CapsuleShape2D_mekin")
 
 [node name="CoyoteTimer" type="Timer" parent="."]
 wait_time = 0.08
@@ -34,6 +220,23 @@ one_shot = true
 wait_time = 0.05
 one_shot = true
 
+[node name="CastTimer" type="Timer" parent="."]
+wait_time = 0.35
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lfiam")
+}
+autoplay = "idle"
+playback_auto_capture = false
+
+[node name="EmoteAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_062sg")
+}
+
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_buffered_timer_timeout"]
 [connection signal="timeout" from="ApexTimer" to="." method="_on_apex_timer_timeout"]
+[connection signal="timeout" from="CastTimer" to="." method="_on_cast_timer_timeout"]

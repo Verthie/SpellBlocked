@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpo0xs7635pyd"]
+
+[ext_resource type="Texture2D" uid="uid://som5452t8wrj" path="res://assets/sprites/objects/Crate.png" id="1_x1gef"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t4joh"]
+size = Vector2(10, 6)
+
+[node name="Block" type="RigidBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_t4joh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_x1gef")
