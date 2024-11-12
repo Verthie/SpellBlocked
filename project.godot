@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Block Sorcery"
-run/main_scene="res://scenes/levels/level_1.tscn"
+run/main_scene="res://scenes/levels/level_test.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -21,7 +21,18 @@ Globals="*res://globals/globals.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Open External Editor/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/Open External Editor/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://assets/animations/": "gray",
+"res://assets/bgm/": "teal",
+"res://assets/fonts/": "gray",
+"res://assets/sprites/": "red",
+"res://assets/sprites/tilesets/": "orange",
+"res://assets/tilesets/": "purple"
+}
 
 [input]
 
@@ -43,12 +54,12 @@ jump={
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"key_label":0,"unicode":119,"location":0,"echo":false,"script":null)
 ]
 }
-shoot_create={
+cast={
 "deadzone": 0.5,
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":false,"double_click":false,"script":null)
 ]
 }
-shoot_destroy={
+cast_destroy={
 "deadzone": 0.5,
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(95, 15),"global_position":Vector2(784, 360),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
@@ -93,10 +104,10 @@ quit={
 
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Ground"
-2d_physics/layer_3="Objects"
-2d_physics/layer_4="Projectiles"
+2d_physics/layer_3="Blocks"
+2d_physics/layer_4="Wand-Ray"
 2d_physics/layer_5="Hazards"
-2d_physics/layer_6="Gun"
+2d_physics/layer_6="Items"
 2d_physics/layer_7="Exit"
 
 [rendering]

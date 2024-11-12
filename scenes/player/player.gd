@@ -1,7 +1,5 @@
 extends CharacterBody2D
 
-signal shoot(pos: Vector2, type: PackedScene, create: bool, direction: Vector2)
-
 @export var foot_speed: float = 550
 @export_range(0.0, 1.0, 0.025) var friction: float = 0.175
 @export_range(0.0, 1.0, 0.025) var acceleration: float = 0.125
@@ -26,44 +24,72 @@ signal shoot(pos: Vector2, type: PackedScene, create: bool, direction: Vector2)
 @onready var coyote_timer: Timer = $CoyoteTimer
 @onready var jump_buffer_timer: Timer = $JumpBufferTimer
 @onready var apex_timer: Timer = $ApexTimer
-@onready var gun: Area2D = $Gun
+@onready var cast_timer: Timer = $CastTimer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var wand_pivot: Marker2D = $Sprites/WandPivot
+@onready var emote_animation: AnimationPlayer = $EmoteAnimation
 
 var fall_time: float = 0.0
 var fall_multiplier: float = 1.0
+var is_falling: bool = false
+var landed: bool = false
 var can_jump: bool = true
+var is_jumping: bool = false
 var was_on_floor: bool
 var just_left_ledge: bool
 var coyote: bool = false # Sprawdza czy postać znajduje się aktualnie w czasie coyote
 var buffered_jump: bool = false # Sprawdza czy został zainicjowany buffer jump
 var at_apex: bool = false
-var is_jumping: bool = false
-var can_shoot: bool = true
+var previous_state: String
+var current_direction: String = "right"
+var can_cast: bool = true
+var casting: bool = false
 
 func _process(_delta):
-	var object_amount = Globals.object_amounts[Globals.current_object_type]
 
-	if gun.has_overlapping_bodies(): can_shoot = false
-	else: can_shoot = true
+	var direction: float = Input.get_axis("move_left", "move_rigt")
 
-	if Input.is_action_just_pressed('shoot_create') and can_shoot:
-		if object_amount <= 0:
-			print("no blocks")
-		else:
-			var scene: PackedScene = gun.get_scene('create')
-			_shoot_emitter(true, scene)
+	handle_animation(direction)
 
-	if Input.is_action_just_pressed('shoot_destroy') and can_shoot:
-		var scene: PackedScene = gun.get_scene('destroy')
-		_shoot_emitter(false, scene)
+func handle_animation(direction) -> void:
+	var animation_to_play: String = ""
 
-	if Input.is_action_just_pressed('restart'):
-		get_tree().reload_current_scene()
+	if direction > 0:
+		$Sprites/Wizard.flip_h = false
+		wand_pivot.scale.x = 1
+	elif direction < 0:
+		$Sprites/Wizard.flip_h = true
+		wand_pivot.scale.x = -1
 
-	# Logika odpowiadająca za przyciski numeryczne (zmiana wartości globalnych aktualnego typu obiektu)
-	if Input.is_action_just_pressed('switch_1'): Globals.current_object_type = 0
-	if Input.is_action_just_pressed('switch_2'): Globals.current_object_type = 1
-	if Input.is_action_just_pressed('switch_3'): Globals.current_object_type = 2
-	if Input.is_action_just_pressed('switch_4'): Globals.current_object_type = 3
+	if !casting:
+		if is_on_floor():
+			if previous_state == "falling":
+				previous_state = "land"
+				animation_to_play = "land"
+			elif direction == 0 and previous_state != "land":
+				animation_to_play = "idle"
+			elif direction != 0 and previous_state != "land":
+				animation_to_play = "run"
+
+		if is_falling:
+			animation_to_play = "fall"
+			previous_state = "falling"
+
+		if is_jumping:
+			animation_to_play = "jump"
+
+	if can_cast and Input.is_action_just_pressed("cast"):
+		casting = true
+		can_cast = false
+		animation_to_play = "cast"
+		cast_timer.start()
+
+	animation_player.play(animation_to_play)
+
+	if casting or previous_state == "land":
+		await animation_player.animation_finished
+		casting = false
+		previous_state = "none"
 
 func _physics_process(delta: float) -> void:
 
@@ -90,12 +116,14 @@ func _physics_process(delta: float) -> void:
 
 # Grawitacja
 func handle_gravity(delta) -> void:
+
 	if !is_on_floor():
 		if at_apex:
 			velocity.y = apex_gravity
 		elif velocity.y < 0:
 			velocity.y += jump_gravity * delta
 		elif velocity.y >= 0:
+			is_falling = true
 			if !fall_acceleration:
 				velocity.y += fall_gravity * delta # Liniowa akceleracja
 			if fall_acceleration:
@@ -105,6 +133,8 @@ func handle_gravity(delta) -> void:
 
 		velocity.y = min(velocity.y, max_fall_speed) # Clamp prędkości spadania
 		#print(" velocity.y: ", roundf(velocity.y))
+	else:
+		is_falling = false
 
 	if fall_acceleration and is_on_floor():
 		fall_time = 0.0
@@ -159,7 +189,16 @@ func _on_buffered_timer_timeout() -> void:
 func _on_apex_timer_timeout() -> void:
 	at_apex = false
 
-func _shoot_emitter(type_create: bool, scene: PackedScene) -> void:
-	var pos: Vector2 = gun.get_shoot_marker()
-	var player_direction: Vector2 = (get_global_mouse_position() - position).normalized()
-	shoot.emit(pos, scene, type_create, player_direction)
+func _on_cast_timer_timeout() -> void:
+	can_cast = true
+
+#TODO On signal emission from an area play a chosen emote animation which is given inside signal parameter
+
+#func _on_gun_shoot(pos: Vector2, type: PackedScene, create: bool, direction: Vector2) -> void:
+	#var projectile = scene.instantiate() as Area2D
+	#projectile.position = pos
+	#projectile.rotation_degrees = rad_to_deg(direction.angle())
+	#projectile.direction = direction
+	#projectile_direction = direction
+	#if create: projectile.create.connect(_on_projectile_body_entered)
+	#$Projectiles.add_child(projectile)
