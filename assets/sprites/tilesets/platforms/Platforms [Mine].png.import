@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtkadixgr38in"
-path="res://.godot/imported/Platforms [Snow].png-4ff4e84697b2590ceb0cd312bd71a407.ctex"
+uid="uid://m4kbvj788bqa"
+path="res://.godot/imported/Platforms [Mine].png-40de1beac097febcdb93ee58fd95657f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/tilesets/moving platforms/Platforms [Snow].png"
-dest_files=["res://.godot/imported/Platforms [Snow].png-4ff4e84697b2590ceb0cd312bd71a407.ctex"]
+source_file="res://assets/sprites/tilesets/platforms/Platforms [Mine].png"
+dest_files=["res://.godot/imported/Platforms [Mine].png-40de1beac097febcdb93ee58fd95657f.ctex"]
 
 [params]
 

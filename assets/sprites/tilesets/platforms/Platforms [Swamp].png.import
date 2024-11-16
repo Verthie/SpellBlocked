@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://x24urwxd80lr"
-path="res://.godot/imported/Isles [Ice].png-956d374dcc72fd8afcd65689e072c55e.ctex"
+uid="uid://cfb3ngjqy7p0d"
+path="res://.godot/imported/Platforms [Swamp].png-6748ac18bf20d57a74bfc1fa3b2c292d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/tilesets/icy_ground/Isles [Ice].png"
-dest_files=["res://.godot/imported/Isles [Ice].png-956d374dcc72fd8afcd65689e072c55e.ctex"]
+source_file="res://assets/sprites/tilesets/platforms/Platforms [Swamp].png"
+dest_files=["res://.godot/imported/Platforms [Swamp].png-6748ac18bf20d57a74bfc1fa3b2c292d.ctex"]
 
 [params]
 

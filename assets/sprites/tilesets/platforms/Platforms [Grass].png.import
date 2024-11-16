@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfb3ngjqy7p0d"
-path="res://.godot/imported/Platforms [Swamp].png-73695bad3e70bdad8774afc2ef63db5a.ctex"
+uid="uid://britmyss2ro4x"
+path="res://.godot/imported/Platforms [Grass].png-70fc2df5d32c56f2653ef7b07402607b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/tilesets/moving platforms/Platforms [Swamp].png"
-dest_files=["res://.godot/imported/Platforms [Swamp].png-73695bad3e70bdad8774afc2ef63db5a.ctex"]
+source_file="res://assets/sprites/tilesets/platforms/Platforms [Grass].png"
+dest_files=["res://.godot/imported/Platforms [Grass].png-70fc2df5d32c56f2653ef7b07402607b.ctex"]
 
 [params]
 
