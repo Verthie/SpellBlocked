@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b0qkkisnuydja"]
+[gd_scene load_steps=11 format=3 uid="uid://b0qkkisnuydja"]
 
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_yace1"]
 [ext_resource type="PackedScene" uid="uid://bqumck2g1lx6b" path="res://scenes/player/player.tscn" id="2_7aa5x"]
@@ -6,7 +6,6 @@
 [ext_resource type="TileSet" uid="uid://duef7jgbqvoir" path="res://assets/tilesets/ground.tres" id="3_kclcj"]
 [ext_resource type="TileSet" uid="uid://bh1ffdsew3di7" path="res://assets/tilesets/bridges.tres" id="4_hlqh0"]
 [ext_resource type="TileSet" uid="uid://beb2w5g0vr2d1" path="res://assets/tilesets/background_elements.tres" id="4_w1n7g"]
-[ext_resource type="TileSet" uid="uid://30of8084ynbb" path="res://assets/tilesets/moving_platforms.tres" id="5_5uwih"]
 [ext_resource type="PackedScene" uid="uid://clpflpxtp3g2h" path="res://scenes/ui/ui.tscn" id="5_rj7pd"]
 [ext_resource type="PackedScene" uid="uid://c3hfa17lbuxae" path="res://scenes/hazards/deathzone.tscn" id="7_546jt"]
 [ext_resource type="TileSet" uid="uid://c7g86xemyc2us" path="res://assets/tilesets/decor.tres" id="7_a216d"]
@@ -18,6 +17,7 @@ script = ExtResource("1_yace1")
 [node name="TileMaps" type="Node2D" parent="."]
 
 [node name="Background" type="TileMapLayer" parent="TileMaps"]
+z_index = -10
 tile_set = ExtResource("2_nvkav")
 
 [node name="FGThirdPlane" type="TileMapLayer" parent="TileMaps"]
@@ -35,22 +35,23 @@ tile_set = ExtResource("3_kclcj")
 [node name="BGElementsFirstPlane" type="TileMapLayer" parent="TileMaps"]
 tile_set = ExtResource("4_w1n7g")
 
-[node name="MovingPlatforms" type="TileMapLayer" parent="TileMaps"]
-tile_set = ExtResource("5_5uwih")
+[node name="Platforms" type="Node2D" parent="TileMaps"]
 
 [node name="Decor" type="TileMapLayer" parent="TileMaps"]
 tile_set = ExtResource("7_a216d")
 
-[node name="Blocks" type="Node2D" parent="."]
-
-[node name="Items" type="Node2D" parent="."]
-
 [node name="Player" parent="." instance=ExtResource("2_7aa5x")]
-position = Vector2(0, -39)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(4, 4)
-limit_bottom = 55
+limit_top = -115
+limit_bottom = 0
+
+[node name="Interactables" type="Node2D" parent="."]
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="Blocks" type="Node2D" parent="."]
 
 [node name="UI" parent="." instance=ExtResource("5_rj7pd")]
 

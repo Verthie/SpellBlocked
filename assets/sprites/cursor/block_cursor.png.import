@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://h6p26jj74f0k"
+path="res://.godot/imported/block_cursor.png-3d606607fa298055eaf66b5d13126b89.image"
+
+[deps]
+
+source_file="res://assets/sprites/cursor/block_cursor.png"
+dest_files=["res://.godot/imported/block_cursor.png-3d606607fa298055eaf66b5d13126b89.image"]
+
+[params]
+

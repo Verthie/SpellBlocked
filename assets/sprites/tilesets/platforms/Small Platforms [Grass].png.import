@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://crbfjnf0u1pwd"
-path="res://.godot/imported/Small Platforms [Grass].png-d66ded5dc08d3a70b23af784c133a7d2.ctex"
+path="res://.godot/imported/Small Platforms [Grass].png-7cb2727878aa5ff37530032ee9bae433.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/tilesets/moving platforms/Small Platforms [Grass].png"
-dest_files=["res://.godot/imported/Small Platforms [Grass].png-d66ded5dc08d3a70b23af784c133a7d2.ctex"]
+source_file="res://assets/sprites/tilesets/platforms/Small Platforms [Grass].png"
+dest_files=["res://.godot/imported/Small Platforms [Grass].png-7cb2727878aa5ff37530032ee9bae433.ctex"]
 
 [params]
 

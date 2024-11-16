@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqecm6qfu7ic3"
-path="res://.godot/imported/Platforms [Ice].png-253cf64ec7aba84a7ebebc93f6912329.ctex"
+uid="uid://dgr7lv6wkb7cs"
+path="res://.godot/imported/Small Platforms [Ice].png-cf60c5b8ccf2ba7b1f3f6748f0a9c066.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/tilesets/icy_ground/Platforms [Ice].png"
-dest_files=["res://.godot/imported/Platforms [Ice].png-253cf64ec7aba84a7ebebc93f6912329.ctex"]
+source_file="res://assets/sprites/tilesets/platforms/Small Platforms [Ice].png"
+dest_files=["res://.godot/imported/Small Platforms [Ice].png-cf60c5b8ccf2ba7b1f3f6748f0a9c066.ctex"]
 
 [params]
 

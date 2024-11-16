@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6xsshopijiue"
-path="res://.godot/imported/Small Platforms [Mine].png-0fc74509189f604ec57e072ac78ce923.ctex"
+uid="uid://dqtn363kcqr5d"
+path="res://.godot/imported/Small Platforms [Swamp].png-3e6658ad968698a59d825076ca36449b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/tilesets/moving platforms/Small Platforms [Mine].png"
-dest_files=["res://.godot/imported/Small Platforms [Mine].png-0fc74509189f604ec57e072ac78ce923.ctex"]
+source_file="res://assets/sprites/tilesets/platforms/Small Platforms [Swamp].png"
+dest_files=["res://.godot/imported/Small Platforms [Swamp].png-3e6658ad968698a59d825076ca36449b.ctex"]
 
 [params]
 

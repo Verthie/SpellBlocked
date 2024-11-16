@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwmkqdgspcayx"
-path="res://.godot/imported/Small Platforms [Snow].png-2f2e63eb5e7876f5e1d264408396cc37.ctex"
+uid="uid://dtkadixgr38in"
+path="res://.godot/imported/Platforms [Snow].png-6352bf66210998c7f046fb35a0e44ee0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/tilesets/moving platforms/Small Platforms [Snow].png"
-dest_files=["res://.godot/imported/Small Platforms [Snow].png-2f2e63eb5e7876f5e1d264408396cc37.ctex"]
+source_file="res://assets/sprites/tilesets/platforms/Platforms [Snow].png"
+dest_files=["res://.godot/imported/Platforms [Snow].png-6352bf66210998c7f046fb35a0e44ee0.ctex"]
 
 [params]
 

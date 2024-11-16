@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://dx0x2s135tjrw"
+path="res://.godot/imported/select_cursor.png-5b51c8ecc3be45f87f9e61b325182a98.image"
+
+[deps]
+
+source_file="res://assets/sprites/cursor/select_cursor.png"
+dest_files=["res://.godot/imported/select_cursor.png-5b51c8ecc3be45f87f9e61b325182a98.image"]
+
+[params]
+

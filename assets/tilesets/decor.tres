@@ -1,11 +1,15 @@
-[gd_resource type="TileSet" load_steps=57 format=3 uid="uid://c7g86xemyc2us"]
+[gd_resource type="TileSet" load_steps=65 format=3 uid="uid://c7g86xemyc2us"]
 
 [ext_resource type="Texture2D" uid="uid://cpwjh1s6plm5f" path="res://assets/sprites/tilesets/decor/Anvil.png" id="1_7kngs"]
+[ext_resource type="Texture2D" uid="uid://rhikubdkmkgf" path="res://assets/sprites/tilesets/foreground/Lava Bubble.png" id="1_mvdkt"]
 [ext_resource type="Texture2D" uid="uid://4xy2y80jevf0" path="res://assets/sprites/tilesets/decor/Big Crystal.png" id="2_4nxgt"]
+[ext_resource type="Texture2D" uid="uid://rl36ojwtu7ch" path="res://assets/sprites/tilesets/foreground/Lava.png" id="2_gxsmd"]
 [ext_resource type="Texture2D" uid="uid://dgn5ej36k06h5" path="res://assets/sprites/tilesets/decor/Big Gold Ore.png" id="3_8ejuu"]
 [ext_resource type="Texture2D" uid="uid://3g7b1rytaxlv" path="res://assets/sprites/tilesets/decor/Big Ice Crystal.png" id="4_hvdtl"]
+[ext_resource type="Texture2D" uid="uid://ci0picpcd6yvf" path="res://assets/sprites/tilesets/foreground/Water Splash.png" id="4_wpcbr"]
 [ext_resource type="Texture2D" uid="uid://ct20oxo2b1ax5" path="res://assets/sprites/tilesets/decor/Boulder.png" id="6_xuqyv"]
 [ext_resource type="Texture2D" uid="uid://coid4yfqnoic8" path="res://assets/sprites/tilesets/decor/Boulders.png" id="7_nn1my"]
+[ext_resource type="Texture2D" uid="uid://64u2r3wbttda" path="res://assets/sprites/tilesets/foreground/Water.png" id="9_l1u5v"]
 [ext_resource type="Texture2D" uid="uid://buesvbdvsnylf" path="res://assets/sprites/tilesets/decor/Crystal.png" id="10_b8he4"]
 [ext_resource type="Texture2D" uid="uid://b6duqdlkrh3x7" path="res://assets/sprites/tilesets/decor/Crystals.png" id="11_gccbx"]
 [ext_resource type="Texture2D" uid="uid://jl0d75m7xwx0" path="res://assets/sprites/tilesets/decor/Foliage [Grass].png" id="15_t8x8q"]
@@ -29,11 +33,69 @@
 [ext_resource type="Texture2D" uid="uid://dxhn1ihcjq7vk" path="res://assets/sprites/tilesets/decor/Trees [Swamp].png" id="33_f6hjt"]
 [ext_resource type="Texture2D" uid="uid://cmcyfrpsq8wn" path="res://assets/sprites/tilesets/decor/Well.png" id="34_ooaww"]
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c1kjc"]
+texture = ExtResource("1_mvdkt")
+texture_region_size = Vector2i(8, 8)
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+8:1/0 = 0
+9:1/0 = 0
+10:1/0 = 0
+11:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j4dls"]
+texture = ExtResource("2_gxsmd")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+0:1/0 = 0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5ajb3"]
 texture = ExtResource("1_7kngs")
 texture_region_size = Vector2i(8, 8)
 0:0/size_in_atlas = Vector2i(2, 1)
 0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8rh6e"]
+texture = ExtResource("4_wpcbr")
+texture_region_size = Vector2i(8, 8)
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+8:1/0 = 0
+9:1/0 = 0
+10:1/0 = 0
+11:1/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4rmbw"]
 texture = ExtResource("2_4nxgt")
@@ -97,6 +159,12 @@ texture_region_size = Vector2i(8, 8)
 texture = ExtResource("6_xuqyv")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7lb46"]
+texture = ExtResource("9_l1u5v")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+0:1/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_txmjg"]
 texture = ExtResource("7_nn1my")
@@ -447,7 +515,6 @@ texture_region_size = Vector2i(8, 8)
 
 [resource]
 tile_size = Vector2i(8, 8)
-sources/34 = SubResource("TileSetAtlasSource_5ajb3")
 sources/35 = SubResource("TileSetAtlasSource_4rmbw")
 sources/36 = SubResource("TileSetAtlasSource_xmhu0")
 sources/37 = SubResource("TileSetAtlasSource_3c4q8")
@@ -475,3 +542,8 @@ sources/64 = SubResource("TileSetAtlasSource_gbop3")
 sources/65 = SubResource("TileSetAtlasSource_s1dk7")
 sources/66 = SubResource("TileSetAtlasSource_3qbpw")
 sources/67 = SubResource("TileSetAtlasSource_ice24")
+sources/2 = SubResource("TileSetAtlasSource_5ajb3")
+sources/0 = SubResource("TileSetAtlasSource_c1kjc")
+sources/1 = SubResource("TileSetAtlasSource_j4dls")
+sources/3 = SubResource("TileSetAtlasSource_8rh6e")
+sources/4 = SubResource("TileSetAtlasSource_7lb46")

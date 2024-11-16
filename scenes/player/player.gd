@@ -27,7 +27,7 @@ extends CharacterBody2D
 @onready var cast_timer: Timer = $CastTimer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var wand_pivot: Marker2D = $Sprites/WandPivot
-@onready var emote_animation: AnimationPlayer = $EmoteAnimation
+@onready var emote_animation: AnimationPlayer = $Sprites/Emotes/EmoteAnimation
 
 var fall_time: float = 0.0
 var fall_multiplier: float = 1.0
@@ -37,6 +37,7 @@ var can_jump: bool = true
 var is_jumping: bool = false
 var was_on_floor: bool
 var just_left_ledge: bool
+var shape_collided: bool = false
 var coyote: bool = false # Sprawdza czy postać znajduje się aktualnie w czasie coyote
 var buffered_jump: bool = false # Sprawdza czy został zainicjowany buffer jump
 var at_apex: bool = false
@@ -44,6 +45,9 @@ var previous_state: String
 var current_direction: String = "right"
 var can_cast: bool = true
 var casting: bool = false
+
+func _ready() -> void:
+	EventBus.changed_interaction_state.connect(_on_interactable_state_change)
 
 func _process(_delta):
 
@@ -99,18 +103,19 @@ func _physics_process(delta: float) -> void:
 
 	handle_movement(direction)
 
-	was_on_floor = is_on_floor() # Sprawdzanie czy postać była na podłodze przed wykonaniem ruchu
+	handle_fall_through()
 
-	#print("velocity.x: ", roundf(velocity.x) , " velocity.y: ", roundf(velocity.y))
+	was_on_floor = is_on_floor() # Sprawdzanie czy postać była na podłodze przed wykonaniem ruchu
 
 	move_and_slide() # funkcja wprawiająca postać w ruch
 
-	# Sprawdzanie czy postać spada bedąc uprzednio na podłożu
-	just_left_ledge = !is_on_floor() and was_on_floor and velocity.y >= 0
+	just_left_ledge = !is_on_floor() and was_on_floor and velocity.y >= 0 # Sprawdzanie czy postać spada bedąc uprzednio na podłożu
 
 	handle_coyote()
 
 	handle_jump()
+
+	#handle_edge_detection()
 
 	handle_apex()
 
@@ -150,6 +155,18 @@ func handle_movement(direction) -> void:
 	if at_apex:
 		velocity.x += direction * apex_horizontal_boost
 
+# Funkcja spadania przez platformy fall-through
+func handle_fall_through() -> void:
+
+	#set_collision_mask_value(8, true)
+
+	if Input.is_action_just_released("fall_through") and is_on_floor():
+		set_collision_mask_value(8, false)
+
+	# Włączanie kolizji jak tylko gracz puści przycisk
+	#if Input.is_action_just_released("fall_through"):
+		#set_collision_mask_value(8, true)
+
 # Skakanie
 func handle_jump() -> void:
 	if can_jump == false and is_on_floor():
@@ -166,8 +183,31 @@ func handle_jump() -> void:
 		jump_buffer_timer.start()
 		buffered_jump = true
 
-	if Input.is_action_just_released("jump") and velocity.y < jump_velocity / 2:
+	if Input.is_action_just_released("jump") and velocity.y < jump_velocity / 2.5:
 		velocity.y -= jump_velocity / 2
+
+func handle_edge_detection() -> void:
+	if $ShapeCast2D.is_colliding() and is_jumping and !shape_collided:
+		shape_collided = true
+		var nudge_vertical_value: float = 100.0
+		var nudge_horizontal_value: float = 50.0
+
+		var dir: Vector2 = ($'.'.global_position - $ShapeCast2D.get_collision_point(0)).normalized()
+		#print("dir:", dir, " ", dir.normalized())
+		print(dir.normalized())
+
+		var object_collider = $ShapeCast2D.get_collider(0)
+		print(object_collider)
+
+		if dir.y < 1 and abs(dir.y) > 0.5 and abs(dir.x) > 0.5:
+			#print("we should nudge the player horizontally")
+			velocity.x += dir.normalized().x * nudge_horizontal_value
+		elif abs(dir.x) > 0.5 and abs(dir.y) < 0.6:
+			#print("we should nudge the player vertically")
+			velocity.y += dir.normalized().y * nudge_vertical_value
+
+	if shape_collided and is_on_floor():
+		shape_collided = false
 
 func handle_apex() -> void:
 	if !at_apex and is_jumping and !is_on_floor() and abs(velocity.y) < apex_threshold:
@@ -192,7 +232,13 @@ func _on_apex_timer_timeout() -> void:
 func _on_cast_timer_timeout() -> void:
 	can_cast = true
 
-#TODO On signal emission from an area play a chosen emote animation which is given inside signal parameter
+# On signal emission from an area play an emote animation
+func _on_interactable_state_change(in_area) -> void:
+	if in_area:
+		emote_animation.play("interaction")
+		emote_animation.queue("float")
+	else:
+		emote_animation.play_backwards("interaction")
 
 #func _on_gun_shoot(pos: Vector2, type: PackedScene, create: bool, direction: Vector2) -> void:
 	#var projectile = scene.instantiate() as Area2D
