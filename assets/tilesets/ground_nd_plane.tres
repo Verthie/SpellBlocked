@@ -1,18 +1,18 @@
-[gd_resource type="TileSet" load_steps=21 format=3 uid="uid://duef7jgbqvoir"]
+[gd_resource type="TileSet" load_steps=21 format=3 uid="uid://cwa4cldhrpdvk"]
 
-[ext_resource type="Texture2D" uid="uid://b57t4dtxjou5j" path="res://assets/sprites/tilesets/foreground/Isles [Grass].png" id="1_esbxo"]
-[ext_resource type="Texture2D" uid="uid://cyqctvt7hwv0e" path="res://assets/sprites/tilesets/foreground/Big Mushroom [Trunk].png" id="2_rc7ex"]
-[ext_resource type="Texture2D" uid="uid://x24urwxd80lr" path="res://assets/sprites/tilesets/foreground/Isles [Ice].png" id="3_2edq4"]
-[ext_resource type="Texture2D" uid="uid://ci0picpcd6yvf" path="res://assets/sprites/tilesets/foreground/Water Splash.png" id="12_3goqw"]
-[ext_resource type="Texture2D" uid="uid://64u2r3wbttda" path="res://assets/sprites/tilesets/foreground/Water.png" id="13_vahc0"]
-[ext_resource type="Texture2D" uid="uid://ch8g0r2tm3v4i" path="res://assets/sprites/tilesets/foreground/Isles [Mine].png" id="15_88dcx"]
-[ext_resource type="Texture2D" uid="uid://b2nvf33w7m80b" path="res://assets/sprites/tilesets/foreground/Isles [Snow].png" id="16_dfrxo"]
-[ext_resource type="Texture2D" uid="uid://bvmu63tq7ccqq" path="res://assets/sprites/tilesets/foreground/Isles [Swamp].png" id="17_m201r"]
-[ext_resource type="Texture2D" uid="uid://rhikubdkmkgf" path="res://assets/sprites/tilesets/foreground/Lava Bubble.png" id="18_qhy1l"]
-[ext_resource type="Texture2D" uid="uid://rl36ojwtu7ch" path="res://assets/sprites/tilesets/foreground/Lava.png" id="19_jpufc"]
+[ext_resource type="Texture2D" uid="uid://b57t4dtxjou5j" path="res://assets/sprites/tilesets/foreground/Isles [Grass].png" id="1_apanw"]
+[ext_resource type="Texture2D" uid="uid://cyqctvt7hwv0e" path="res://assets/sprites/tilesets/foreground/Big Mushroom [Trunk].png" id="2_k4wev"]
+[ext_resource type="Texture2D" uid="uid://x24urwxd80lr" path="res://assets/sprites/tilesets/foreground/Isles [Ice].png" id="3_irtn2"]
+[ext_resource type="Texture2D" uid="uid://ci0picpcd6yvf" path="res://assets/sprites/tilesets/foreground/Water Splash.png" id="4_7dmd8"]
+[ext_resource type="Texture2D" uid="uid://64u2r3wbttda" path="res://assets/sprites/tilesets/foreground/Water.png" id="5_c0g5u"]
+[ext_resource type="Texture2D" uid="uid://ch8g0r2tm3v4i" path="res://assets/sprites/tilesets/foreground/Isles [Mine].png" id="6_6c406"]
+[ext_resource type="Texture2D" uid="uid://b2nvf33w7m80b" path="res://assets/sprites/tilesets/foreground/Isles [Snow].png" id="7_jhtn8"]
+[ext_resource type="Texture2D" uid="uid://bvmu63tq7ccqq" path="res://assets/sprites/tilesets/foreground/Isles [Swamp].png" id="8_3m8r8"]
+[ext_resource type="Texture2D" uid="uid://rhikubdkmkgf" path="res://assets/sprites/tilesets/foreground/Lava Bubble.png" id="9_mij0s"]
+[ext_resource type="Texture2D" uid="uid://rl36ojwtu7ch" path="res://assets/sprites/tilesets/foreground/Lava.png" id="10_iy7w3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nmwd5"]
-texture = ExtResource("1_esbxo")
+texture = ExtResource("1_apanw")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(2, -3, 4, -3, 4, 4, 2, 4)
@@ -520,7 +520,7 @@ texture_region_size = Vector2i(8, 8)
 23:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-2, -4, -4, -4, -4, -2, -2, -2)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4ftyu"]
-texture = ExtResource("2_rc7ex")
+texture = ExtResource("2_k4wev")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-2, -4, 2, -4, 2, 4, -2, 4)
@@ -528,7 +528,7 @@ texture_region_size = Vector2i(8, 8)
 0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-2, -4, 2, -4, 2, 3, 3, 3, 3, 4, -3, 4, -3, 3, -2, 3)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7kmud"]
-texture = ExtResource("3_2edq4")
+texture = ExtResource("3_irtn2")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(2, -3, 4, -3, 4, 4, 2, 4)
@@ -676,7 +676,7 @@ texture_region_size = Vector2i(8, 8)
 7:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-2, -4, -4, -4, -4, -1, -2, -1)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3h37v"]
-texture = ExtResource("12_3goqw")
+texture = ExtResource("4_7dmd8")
 texture_region_size = Vector2i(8, 8)
 0:0/size_in_atlas = Vector2i(2, 2)
 0:0/animation_frame_0/duration = 0.15
@@ -689,7 +689,7 @@ texture_region_size = Vector2i(8, 8)
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 5, 8, 5, 8, 8, -8, 8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3wqmn"]
-texture = ExtResource("13_vahc0")
+texture = ExtResource("5_c0g5u")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, 1, 4, 1, 4, 4, -4, 4)
@@ -697,7 +697,7 @@ texture_region_size = Vector2i(8, 8)
 0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_scts1"]
-texture = ExtResource("15_88dcx")
+texture = ExtResource("6_6c406")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(2, 4, 4, 4, 4, -3, 2, -3)
@@ -1133,7 +1133,7 @@ texture_region_size = Vector2i(8, 8)
 23:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-2, -4, -4, -4, -4, -2, -2, -2)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x86lv"]
-texture = ExtResource("16_dfrxo")
+texture = ExtResource("7_jhtn8")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(2, 4, 4, 4, 4, -3, 2, -3)
@@ -1713,7 +1713,7 @@ texture_region_size = Vector2i(8, 8)
 31:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, -2, -4, -2, -2, -4, -2)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_au3js"]
-texture = ExtResource("17_m201r")
+texture = ExtResource("8_3m8r8")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(4, -3, 2, -3, 2, 4, 4, 4)
@@ -2149,7 +2149,7 @@ texture_region_size = Vector2i(8, 8)
 23:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, -2, -4, -2, -2, -4, -2)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l1eu8"]
-texture = ExtResource("18_qhy1l")
+texture = ExtResource("9_mij0s")
 texture_region_size = Vector2i(8, 8)
 0:0/size_in_atlas = Vector2i(2, 2)
 0:0/animation_frame_0/duration = 0.15
@@ -2162,7 +2162,7 @@ texture_region_size = Vector2i(8, 8)
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 5, 8, 5, 8, 8, -8, 8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sanpc"]
-texture = ExtResource("19_jpufc")
+texture = ExtResource("10_iy7w3")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, 1, 4, 1, 4, 4, -4, 4)
@@ -2170,7 +2170,7 @@ texture_region_size = Vector2i(8, 8)
 
 [resource]
 tile_size = Vector2i(8, 8)
-physics_layer_0/collision_layer = 2
+physics_layer_0/collision_layer = 256
 physics_layer_0/collision_mask = 517
 sources/24 = SubResource("TileSetAtlasSource_3h37v")
 sources/25 = SubResource("TileSetAtlasSource_3wqmn")
