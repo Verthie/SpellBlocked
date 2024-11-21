@@ -19,6 +19,13 @@ config/icon="res://icon.svg"
 
 Globals="*res://globals/globals.gd"
 EventBus="*res://globals/event_bus.gd"
+Cursor="*res://scenes/ui/cursor.tscn"
+
+[debug]
+
+gdscript/warnings/unused_signal=0
+gdscript/warnings/untyped_declaration=1
+gdscript/warnings/inferred_declaration=1
 
 [display]
 
@@ -118,12 +125,12 @@ quit={
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Ground"
 2d_physics/layer_3="Blocks"
-2d_physics/layer_4="Wand-Ray"
+2d_physics/layer_4="Exit"
 2d_physics/layer_5="Hazards"
 2d_physics/layer_6="Items"
 2d_physics/layer_7="Interactables"
 2d_physics/layer_8="Fall Platforms"
-2d_physics/layer_9="Exit"
+2d_physics/layer_9="BGGround"
 2d_physics/layer_10="Cursor"
 
 [rendering]

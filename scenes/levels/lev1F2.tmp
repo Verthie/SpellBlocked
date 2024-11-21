@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://b0qkkisnuydja"]
+[gd_scene load_steps=11 format=3 uid="uid://b0qkkisnuydja"]
 
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_yace1"]
 [ext_resource type="PackedScene" uid="uid://bqumck2g1lx6b" path="res://scenes/player/player.tscn" id="2_7aa5x"]
 [ext_resource type="TileSet" uid="uid://pyjwaxj30ab" path="res://assets/tilesets/background.tres" id="2_nvkav"]
 [ext_resource type="TileSet" uid="uid://duef7jgbqvoir" path="res://assets/tilesets/ground.tres" id="3_kclcj"]
-[ext_resource type="TileSet" uid="uid://cwa4cldhrpdvk" path="res://assets/tilesets/ground_nd_plane.tres" id="3_pluxv"]
 [ext_resource type="TileSet" uid="uid://bh1ffdsew3di7" path="res://assets/tilesets/bridges.tres" id="4_hlqh0"]
 [ext_resource type="TileSet" uid="uid://beb2w5g0vr2d1" path="res://assets/tilesets/background_elements.tres" id="4_w1n7g"]
 [ext_resource type="PackedScene" uid="uid://clpflpxtp3g2h" path="res://scenes/ui/ui.tscn" id="5_rj7pd"]
@@ -22,7 +21,7 @@ z_index = -10
 tile_set = ExtResource("2_nvkav")
 
 [node name="FGThirdPlane" type="TileMapLayer" parent="TileMaps"]
-tile_set = ExtResource("3_pluxv")
+tile_set = ExtResource("3_kclcj")
 
 [node name="BGElementsThirdPlane" type="TileMapLayer" parent="TileMaps"]
 tile_set = ExtResource("4_w1n7g")

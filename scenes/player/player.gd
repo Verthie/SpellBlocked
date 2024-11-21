@@ -1,18 +1,18 @@
 extends CharacterBody2D
 
-@export var foot_speed: float = 550
+@export var foot_speed: float = 140
 @export_range(0.0, 1.0, 0.025) var friction: float = 0.175
 @export_range(0.0, 1.0, 0.025) var acceleration: float = 0.125
 
-@export var jump_height: float = 150
-@export var jump_time_to_peak: float = 0.25
-@export var jump_time_to_descent: float = 0.5
+@export var jump_height: float = 30
+@export var jump_time_to_peak: float = 0.3
+@export var jump_time_to_descent: float = 0.2
 
 @export var apex_threshold: float = 2
 @export_range(0.0, 200.0, 0.1) var apex_gravity: float = 10.0
-@export var apex_horizontal_boost: float = 20
+@export var apex_horizontal_boost: float = 2
 
-@export var max_fall_speed: float = 800
+@export var max_fall_speed: float = 500
 @export var min_fall_speed: float = 20
 @export var fall_acceleration: bool = false
 @export var fall_acceleration_rate: float = 20
@@ -42,26 +42,26 @@ var coyote: bool = false # Sprawdza czy postać znajduje się aktualnie w czasie
 var buffered_jump: bool = false # Sprawdza czy został zainicjowany buffer jump
 var at_apex: bool = false
 var previous_state: String
-var current_direction: String = "right"
 var can_cast: bool = true
 var casting: bool = false
 
 func _ready() -> void:
 	EventBus.changed_interaction_state.connect(_on_interactable_state_change)
 
-func _process(_delta):
+
+func _process(_delta: float) -> void:
 
 	var direction: float = Input.get_axis("move_left", "move_rigt")
 
 	handle_animation(direction)
 
-func handle_animation(direction) -> void:
+func handle_animation(direction: float) -> void:
 	var animation_to_play: String = ""
 
-	if direction > 0:
+	if get_local_mouse_position().x >= -4:
 		$Sprites/Wizard.flip_h = false
 		wand_pivot.scale.x = 1
-	elif direction < 0:
+	else:
 		$Sprites/Wizard.flip_h = true
 		wand_pivot.scale.x = -1
 
@@ -72,7 +72,7 @@ func handle_animation(direction) -> void:
 				animation_to_play = "land"
 			elif direction == 0 and previous_state != "land":
 				animation_to_play = "idle"
-			elif direction != 0 and previous_state != "land":
+			elif direction != 0 and previous_state != "land" and animation_player.current_animation != "run":
 				animation_to_play = "run"
 
 		if is_falling:
@@ -120,7 +120,7 @@ func _physics_process(delta: float) -> void:
 	handle_apex()
 
 # Grawitacja
-func handle_gravity(delta) -> void:
+func handle_gravity(delta: float) -> void:
 
 	if !is_on_floor():
 		if at_apex:
@@ -146,7 +146,7 @@ func handle_gravity(delta) -> void:
 		fall_multiplier = 1.0
 
 # Ruch horyzontalny
-func handle_movement(direction) -> void:
+func handle_movement(direction: float) -> void:
 	if direction != 0:
 		velocity.x = lerp(velocity.x, direction * foot_speed, acceleration) # Akceleracja ruchu
 	else:
@@ -157,11 +157,19 @@ func handle_movement(direction) -> void:
 
 # Funkcja spadania przez platformy fall-through
 func handle_fall_through() -> void:
+	var last_collision: KinematicCollision2D
+	var collider: Object
+	var collider_type: String = ""
 
-	#set_collision_mask_value(8, true)
+	if get_last_slide_collision() != null:
+		last_collision = get_last_slide_collision()
+		collider = last_collision.get_collider()
+		collider_type = collider.get_class() if collider != null else ""
 
-	if Input.is_action_just_released("fall_through") and is_on_floor():
-		set_collision_mask_value(8, false)
+	if Input.is_action_just_pressed("fall_through") and is_on_floor() and collider_type == "StaticBody2D":
+		#print(collider.collision_layer)
+		#set_collision_mask_value(8, false)
+		position.y += 1 if collider.collision_layer == 128 else 0
 
 	# Włączanie kolizji jak tylko gracz puści przycisk
 	#if Input.is_action_just_released("fall_through"):
@@ -186,35 +194,26 @@ func handle_jump() -> void:
 	if Input.is_action_just_released("jump") and velocity.y < jump_velocity / 2.5:
 		velocity.y -= jump_velocity / 2
 
+# Niezaimplementowana funkcja detekcji krawędzi i korekty gracza
 func handle_edge_detection() -> void:
-	if $ShapeCast2D.is_colliding() and is_jumping and !shape_collided:
-		shape_collided = true
-		var nudge_vertical_value: float = 100.0
-		var nudge_horizontal_value: float = 50.0
+	if is_jumping and get_last_slide_collision() != null:
+		#var nudge_vertical_value: float = 100.0
+		#var nudge_horizontal_value: float = 50.0
 
-		var dir: Vector2 = ($'.'.global_position - $ShapeCast2D.get_collision_point(0)).normalized()
+		var hit_position: Vector2 = get_last_slide_collision().get_position() # Punkt w którym dwa obiekty wpadły w kolizję
+		var dir: Vector2 = position - hit_position
+		position += dir.normalized() * velocity.x
 		#print("dir:", dir, " ", dir.normalized())
-		print(dir.normalized())
+		#print(dir.normalized())
 
-		var object_collider = $ShapeCast2D.get_collider(0)
-		print(object_collider)
-
-		if dir.y < 1 and abs(dir.y) > 0.5 and abs(dir.x) > 0.5:
-			#print("we should nudge the player horizontally")
-			velocity.x += dir.normalized().x * nudge_horizontal_value
-		elif abs(dir.x) > 0.5 and abs(dir.y) < 0.6:
-			#print("we should nudge the player vertically")
-			velocity.y += dir.normalized().y * nudge_vertical_value
-
-	if shape_collided and is_on_floor():
-		shape_collided = false
-
+# Funkcja wykonana w trakcie docierania do górnej granicy skoku
 func handle_apex() -> void:
 	if !at_apex and is_jumping and !is_on_floor() and abs(velocity.y) < apex_threshold:
 		is_jumping = false
 		at_apex = true
 		apex_timer.start()
 
+# Funkcja implementująca czas coyote
 func handle_coyote() -> void:
 	if just_left_ledge:
 		coyote_timer.start()
@@ -232,19 +231,10 @@ func _on_apex_timer_timeout() -> void:
 func _on_cast_timer_timeout() -> void:
 	can_cast = true
 
-# On signal emission from an area play an emote animation
-func _on_interactable_state_change(in_area) -> void:
+# Odtwarzanie animacji emotikony po przechwyceniu sygnału od obszaru (area2D)
+func _on_interactable_state_change(in_area: bool) -> void:
 	if in_area:
 		emote_animation.play("interaction")
 		emote_animation.queue("float")
 	else:
 		emote_animation.play_backwards("interaction")
-
-#func _on_gun_shoot(pos: Vector2, type: PackedScene, create: bool, direction: Vector2) -> void:
-	#var projectile = scene.instantiate() as Area2D
-	#projectile.position = pos
-	#projectile.rotation_degrees = rad_to_deg(direction.angle())
-	#projectile.direction = direction
-	#projectile_direction = direction
-	#if create: projectile.create.connect(_on_projectile_body_entered)
-	#$Projectiles.add_child(projectile)
