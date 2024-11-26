@@ -151,7 +151,7 @@ tile_map_data = PackedByteArray("AAAGAP7/IwAAAAAAAABTAAcABAAAAAAAAABSAAcABAAAAAA
 [node name="Player" parent="." index="1"]
 position = Vector2(0, -13)
 
-[node name="Camera2D" parent="Player" index="8"]
+[node name="Camera2D" parent="Player" index="9"]
 limit_top = -114
 
 [node name="InteractableArea" parent="Interactables" index="0" instance=ExtResource("5_b06aa")]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bqumck2g1lx6b"]
+[gd_scene load_steps=23 format=3 uid="uid://bqumck2g1lx6b"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_8d035"]
 [ext_resource type="Texture2D" uid="uid://dsgob0525kdso" path="res://assets/sprites/character/Merchant.png" id="2_m6wue"]
@@ -312,13 +312,14 @@ _data = {
 "turn": ExtResource("10_ujvua")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_28ecw"]
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 collision_mask = 502
 floor_max_angle = 0.872665
 platform_on_leave = 2
 platform_floor_layers = 4294967290
-safe_margin = 0.001
 script = ExtResource("1_8d035")
 push_force = 2000.0
 min_push_force = 500.0
@@ -412,6 +413,13 @@ libraries = {
 }
 autoplay = "idle"
 playback_auto_capture = false
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="."]
+position = Vector2(0, -1)
+scale = Vector2(-0.333769, -0.0735473)
+shape = SubResource("RectangleShape2D_28ecw")
+target_position = Vector2(0, 66.21)
+collision_mask = 4
 
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_buffered_timer_timeout"]
