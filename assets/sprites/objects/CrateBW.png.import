@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6dqdwenkd0up"
-path="res://.godot/imported/cursors.png-79263ec64bdcc4efaf417ae3c2fdc0ca.ctex"
+uid="uid://gu22vg6khci6"
+path="res://.godot/imported/CrateBW.png-133675efaa7995382f48a935c6c2bd0c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/cursor/cursors.png"
-dest_files=["res://.godot/imported/cursors.png-79263ec64bdcc4efaf417ae3c2fdc0ca.ctex"]
+source_file="res://assets/sprites/objects/CrateBW.png"
+dest_files=["res://.godot/imported/CrateBW.png-133675efaa7995382f48a935c6c2bd0c.ctex"]
 
 [params]
 

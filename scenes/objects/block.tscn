@@ -1,20 +1,29 @@
 [gd_scene load_steps=4 format=3 uid="uid://bpo0xs7635pyd"]
 
 [ext_resource type="Script" path="res://scenes/objects/block.gd" id="1_h5gay"]
-[ext_resource type="Texture2D" uid="uid://som5452t8wrj" path="res://assets/sprites/objects/Crate.png" id="1_x1gef"]
+[ext_resource type="Texture2D" uid="uid://gu22vg6khci6" path="res://assets/sprites/objects/CrateBW.png" id="2_jfu3h"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_t4joh"]
-size = Vector2(10, 8)
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0bq0o"]
 
 [node name="Block" type="RigidBody2D"]
 collision_layer = 4
-collision_mask = 919
+collision_mask = 7
 input_pickable = true
+mass = 0.149
+physics_material_override = SubResource("PhysicsMaterial_0bq0o")
+can_sleep = false
 lock_rotation = true
+contact_monitor = true
+max_contacts_reported = 3
 script = ExtResource("1_h5gay")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_t4joh")
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_x1gef")
+self_modulate = Color(1, 0.513726, 0.431373, 1)
+texture = ExtResource("2_jfu3h")
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(0.596154, 0.404344)
+polygon = PackedVector2Array(-8.3871, -7.41942, -8.3871, 4.94628, -6.70968, 7.41942, 6.70968, 7.41942, 8.3871, 4.94628, 8.3871, -7.41942)
+one_way_collision_margin = 0.0
+
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

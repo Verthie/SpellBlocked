@@ -317,7 +317,6 @@ z_index = 1
 collision_mask = 502
 platform_on_leave = 2
 script = ExtResource("1_8d035")
-push_force = 20.0
 
 [node name="Sprites" type="Node2D" parent="."]
 

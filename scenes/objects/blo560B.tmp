@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bpo0xs7635pyd"]
+
+[ext_resource type="Script" path="res://scenes/objects/block.gd" id="1_h5gay"]
+[ext_resource type="Texture2D" uid="uid://gu22vg6khci6" path="res://assets/sprites/objects/CrateBW.png" id="2_jfu3h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t4joh"]
+size = Vector2(10, 8)
+
+[node name="Block" type="RigidBody2D"]
+collision_layer = 4
+collision_mask = 919
+input_pickable = true
+can_sleep = false
+lock_rotation = true
+script = ExtResource("1_h5gay")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_t4joh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.43, 0.924, 1, 1)
+texture = ExtResource("2_jfu3h")

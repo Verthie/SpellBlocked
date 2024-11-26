@@ -4,12 +4,14 @@ extends Node2D
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var area_2d: Area2D = $'.'
 
+@export_enum("Block", "Grow", "Shrink", "Select", "Type") var current_cursor_type: String = "Block"
+
 var current_body_type: String = "none"
 var object_index: int = 0
 var colliding_body: Node2D
-var current_cursor_type: String = "block"
 var cast_allowed: bool = false
 var modification_allowed: bool = false
+var just_created: bool = false
 
 signal cursor_changed_state(colliding_body: Node2D, current_body_type: String, cast_allowed: bool, modification_allowed: bool)
 
@@ -37,7 +39,7 @@ func _process(_delta: float) -> void:
 # Kolizja kursora z obiektami fizycznymi
 func handle_collisions() -> void:
 	var objects: Array[Node2D] = area_2d.get_overlapping_bodies()
-	print(objects)
+	#print(objects)
 	var objects_types: Array = objects.map(object_to_type)
 	#print(objects_types)
 
@@ -62,30 +64,35 @@ func handle_collisions() -> void:
 # Zmiana wyglądu kursora
 func handle_sprite() -> void:
 
-	if (!cast_allowed and Input.is_action_just_pressed('cast')) or (!modification_allowed and Input.is_action_just_pressed('cast_destroy')):
+	if cast_allowed and Input.is_action_just_pressed('cast'):
+		animation_player.play("cast_create")
+		just_created = true
+
+	if modification_allowed and Input.is_action_just_pressed('cast_destroy'):
+		animation_player.play("cast_remove")
+	elif (!cast_allowed and Input.is_action_just_pressed('cast')) or (!modification_allowed and Input.is_action_just_pressed('cast_destroy')):
 		animation_player.play("not_available")
 
 	if !animation_player.is_playing():
 		if !cast_allowed:
+			sprite_2d.self_modulate = Color("df989f")
+		if cast_allowed:
+			sprite_2d.self_modulate = Color(1,1,1)
+
+
+	match current_cursor_type:
+		"Block":
+			sprite_2d.frame = 0
+		"Grow":
+			sprite_2d.frame = 2
+		"Shrink":
+			sprite_2d.frame = 3
+		"Select":
+			sprite_2d.frame = 4
+		"Type":
 			sprite_2d.frame = 5
-		else:
-			match current_cursor_type:
-				"block":
-					sprite_2d.frame = 0
-				"anti-gravity":
-					sprite_2d.frame = 1
-				"ice":
-					sprite_2d.frame = 2
-				"enlarge":
-					sprite_2d.frame = 3
-				"shrink":
-					sprite_2d.frame = 4
-				"select":
-					sprite_2d.frame = 10
-				"type":
-					sprite_2d.frame = 11
-				_:
-					sprite_2d.frame = 0
+		_:
+			sprite_2d.frame = 0
 
 # Funkcja przyjmująca tablicę obiektów i zwracająca tablicę nazw typów obiektów
 func object_to_type(object: Node2D) -> String:
