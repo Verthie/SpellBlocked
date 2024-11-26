@@ -315,9 +315,13 @@ _data = {
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 collision_mask = 502
+floor_max_angle = 0.872665
 platform_on_leave = 2
+platform_floor_layers = 4294967290
+safe_margin = 0.001
 script = ExtResource("1_8d035")
-push_force = 20.0
+push_force = 2000.0
+min_push_force = 500.0
 
 [node name="Sprites" type="Node2D" parent="."]
 

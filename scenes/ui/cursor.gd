@@ -40,24 +40,26 @@ func _process(_delta: float) -> void:
 func handle_collisions() -> void:
 	var objects: Array[Node2D] = area_2d.get_overlapping_bodies()
 	#print(objects)
+	var objects_names: Array = objects.map(object_to_name)
 	var objects_types: Array = objects.map(object_to_type)
+	#print(objects_names)
 	#print(objects_types)
 
-	if "RigidBody2D" in objects_types:
-		### can't cast, can destroy and modify
-		cast_allowed = false
-		modification_allowed = true
-		object_index = objects_types.find("RigidBody2D")
-		current_body_type = "rigidbody"
-		#print("Found RigidBody at index: ", object_index)
-		colliding_body = objects[object_index]
-
-	elif "TileMapLayer" or "CharacterBody2D" in objects_types:
+	if "FGFirstPlane" in objects_names or "Player" in objects_names:
 		### can't cast, can't destroy and modify
 		cast_allowed = false
 		modification_allowed = false
 		current_body_type = "none"
 		colliding_body = null
+
+	elif "CharacterBody2D" in objects_types:
+		### can't cast, can destroy and modify
+		cast_allowed = false
+		modification_allowed = true
+		object_index = objects_types.find("CharacterBody2D")
+		current_body_type = "characterbody"
+		#print("Found RigidBody at index: ", object_index)
+		colliding_body = objects[object_index]
 
 	cursor_changed_state.emit(colliding_body, current_body_type, cast_allowed, modification_allowed)
 
@@ -97,3 +99,6 @@ func handle_sprite() -> void:
 # Funkcja przyjmująca tablicę obiektów i zwracająca tablicę nazw typów obiektów
 func object_to_type(object: Node2D) -> String:
 	return object.get_class()
+
+func object_to_name(object: Node2D) -> String:
+	return object.name
