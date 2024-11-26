@@ -3,6 +3,8 @@ extends Node
 signal ui_update(type: int, amount: int)
 signal ui_current(previous_type: int, current_type: int)
 
+var player_has_block_on_head: bool = false
+
 var object_amounts: Array = [0,0,0,0]
 
 var current_object_type: int = 0:
