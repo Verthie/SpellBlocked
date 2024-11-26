@@ -31,6 +31,7 @@ class_name Player
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var wand_pivot: Marker2D = $Sprites/WandPivot
 @onready var emote_animation: AnimationPlayer = $Sprites/Emotes/EmoteAnimation
+@onready var shape_cast_2d: ShapeCast2D = $ShapeCast2D
 
 var fall_time: float = 0.0
 var fall_multiplier: float = 1.0
@@ -59,10 +60,12 @@ func _process(_delta: float) -> void:
 
 	handle_animation(direction)
 
+	check_top()
+
 func handle_animation(direction: float) -> void:
 	var animation_to_play: String = ""
 
-	if get_local_mouse_position().x >= -4:
+	if get_local_mouse_position().x >= -0.125:
 		$Sprites/Wizard.flip_h = false
 		wand_pivot.scale.x = 1
 	else:
@@ -104,6 +107,12 @@ func handle_animation(direction: float) -> void:
 		await animation_player.animation_finished
 		casting = false
 		previous_state = "none"
+
+func check_top() -> void:
+	if shape_cast_2d.is_colliding():
+		var direction: int = 1 if get_local_mouse_position().x >= -0.125 else -1
+		var colliding_object: Object = shape_cast_2d.get_collider(0)
+		colliding_object.velocity.x = 300 * direction
 
 func _physics_process(delta: float) -> void:
 
@@ -189,7 +198,7 @@ func handle_fall_through() -> void:
 
 func handle_push() -> void:
 
-	for i in get_slide_collision_count():
+	for i: int in get_slide_collision_count():
 		var collision: KinematicCollision2D = get_slide_collision(i)
 		var colliding_object: Object = collision.get_collider()
 		#print(colliding_object)
@@ -199,7 +208,7 @@ func handle_push() -> void:
 	var moving_blocks: Array[Node] = get_tree().get_nodes_in_group('Pushed Block')
 	for block: Block in moving_blocks:
 		var all_collisions: Array[Object]
-		for i in block.get_slide_collision_count():
+		for i: int in block.get_slide_collision_count():
 			var collision: KinematicCollision2D = block.get_slide_collision(i)
 			var colliding_object: Object = collision.get_collider()
 			all_collisions.append(colliding_object)

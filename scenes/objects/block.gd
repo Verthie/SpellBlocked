@@ -20,23 +20,12 @@ class_name Block
 @export var fall_acceleration: bool = false
 @export var fall_acceleration_rate: float = 20
 
-@export var allow_staying_on_player_head: bool = false
-
 var fall_time: float = 0.0
 var fall_multiplier: float = 1.0
-
-var pushing: bool = false
-var predetermined_direction: int
-
-var player: Player
-var on_head_block: bool = false
-#var on_top_of_block: bool = false
-#var on_top_of_player: bool = false
 
 var physics_resource: CustomResource
 
 func _ready() -> void:
-	predetermined_direction = randi() % 2
 	apply_effect(block_type)
 
 func _physics_process(delta: float) -> void:
@@ -50,18 +39,8 @@ func _physics_process(delta: float) -> void:
 	if velocity.x == 0:
 		remove_from_group('Pushed Block')
 
-	if ray_cast_2d.is_colliding():
-		if Globals.player_has_block_on_head or (!allow_staying_on_player_head and ray_cast_2d.get_collider() is Player):
-			slide_from_head()
-		elif allow_staying_on_player_head:
-			check_below()
-
 	if !ray_cast_2d.is_colliding() or ray_cast_2d.get_collider() is Block:
 		apply_movement(Vector2(0.0,0.0), 0.0)
-
-	if Globals.player_has_block_on_head and on_head_block:
-		var tween = create_tween().bind_node(self).set_ease(Tween.EASE_OUT)
-		tween.tween_property(self, "position", Vector2(player.position.x, player.position.y - 12), 0.2)
 
 
 func apply_movement(direction: Vector2, speed: float) -> void:
@@ -92,33 +71,11 @@ func apply_gravity(delta: float) -> void:
 		fall_multiplier = 1.0
 
 func push_blocks() -> void:
-	for i in get_slide_collision_count():
+	for i: int in get_slide_collision_count():
 		var collision: KinematicCollision2D = get_slide_collision(i)
 		var colliding_object: Object = collision.get_collider()
-		#print(colliding_object)
 		if colliding_object is Block and collision.get_normal().y == 0:
 			colliding_object.apply_movement(-collision.get_normal(), velocity.x/2)
-
-	# Ilość bloków powinna wpływać na to jak bardzo są one przesuwane przez kolejne bloki (podzielimy prędkość przez ilość bloków w kolizji)
-
-func check_below() -> void:
-	var colliding_object: Object = ray_cast_2d.get_collider()
-	if colliding_object is Player:
-		print("colliding with Player")
-		player = colliding_object
-		if position.x != player.position.x:
-			var tween = create_tween().bind_node(self).set_ease(Tween.EASE_OUT)
-			tween.tween_property(self, "position", Vector2(player.position.x, player.position.y - 12), 0.2)
-			set_collision_layer_value(3, false)
-			Globals.player_has_block_on_head = true
-			on_head_block = true
-
-func slide_from_head() -> void:
-	if ray_cast_2d.is_colliding():
-		if ray_cast_2d.get_collider() is Player:
-			var direction: float = 1.0 if predetermined_direction else -1.0
-			velocity.x += 10 * direction
-
 
 func destroy() -> void:
 	queue_free()
