@@ -48,6 +48,10 @@ folder_colors={
 "res://assets/tilesets/": "purple"
 }
 
+[global_group]
+
+Tilemaps=""
+
 [input]
 
 move_left={

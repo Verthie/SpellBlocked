@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CustomResource" load_steps=3 format=3 uid="uid://buoyx8o3bcbgf"]
+
+[ext_resource type="Script" path="res://custom_scripts/block_physics.gd" id="1_pqi7e"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_j5pl2"]
+friction = 0.2
+
+[resource]
+script = ExtResource("1_pqi7e")
+mass = 1.0
+mat = SubResource("PhysicsMaterial_j5pl2")
+gravity_scale = 1.0

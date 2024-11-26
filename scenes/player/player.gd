@@ -17,6 +17,9 @@ extends CharacterBody2D
 @export var fall_acceleration: bool = false
 @export var fall_acceleration_rate: float = 20
 
+@export var push_force: float = 15.0
+@export var min_push_force: float = 10.0
+
 @onready var jump_velocity: float = ((2.0 * jump_height) / jump_time_to_peak) * -1.0
 @onready var jump_gravity: float = (2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
 @onready var fall_gravity: float = (2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)
@@ -82,10 +85,16 @@ func handle_animation(direction: float) -> void:
 		if is_jumping:
 			animation_to_play = "jump"
 
-	if can_cast and Input.is_action_just_pressed("cast"):
+	if can_cast and !casting and Input.is_action_just_pressed("cast"):
 		casting = true
 		can_cast = false
 		animation_to_play = "cast"
+		cast_timer.start()
+
+	if can_cast and !casting and Input.is_action_just_pressed("cast_destroy"):
+		casting = true
+		can_cast = false
+		animation_to_play = "cast_remove"
 		cast_timer.start()
 
 	animation_player.play(animation_to_play)
@@ -108,6 +117,8 @@ func _physics_process(delta: float) -> void:
 	was_on_floor = is_on_floor() # Sprawdzanie czy postać była na podłodze przed wykonaniem ruchu
 
 	move_and_slide() # funkcja wprawiająca postać w ruch
+
+	handle_push()
 
 	just_left_ledge = !is_on_floor() and was_on_floor and velocity.y >= 0 # Sprawdzanie czy postać spada bedąc uprzednio na podłożu
 
@@ -174,6 +185,14 @@ func handle_fall_through() -> void:
 	# Włączanie kolizji jak tylko gracz puści przycisk
 	#if Input.is_action_just_released("fall_through"):
 		#set_collision_mask_value(8, true)
+
+func handle_push() -> void:
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var colliding_object = collision.get_collider()
+		if colliding_object is RigidBody2D:
+			var applied_force = (push_force * velocity.length() / foot_speed) + min_push_force
+			colliding_object.apply_central_impulse(-collision.get_normal() * applied_force)
 
 # Skakanie
 func handle_jump() -> void:

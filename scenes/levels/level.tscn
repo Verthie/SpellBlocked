@@ -30,7 +30,7 @@ tile_set = ExtResource("4_w1n7g")
 [node name="FGSecondPlane" type="TileMapLayer" parent="TileMaps"]
 tile_set = ExtResource("4_hlqh0")
 
-[node name="FGFirstPlane" type="TileMapLayer" parent="TileMaps"]
+[node name="FGFirstPlane" type="TileMapLayer" parent="TileMaps" groups=["Tilemaps"]]
 tile_set = ExtResource("3_kclcj")
 
 [node name="BGElementsFirstPlane" type="TileMapLayer" parent="TileMaps"]
