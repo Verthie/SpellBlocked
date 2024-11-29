@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name Player
 
 @export var foot_speed: float = 140
 @export_range(0.0, 1.0, 0.025) var friction: float = 0.175
@@ -13,7 +14,6 @@ extends CharacterBody2D
 @export var apex_horizontal_boost: float = 2
 
 @export var max_fall_speed: float = 500
-@export var min_fall_speed: float = 20
 @export var fall_acceleration: bool = false
 @export var fall_acceleration_rate: float = 20
 
@@ -40,6 +40,7 @@ var can_jump: bool = true
 var is_jumping: bool = false
 var was_on_floor: bool
 var just_left_ledge: bool
+var last_colliding_block: Block
 var shape_collided: bool = false
 var coyote: bool = false # Sprawdza czy postać znajduje się aktualnie w czasie coyote
 var buffered_jump: bool = false # Sprawdza czy został zainicjowany buffer jump
@@ -187,12 +188,24 @@ func handle_fall_through() -> void:
 		#set_collision_mask_value(8, true)
 
 func handle_push() -> void:
+
 	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		var colliding_object = collision.get_collider()
-		if colliding_object is RigidBody2D:
-			var applied_force = (push_force * velocity.length() / foot_speed) + min_push_force
-			colliding_object.apply_central_impulse(-collision.get_normal() * applied_force)
+		var collision: KinematicCollision2D = get_slide_collision(i)
+		var colliding_object: Object = collision.get_collider()
+		#print(colliding_object)
+		if colliding_object is Block and collision.get_normal().y == 0:
+			colliding_object.apply_movement(-collision.get_normal(), foot_speed/2)
+
+	var moving_blocks: Array[Node] = get_tree().get_nodes_in_group('Pushed Block')
+	for block: Block in moving_blocks:
+		var all_collisions: Array[Object]
+		for i in block.get_slide_collision_count():
+			var collision: KinematicCollision2D = block.get_slide_collision(i)
+			var colliding_object: Object = collision.get_collider()
+			all_collisions.append(colliding_object)
+		if Player not in all_collisions:
+			block.apply_movement(Vector2(0.0,0.0), 0.0)
+			#block.remove_from_group('Pushed Block')
 
 # Skakanie
 func handle_jump() -> void:

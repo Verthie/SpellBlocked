@@ -3,27 +3,32 @@
 [ext_resource type="Script" path="res://scenes/objects/block.gd" id="1_h5gay"]
 [ext_resource type="Texture2D" uid="uid://gu22vg6khci6" path="res://assets/sprites/objects/CrateBW.png" id="2_jfu3h"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0bq0o"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oh7jb"]
+size = Vector2(10, 7)
 
-[node name="Block" type="RigidBody2D"]
+[node name="Block" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 7
-input_pickable = true
-mass = 0.149
-physics_material_override = SubResource("PhysicsMaterial_0bq0o")
-can_sleep = false
-lock_rotation = true
-contact_monitor = true
-max_contacts_reported = 3
+collision_mask = 391
+floor_stop_on_slope = false
+floor_max_angle = 0.0
+floor_snap_length = 0.0
+platform_on_leave = 2
 script = ExtResource("1_h5gay")
+acceleration = 0.1
+starting_impulse = 25.0
+gravity = 400.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 self_modulate = Color(1, 0.513726, 0.431373, 1)
 texture = ExtResource("2_jfu3h")
 
-[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
-scale = Vector2(0.596154, 0.404344)
-polygon = PackedVector2Array(-8.3871, -7.41942, -8.3871, 4.94628, -6.70968, 7.41942, 6.70968, 7.41942, 8.3871, 4.94628, 8.3871, -7.41942)
-one_way_collision_margin = 0.0
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_oh7jb")
+one_way_collision = true
 
-[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(0, 3)
+scale = Vector2(4.76, 1)
+target_position = Vector2(0, 3)
+collision_mask = 5

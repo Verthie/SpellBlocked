@@ -17,18 +17,6 @@ func _process(_delta: float) -> void:
 		get_tree().quit()
 
 func _on_wand_cast() -> void:
-	var block_instance: RigidBody2D = BLOCK.instantiate()
+	var block_instance: CharacterBody2D = BLOCK.instantiate()
 	block_instance.position = get_local_mouse_position()
 	$Blocks.add_child(block_instance)
-
-# func _on_wand_modify(block: Node2D, block_property: String) -> void:
-# 	match block_property:
-# 		"anti-gravity":
-# 			pass
-# 			# block.add_child(anti-gravity_component) #TODO
-# 		"ice":
-# 			pass
-# 			# block.add_child(ice_component) #TODO
-# 		"size":
-# 			pass
-# 			# block.add_child(size_component) # component ten będzie musiał zawierać informacje o tym czy blok jest enlarged czy nie #TODO
