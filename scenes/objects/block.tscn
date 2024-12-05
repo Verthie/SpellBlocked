@@ -17,9 +17,6 @@ platform_on_leave = 2
 platform_floor_layers = 4294967294
 safe_margin = 0.001
 script = ExtResource("1_h5gay")
-acceleration = 0.1
-starting_impulse = 25.0
-gravity = 400.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 self_modulate = Color(1, 0.513726, 0.431373, 1)
@@ -34,3 +31,18 @@ position = Vector2(0, 3)
 scale = Vector2(4.76, 1)
 target_position = Vector2(0, 3)
 collision_mask = 5
+
+[node name="DebugLabel" type="Label" parent="."]
+visible = false
+offset_left = -11.0
+offset_top = -10.0
+offset_right = 89.0
+offset_bottom = 13.0
+scale = Vector2(0.220152, 0.220152)
+text = "Not in Group"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Attributes" type="Node" parent="."]
+
+[node name="Properties" type="Node" parent="."]

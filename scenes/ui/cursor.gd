@@ -1,8 +1,11 @@
 extends Node2D
 
+signal cursor_changed_state(colliding_body: Node2D, current_body_type: String, cast_allowed: bool, modification_allowed: bool)
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var area_2d: Area2D = $'.'
+@onready var created_timer: Timer = $CreatedTimer
 
 @export_enum("Block", "Grow", "Shrink", "Select", "Type") var current_cursor_type: String = "Block"
 
@@ -12,8 +15,6 @@ var colliding_body: Node2D
 var cast_allowed: bool = false
 var modification_allowed: bool = false
 var just_created: bool = false
-
-signal cursor_changed_state(colliding_body: Node2D, current_body_type: String, cast_allowed: bool, modification_allowed: bool)
 
 func _ready() -> void:
 	# TODO Ustawić połączenie z UI pod naciśnięcie przycisku - zmiana kursora
@@ -69,6 +70,7 @@ func handle_sprite() -> void:
 	if cast_allowed and Input.is_action_just_pressed('cast'):
 		animation_player.play("cast_create")
 		just_created = true
+		created_timer.start()
 
 	if modification_allowed and Input.is_action_just_pressed('cast_destroy'):
 		animation_player.play("cast_remove")
@@ -76,13 +78,23 @@ func handle_sprite() -> void:
 		animation_player.play("not_available")
 
 	if !animation_player.is_playing():
-		if !cast_allowed:
-			sprite_2d.self_modulate = Color("df989f")
-		if cast_allowed:
+		if Globals.in_modify_state:
+			match Globals.current_block_type:
+				"Ice":
+					sprite_2d.self_modulate = Color("93f0ff")
+				"Enlarge":
+					sprite_2d.self_modulate = Color("93969c")
+				_:
+					sprite_2d.self_modulate = Color(0,0,0)
+			if !modification_allowed and area_2d.has_overlapping_bodies():
+				sprite_2d.self_modulate = Color("df989f")
+		elif cast_allowed or just_created:
 			sprite_2d.self_modulate = Color(1,1,1)
+		elif !cast_allowed and !Globals.in_modify_state:
+			sprite_2d.self_modulate = Color("df989f")
 
 
-	match current_cursor_type:
+	match Globals.current_cursor_type:
 		"Block":
 			sprite_2d.frame = 0
 		"Grow":
@@ -102,3 +114,6 @@ func object_to_type(object: Node2D) -> String:
 
 func object_to_name(object: Node2D) -> String:
 	return object.name
+
+func _on_timer_timeout() -> void:
+	just_created = false

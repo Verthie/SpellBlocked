@@ -1,27 +1,17 @@
 extends Node
 
-signal ui_update(type: int, amount: int)
-signal ui_current(previous_type: int, current_type: int)
+var current_block_type: String = "None"
+	#set(value):
+		#current_block_type = value
 
-var player_has_block_on_head: bool = false
+var in_modify_state: bool = false
 
-var object_amounts: Array = [0,0,0,0]
+func _process(_delta: float) -> void:
+	if current_block_type == "None": #or current_block_type == "Enlarge":
+		in_modify_state = false
+	else:
+		in_modify_state = true
 
-var current_object_type: int = 0:
-	set(value):
-		var previous_type: int = current_object_type
-		current_object_type = value
-		ui_current.emit(previous_type, current_object_type)
+var current_cursor_type: String = "Block"
 
-var current_object_amount_create: int = 0:
-	set(value):
-		object_amounts[current_object_type] += value
-		current_object_amount_create = 0
-		ui_update.emit(current_object_type, object_amounts[current_object_type])
-
-var object_type_destroy: int = 0:
-	set(value):
-		object_amounts[value] += 1
-		#print(object_amounts)
-		#print("Sent to function:", value, " ", object_amounts[value])
-		ui_update.emit(value, object_amounts[value])
+#var object_amounts: Array = [0,0,0,0]

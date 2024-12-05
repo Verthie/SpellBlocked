@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CustomResource" load_steps=2 format=3 uid="uid://ds5p78pv4dkia"]
+
+[ext_resource type="Script" path="res://custom_scripts/block_physics.gd" id="1_82jm6"]
+
+[resource]
+script = ExtResource("1_82jm6")
+friction = 0.175
+gravity = -100.0

@@ -42,6 +42,7 @@ var is_jumping: bool = false
 var was_on_floor: bool
 var just_left_ledge: bool
 var last_colliding_block: Block
+var colliding_with_block: bool = false
 var shape_collided: bool = false
 var coyote: bool = false # Sprawdza czy postać znajduje się aktualnie w czasie coyote
 var buffered_jump: bool = false # Sprawdza czy został zainicjowany buffer jump
@@ -73,18 +74,16 @@ func handle_animation(direction: float) -> void:
 		wand_pivot.scale.x = -1
 
 	if !casting:
-		if is_on_floor():
-			if previous_state == "falling":
-				previous_state = "land"
-				animation_to_play = "land"
-			elif direction == 0 and previous_state != "land":
+		if is_on_floor() and animation_player.current_animation != "land":
+			if direction == 0:
 				animation_to_play = "idle"
-			elif direction != 0 and previous_state != "land" and animation_player.current_animation != "run":
+			elif direction != 0 and animation_player.current_animation != "run":
 				animation_to_play = "run"
 
 		if is_falling:
 			animation_to_play = "fall"
-			previous_state = "falling"
+			if is_on_floor():
+				animation_to_play = "land"
 
 		if is_jumping:
 			animation_to_play = "jump"
@@ -103,16 +102,18 @@ func handle_animation(direction: float) -> void:
 
 	animation_player.play(animation_to_play)
 
-	if casting or previous_state == "land":
+	if casting:
 		await animation_player.animation_finished
 		casting = false
-		previous_state = "none"
 
 func check_top() -> void:
 	if shape_cast_2d.is_colliding():
 		var direction: int = 1 if get_local_mouse_position().x >= -0.125 else -1
 		var colliding_object: Object = shape_cast_2d.get_collider(0)
-		colliding_object.velocity.x = 300 * direction
+		if colliding_object is Block:
+			var block: Block = colliding_object
+			block.velocity.x = direction * 300
+			EventBus.block_thrown.emit()
 
 func _physics_process(delta: float) -> void:
 
@@ -202,8 +203,13 @@ func handle_push() -> void:
 		var collision: KinematicCollision2D = get_slide_collision(i)
 		var colliding_object: Object = collision.get_collider()
 		#print(colliding_object)
-		if colliding_object is Block and collision.get_normal().y == 0:
-			colliding_object.apply_movement(-collision.get_normal(), foot_speed/2)
+		if colliding_object is Block:
+			last_colliding_block = colliding_object
+			colliding_with_block = true
+			if collision.get_normal().y == 0:
+				colliding_object.apply_movement(-collision.get_normal(), (foot_speed/5))
+		else:
+			colliding_with_block = false
 
 	var moving_blocks: Array[Node] = get_tree().get_nodes_in_group('Pushed Block')
 	for block: Block in moving_blocks:
@@ -214,12 +220,14 @@ func handle_push() -> void:
 			all_collisions.append(colliding_object)
 		if Player not in all_collisions:
 			block.apply_movement(Vector2(0.0,0.0), 0.0)
-			#block.remove_from_group('Pushed Block')
 
 # Skakanie
 func handle_jump() -> void:
 	if can_jump == false and is_on_floor():
-		can_jump = true
+		if colliding_with_block and last_colliding_block.falling == true:
+			can_jump = false
+		else:
+			can_jump = true
 		is_jumping = false
 
 	if can_jump and (Input.is_action_just_pressed("jump") or buffered_jump) and (is_on_floor() or coyote):

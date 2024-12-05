@@ -163,9 +163,6 @@ shape = SubResource("RectangleShape2D_s214u")
 [node name="Key" parent="Items" index="0" instance=ExtResource("2_g43sp")]
 position = Vector2(-51, 11)
 
-[node name="UI" parent="." index="5"]
-visible = false
-
 [node name="Deathzone" parent="." index="6"]
 position = Vector2(-32, 69)
 
