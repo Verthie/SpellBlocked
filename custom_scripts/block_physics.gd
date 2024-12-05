@@ -2,6 +2,5 @@ extends Resource
 class_name CustomResource
 
 @export_category("Properties")
-@export var mass: float = 1.0
-@export var mat: PhysicsMaterial
-@export var gravity_scale: float = 1.0
+@export_range(0.0, 1.0, 0.025) var friction: float = 0.175
+@export var gravity: float = 400

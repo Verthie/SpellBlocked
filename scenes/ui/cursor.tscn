@@ -63,7 +63,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("Sprite2D:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -199,3 +199,9 @@ metadata/_aseprite_wizard_interface_config_ = {
 libraries = {
 "": SubResource("AnimationLibrary_fl356")
 }
+
+[node name="CreatedTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="timeout" from="CreatedTimer" to="." method="_on_timer_timeout"]
