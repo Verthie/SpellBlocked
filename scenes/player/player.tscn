@@ -382,7 +382,6 @@ libraries = {
 
 [node name="WandLogic" type="Node2D" parent="."]
 script = ExtResource("5_nmg8e")
-raycast_enabled = false
 
 [node name="RayCast2D" type="RayCast2D" parent="WandLogic"]
 target_position = Vector2(80, 0)

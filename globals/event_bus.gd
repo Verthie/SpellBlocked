@@ -4,5 +4,4 @@ extends Node
 signal changed_interaction_state(in_area: bool)
 signal casted()
 signal block_thrown()
-
-# signal modified_property(block: Node2D, block_property: String)
+signal obstructed(state: bool)

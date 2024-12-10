@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CustomResource" load_steps=2 format=3 uid="uid://buoyx8o3bcbgf"]
+
+[ext_resource type="Script" path="res://scenes/objects/block_properties/block_properties.gd" id="1_2bc6n"]
+
+[resource]
+script = ExtResource("1_2bc6n")
+type_name = "Ice"
+friction = 0.025
+gravity = 400.0
+colour = Color(0.576471, 0.941176, 1, 1)
+modifier_overlay_opacity = 0.5

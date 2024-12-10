@@ -1,8 +1,10 @@
 [gd_resource type="Resource" script_class="CustomResource" load_steps=2 format=3 uid="uid://ds5p78pv4dkia"]
 
-[ext_resource type="Script" path="res://custom_scripts/block_physics.gd" id="1_82jm6"]
+[ext_resource type="Script" path="res://scenes/objects/block_properties/block_properties.gd" id="1_82jm6"]
 
 [resource]
 script = ExtResource("1_82jm6")
+type_name = "None"
 friction = 0.175
 gravity = -100.0
+colour = Color(0.654813, 0.634225, 0.939261, 1)
