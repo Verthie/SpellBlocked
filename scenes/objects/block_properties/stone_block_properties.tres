@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CustomResource" load_steps=2 format=3 uid="uid://hac6f1kbvlxr"]
+
+[ext_resource type="Script" path="res://scenes/objects/block_properties/block_properties.gd" id="1_636wv"]
+
+[resource]
+script = ExtResource("1_636wv")
+type_name = "Large"
+friction = 0.9
+gravity = 2500.0
+colour = Color(0.576471, 0.588235, 0.611765, 1)
+modifier_overlay_opacity = 0.4

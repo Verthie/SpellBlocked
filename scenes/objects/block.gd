@@ -1,15 +1,12 @@
 extends CharacterBody2D
 class_name Block
 
-const DEFAULT_BLOCK_PHYSICS: CustomResource = preload('res://custom_scripts/default_block_physics.tres')
-const ICE_BLOCK_PHYSICS: CustomResource = preload('res://custom_scripts/ice_block_physics.tres')
-const LARGE_BLOCK_PHYSICS: CustomResource = preload('res://custom_scripts/large_block_physics.tres')
-
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var ray_cast_2d: RayCast2D = $RayCast2D
 @onready var label: Label = $DebugLabel
+@onready var overlay: Sprite2D = $Sprite2D/Overlay
 
-@export_enum("None", "Ice", "Enlarge") var block_type: String = "None"
+@onready var attributes: Node = $Attributes
 
 @export_category("Horizontal Movement")
 @export_range(0.0, 1.0, 0.025) var friction: float = 0.175
@@ -21,18 +18,21 @@ const LARGE_BLOCK_PHYSICS: CustomResource = preload('res://custom_scripts/large_
 @export var fall_acceleration: bool = false
 @export var fall_acceleration_rate: float = 20
 
+@export_category("Modifiers")
+@export var modifier_nodes: Dictionary
+@export var max_modifier_amount: int = 2
+
 var fall_time: float = 0.0
 var fall_multiplier: float = 1.0
 
 var block_thrown: bool = false
-var falling: bool = false
+var falling: bool = true
 
-var physics_resource: CustomResource
-var applied_effect: bool = false
+var current_modifiers: Array[String]
 
 func _ready() -> void:
 	EventBus.block_thrown.connect(apply_thrown_state)
-	apply_effect(Globals.current_block_type)
+	apply_modifier(Globals.current_block_type)
 
 func _physics_process(delta: float) -> void:
 
@@ -49,7 +49,6 @@ func _physics_process(delta: float) -> void:
 
 	if !ray_cast_2d.is_colliding() or ray_cast_2d.get_collider() is Block:
 		apply_movement(Vector2(0.0,0.0), 0.0)
-
 
 func apply_movement(direction: Vector2, speed: float) -> void:
 	if direction.x != 0:
@@ -97,30 +96,44 @@ func push_blocks() -> void:
 			#print("real velocity:", get_real_velocity(), "normal:", collision.get_normal().y)
 			#print("travel:", collision_travel, "ramainder:", collision_ramainder)
 
-func apply_effect(effect_type: String) -> void:
-	match effect_type:
-		"Ice":
-			# Low Friction
-			physics_resource = ICE_BLOCK_PHYSICS
-			sprite_2d.self_modulate = Color("6eecff") # ice color
-		"Enlarge":
-			# High Mass, High Friction, Rough True, Absorbent True
-			physics_resource = LARGE_BLOCK_PHYSICS
-			sprite_2d.self_modulate = Color("93969c")
-		_:
-			physics_resource = DEFAULT_BLOCK_PHYSICS
-			sprite_2d.self_modulate = Color("ff836e") # standard color
+func apply_modifier(modifier_type: String) -> void:
+	if current_modifiers.is_empty():
+		apply_color(modifier_type)
 
-	if !applied_effect:
-		friction = physics_resource.friction
-		gravity = physics_resource.gravity
-		applied_effect = true
+	if modifier_type != "None" and modifier_type not in current_modifiers and current_modifiers.size() < max_modifier_amount:
+
+		get_node(modifier_nodes[modifier_type]).apply(attributes)
+
+		current_modifiers.append(modifier_type)
+
+		if current_modifiers.size() == 2:
+			apply_overlay(modifier_type)
+			overlay.visible = true
+
+func remove_latest_modifier() -> void:
+	var latest_applied_modifier: String = current_modifiers.pop_back()
+	if current_modifiers.is_empty():
+		apply_color("None")
 	else:
-		gravity = max(gravity, physics_resource.gravity)
+		apply_color(current_modifiers.back())
+		overlay.visible = false
 
+	get_node(modifier_nodes[latest_applied_modifier]).remove(attributes)
+
+func apply_color(modifier_type: String) -> void:
+	sprite_2d.self_modulate = Globals.block_properties[modifier_type].colour
+
+func apply_overlay(modifier_type: String) -> void:
+	overlay.self_modulate = Color(Globals.block_properties[modifier_type].colour, Globals.block_properties[modifier_type].modifier_overlay_opacity)
 
 func destroy() -> void:
 	queue_free()
 
 func apply_thrown_state() -> void:
 	block_thrown = true
+
+func _on_attributes_friction_changed(new_friction: float) -> void:
+	friction = new_friction
+
+func _on_attributes_gravity_changed(new_gravity: float) -> void:
+	gravity = new_gravity

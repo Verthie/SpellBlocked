@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bpo0xs7635pyd"]
+[gd_scene load_steps=8 format=3 uid="uid://bpo0xs7635pyd"]
 
 [ext_resource type="Script" path="res://scenes/objects/block.gd" id="1_h5gay"]
 [ext_resource type="Texture2D" uid="uid://gu22vg6khci6" path="res://assets/sprites/objects/CrateBW.png" id="2_jfu3h"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://scenes/objects/block_modifier/attribute.gd" id="4_rgpo2"]
 [ext_resource type="Script" path="res://scenes/objects/block_modifier/modifier.gd" id="5_ush3f"]
 [ext_resource type="Resource" uid="uid://buoyx8o3bcbgf" path="res://scenes/objects/block_properties/ice_block_properties.tres" id="6_fr7se"]
-[ext_resource type="Resource" uid="uid://hac6f1kbvlxr" path="res://scenes/objects/block_properties/stone_block_properties.tres" id="7_4nveb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oh7jb"]
 size = Vector2(10, 7)
@@ -22,34 +21,9 @@ platform_on_leave = 2
 platform_floor_layers = 4294967294
 safe_margin = 0.001
 script = ExtResource("1_h5gay")
-modifier_nodes = {
-"Ice": NodePath("Modifiers/Ice"),
-"Stone": NodePath("Modifiers/Stone")
-}
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 self_modulate = Color(1, 0.513726, 0.431373, 1)
-texture = ExtResource("2_jfu3h")
-metadata/_aseprite_wizard_interface_config_ = {
-"animation_section": false,
-"layer_section": false,
-"output_section": false,
-"pending_changes": {
-"i_mode": -1,
-"keep_anim_length": false,
-"layer": "",
-"o_ex_p": "",
-"o_folder": "",
-"o_name": "",
-"only_visible": false,
-"player": "",
-"slice": "",
-"source": ""
-}
-}
-
-[node name="Overlay" type="Sprite2D" parent="Sprite2D"]
-visible = false
 texture = ExtResource("2_jfu3h")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -78,21 +52,12 @@ script = ExtResource("3_wd6a0")
 
 [node name="Friction" type="Node" parent="Attributes"]
 script = ExtResource("4_rgpo2")
-amount = 0.18
 
 [node name="Gravity" type="Node" parent="Attributes"]
 script = ExtResource("4_rgpo2")
-amount = 400.0
 
 [node name="Modifiers" type="Node" parent="."]
 
 [node name="Ice" type="Node" parent="Modifiers"]
 script = ExtResource("5_ush3f")
 modifier = ExtResource("6_fr7se")
-
-[node name="Stone" type="Node" parent="Modifiers"]
-script = ExtResource("5_ush3f")
-modifier = ExtResource("7_4nveb")
-
-[connection signal="friction_changed" from="Attributes" to="." method="_on_attributes_friction_changed"]
-[connection signal="gravity_changed" from="Attributes" to="." method="_on_attributes_gravity_changed"]

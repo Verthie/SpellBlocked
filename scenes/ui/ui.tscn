@@ -11,8 +11,12 @@ anchor_left = 0.05
 anchor_top = 0.05
 anchor_right = 0.05
 anchor_bottom = 0.102
-offset_right = 348.0
-offset_bottom = 61.0
+offset_left = 0.399998
+offset_top = -0.400002
+offset_right = 264.4
+offset_bottom = 20.904
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_constants/separation = 20
 
 [node name="ObjectOneCounter" type="VBoxContainer" parent="ChoiceBar"]
@@ -34,7 +38,7 @@ layout_mode = 2
 
 [node name="TwoLabel" type="Label" parent="ChoiceBar/ObjectTwoCounter"]
 layout_mode = 2
-text = "Object 2"
+text = "STONE"
 
 [node name="Object2Counter" type="Label" parent="ChoiceBar/ObjectTwoCounter"]
 layout_mode = 2

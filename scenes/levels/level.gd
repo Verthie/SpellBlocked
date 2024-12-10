@@ -17,6 +17,6 @@ func _process(_delta: float) -> void:
 		get_tree().quit()
 
 func _on_wand_cast() -> void:
-	var block_instance: CharacterBody2D = BLOCK.instantiate()
+	var block_instance: Block = BLOCK.instantiate()
 	block_instance.position = get_local_mouse_position()
 	$Blocks.add_child(block_instance)

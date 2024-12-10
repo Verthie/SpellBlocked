@@ -7,13 +7,9 @@ var colour: Color = Color("ffffff")
 
 @onready var choice_bar: Array[Node] = $ChoiceBar.get_children(true)
 
-# Funkcja inicjalizująca standardowe wartości
 func _ready() -> void:
 	Globals.current_block_type = "None"
-	set_current_type(Globals.current_block_type)
-	#Globals.connect("ui_update", update_counters)
-	#Globals.connect("ui_current", set_current_type)
-	#update_counters(0,0)
+	set_current_ui_type()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and (event.keycode == KEY_1 or event.keycode == KEY_2):
@@ -21,14 +17,14 @@ func _input(event: InputEvent) -> void:
 			KEY_1:
 				Globals.current_block_type = "Ice" if Globals.current_block_type != "Ice" else "None"
 			KEY_2:
-				Globals.current_block_type = "Enlarge" if Globals.current_block_type != "Enlarge" else "None"
+				Globals.current_block_type = "Stone" if Globals.current_block_type != "Stone" else "None"
 
-		set_current_type(Globals.current_block_type)
+		set_current_ui_type()
 
 #func update_counters(type: int, amount: int) -> void:
 	#choice_bar[type].get_child(1).text = str(amount)
 
-func set_current_type(block_type: String) -> void:
+func set_current_ui_type() -> void:
 
 	colour = Color("ffffff")
 
@@ -37,16 +33,16 @@ func set_current_type(block_type: String) -> void:
 		for element: Label in counter:
 			element.modulate = colour
 
-	if block_type != "None":
+	if Globals.current_block_type != "None":
 		var current_counter: int
 
-		match block_type:
+		match Globals.current_block_type:
 			"Ice":
 				current_counter = 0
-				colour = Color('93f0ff')
-			"Enlarge":
+			"Stone":
 				current_counter = 1
-				colour = Color('93969c')
+
+		colour = Globals.block_properties[Globals.current_block_type].colour
 
 		choice_bar[current_counter].get_child(0).modulate = colour
 		choice_bar[current_counter].get_child(1).modulate = colour
