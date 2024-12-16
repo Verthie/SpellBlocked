@@ -12,12 +12,14 @@ func _ready() -> void:
 	set_current_ui_type()
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and (event.keycode == KEY_1 or event.keycode == KEY_2):
+	if event is InputEventKey and event.pressed and (event.keycode == KEY_1 or event.keycode == KEY_2 or event.keycode == KEY_3):
 		match event.keycode:
 			KEY_1:
 				Globals.current_block_type = "Ice" if Globals.current_block_type != "Ice" else "None"
 			KEY_2:
 				Globals.current_block_type = "Stone" if Globals.current_block_type != "Stone" else "None"
+			KEY_3:
+				Globals.current_block_type = "Anti-Gravity" if Globals.current_block_type != "Anti-Gravity" else "None"
 
 		set_current_ui_type()
 
@@ -41,6 +43,8 @@ func set_current_ui_type() -> void:
 				current_counter = 0
 			"Stone":
 				current_counter = 1
+			"Anti-Gravity":
+				current_counter = 2
 
 		colour = Globals.block_properties[Globals.current_block_type].colour
 

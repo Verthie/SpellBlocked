@@ -15,6 +15,8 @@ func get_amount() -> float:
 		# when modifier already applied and current modifier is Stone apply only its gravity
 		if Globals.current_block_type == "Stone" and attribute_type == "gravity":
 			decorated_amount = amount
+		if Globals.current_block_type == "Anti-Gravity" and attribute_type == "gravity" and "Stone" not in current_modifiers:
+			decorated_amount *= -1
 	else:
 		decorated_amount = amount
 

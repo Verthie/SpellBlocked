@@ -5,6 +5,7 @@ class_name Block
 @onready var ray_cast_2d: RayCast2D = $RayCast2D
 @onready var label: Label = $DebugLabel
 @onready var overlay: Sprite2D = $Sprite2D/Overlay
+@onready var anti_gravity_top: ShapeCast2D = $'Anti-GravityTop'
 
 @onready var attributes: Node = $Attributes
 
@@ -29,6 +30,9 @@ var block_thrown: bool = false
 var falling: bool = true
 
 var current_modifiers: Array[String]
+
+var reversed_gravity: bool
+var body_on_top: bool
 
 func _ready() -> void:
 	EventBus.block_thrown.connect(apply_thrown_state)
@@ -59,12 +63,21 @@ func apply_movement(direction: Vector2, speed: float) -> void:
 		velocity.x = lerp(velocity.x, 0.0, friction) # Tarcie
 
 func apply_gravity(delta: float) -> void:
+	if "Anti-Gravity" in current_modifiers:
+		reversed_gravity = true
+	else:
+		reversed_gravity = false
 
 	if !is_on_floor():
 		falling = true
 		#if velocity.y >= 0:
-		if !fall_acceleration:
+		if !fall_acceleration and "Anti-Gravity" not in current_modifiers:
 			velocity.y += gravity * delta # Liniowa akceleracja
+		elif !fall_acceleration and "Anti-Gravity" in current_modifiers:
+			if anti_gravity_top.is_colliding():
+				velocity.y += -gravity * delta
+			else:
+				velocity.y += gravity * delta
 		if fall_acceleration:
 			fall_time += delta
 			fall_multiplier = pow(fall_time * fall_acceleration_rate, 2)
@@ -73,7 +86,10 @@ func apply_gravity(delta: float) -> void:
 		velocity.y = min(velocity.y, max_fall_speed) # Clamp prędkości spadania
 	else:
 		falling = false
-		velocity.y = 0
+		if !reversed_gravity:
+			velocity.y = 0
+		else:
+			velocity.y += gravity * delta
 		fall_time = 0
 
 	if fall_acceleration and is_on_floor():
