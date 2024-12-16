@@ -41,6 +41,8 @@ tile_set = ExtResource("4_w1n7g")
 [node name="Decor" type="TileMapLayer" parent="TileMaps"]
 tile_set = ExtResource("7_a216d")
 
+[node name="LevelElements" type="Node2D" parent="."]
+
 [node name="Player" parent="." instance=ExtResource("2_7aa5x")]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]

@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=3 uid="uid://c8a4g8m722h4"]
+
+[ext_resource type="Texture2D" uid="uid://dvoqvi67irwql" path="res://assets/sprites/objects/Mushrooms.png" id="1_f21iu"]
+[ext_resource type="Script" path="res://scenes/world/mushroom_pad.gd" id="1_sw4l3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shruh"]
+size = Vector2(12, 9)
+
+[sub_resource type="Animation" id="Animation_5hyih"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_8bwh6"]
+resource_name = "bounce"
+length = 0.3
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [3, 4, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6hg0o"]
+_data = {
+"RESET": SubResource("Animation_5hyih"),
+"bounce": SubResource("Animation_8bwh6")
+}
+
+[node name="MushroomPad" type="Area2D"]
+collision_layer = 1024
+collision_mask = 4
+script = ExtResource("1_sw4l3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_f21iu")
+hframes = 6
+vframes = 2
+frame = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.19209e-07, 2.5)
+shape = SubResource("RectangleShape2D_shruh")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(0, -2)
+rotation = -3.14159
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6hg0o")
+}
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

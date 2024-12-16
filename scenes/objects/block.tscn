@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bpo0xs7635pyd"]
+[gd_scene load_steps=11 format=3 uid="uid://bpo0xs7635pyd"]
 
 [ext_resource type="Script" path="res://scenes/objects/block.gd" id="1_h5gay"]
 [ext_resource type="Texture2D" uid="uid://gu22vg6khci6" path="res://assets/sprites/objects/CrateBW.png" id="2_jfu3h"]
@@ -7,13 +7,16 @@
 [ext_resource type="Script" path="res://scenes/objects/block_modifier/modifier.gd" id="5_ush3f"]
 [ext_resource type="Resource" uid="uid://buoyx8o3bcbgf" path="res://scenes/objects/block_properties/ice_block_properties.tres" id="6_fr7se"]
 [ext_resource type="Resource" uid="uid://hac6f1kbvlxr" path="res://scenes/objects/block_properties/stone_block_properties.tres" id="7_4nveb"]
+[ext_resource type="Resource" uid="uid://ds5p78pv4dkia" path="res://scenes/objects/block_properties/anti-gravity_block_properties.tres" id="8_sjvg6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oh7jb"]
 size = Vector2(10, 7)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qm05b"]
+
 [node name="Block" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 391
+collision_mask = 1415
 slide_on_ceiling = false
 floor_stop_on_slope = false
 floor_max_angle = 0.0
@@ -23,6 +26,7 @@ platform_floor_layers = 4294967294
 safe_margin = 0.001
 script = ExtResource("1_h5gay")
 modifier_nodes = {
+"Anti-Gravity": NodePath("Modifiers/Anti-Gravity"),
 "Ice": NodePath("Modifiers/Ice"),
 "Stone": NodePath("Modifiers/Stone")
 }
@@ -62,6 +66,14 @@ scale = Vector2(4.76, 1)
 target_position = Vector2(0, 3)
 collision_mask = 5
 
+[node name="Anti-GravityTop" type="ShapeCast2D" parent="."]
+position = Vector2(0, -3)
+rotation = 3.14159
+scale = Vector2(0.560004, 0.160001)
+shape = SubResource("RectangleShape2D_qm05b")
+target_position = Vector2(-1.85104e-05, 4.99999)
+collision_mask = 5
+
 [node name="DebugLabel" type="Label" parent="."]
 visible = false
 offset_left = -11.0
@@ -93,6 +105,10 @@ modifier = ExtResource("6_fr7se")
 [node name="Stone" type="Node" parent="Modifiers"]
 script = ExtResource("5_ush3f")
 modifier = ExtResource("7_4nveb")
+
+[node name="Anti-Gravity" type="Node" parent="Modifiers"]
+script = ExtResource("5_ush3f")
+modifier = ExtResource("8_sjvg6")
 
 [connection signal="friction_changed" from="Attributes" to="." method="_on_attributes_friction_changed"]
 [connection signal="gravity_changed" from="Attributes" to="." method="_on_attributes_gravity_changed"]

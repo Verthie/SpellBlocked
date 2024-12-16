@@ -51,7 +51,7 @@ layout_mode = 2
 
 [node name="ThreeLabel" type="Label" parent="ChoiceBar/ObjectThreeCounter"]
 layout_mode = 2
-text = "Object 3"
+text = "ANTI-GRAVITY"
 
 [node name="Object3Counter" type="Label" parent="ChoiceBar/ObjectThreeCounter"]
 layout_mode = 2
