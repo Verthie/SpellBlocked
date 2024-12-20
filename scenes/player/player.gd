@@ -287,3 +287,7 @@ func _on_interactable_state_change(in_area: bool) -> void:
 		emote_animation.queue("float")
 	else:
 		emote_animation.play_backwards("interaction")
+
+
+func _on_area_2d_body_entered(_body: Node2D) -> void:
+	get_tree().call_deferred("reload_current_scene")

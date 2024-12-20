@@ -1,0 +1,105 @@
+[gd_scene load_steps=9 format=3 uid="uid://civyoie87sako"]
+
+[ext_resource type="Texture2D" uid="uid://on2t3yfd8ona" path="res://assets/sprites/objects/PressureButton.png" id="1_mcjkm"]
+[ext_resource type="Script" path="res://scenes/world/pressure_button.gd" id="1_yxl03"]
+[ext_resource type="Script" path="res://scenes/world/trigger_area.gd" id="3_kn7ej"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6dnkv"]
+size = Vector2(16, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ahnuc"]
+size = Vector2(14, 9)
+
+[sub_resource type="Animation" id="Animation_mj1h8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_1bhee"]
+resource_name = "press"
+length = 0.45
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 1), Vector2(0, 2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ie6ls"]
+_data = {
+"RESET": SubResource("Animation_mj1h8"),
+"press": SubResource("Animation_1bhee")
+}
+
+[node name="PressureButton" type="StaticBody2D"]
+collision_layer = 1024
+collision_mask = 517
+script = ExtResource("1_yxl03")
+interactable_entities = null
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -5)
+texture = ExtResource("1_mcjkm")
+hframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_6dnkv")
+
+[node name="TriggerArea" type="Area2D" parent="."]
+collision_layer = 1024
+collision_mask = 5
+script = ExtResource("3_kn7ej")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerArea"]
+position = Vector2(0, -1.5)
+shape = SubResource("RectangleShape2D_ahnuc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ie6ls")
+}
+speed_scale = 1.5
+
+[connection signal="body_entered" from="TriggerArea" to="TriggerArea" method="_on_body_entered"]
+[connection signal="body_exited" from="TriggerArea" to="TriggerArea" method="_on_body_exited"]

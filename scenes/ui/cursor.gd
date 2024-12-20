@@ -8,6 +8,7 @@ signal cursor_changed_state(colliding_body: Node, cast_allowed: bool, modificati
 @onready var created_timer: Timer = $CreatedTimer
 
 @export_enum("Block", "Grow", "Shrink", "Select", "Type") var current_cursor_type: String = "Block"
+@export var blacklist: Array[String]
 
 var obstructed: bool = false
 var object_index: int = 0
@@ -27,7 +28,10 @@ func _process(_delta: float) -> void:
 	if area_2d.has_overlapping_bodies():
 		handle_collisions()
 	else:
-		cast_allowed = true if !obstructed else false
+		if !obstructed and Globals.block_amount > 0:
+			cast_allowed = true
+		else:
+			cast_allowed = false
 		modification_allowed = false
 		colliding_body = null
 
@@ -46,7 +50,7 @@ func handle_collisions() -> void:
 	#print(objects_names)
 	#print(objects_types)
 
-	if "FGFirstPlane" in objects_names or "Player" in objects_names:
+	if objects_names.any(check_in_blacklist):
 		cast_allowed = false
 		modification_allowed = false
 		colliding_body = null
@@ -110,6 +114,9 @@ func object_to_type(object: Node2D) -> String:
 
 func object_to_name(object: Node2D) -> String:
 	return object.name
+
+func check_in_blacklist(object_name: String) -> bool:
+	return object_name in blacklist
 
 func _on_timer_timeout() -> void:
 	just_created = false

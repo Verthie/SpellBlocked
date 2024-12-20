@@ -61,5 +61,9 @@ limit_bottom = 0
 [node name="Deathzone" parent="." instance=ExtResource("7_546jt")]
 position = Vector2(0, 105)
 
-[node name="Destructionzone" parent="." instance=ExtResource("8_x4ic2")]
+[node name="DestructionzoneBottom" parent="." instance=ExtResource("8_x4ic2")]
 position = Vector2(526, 106)
+
+[node name="DestructionzoneTop" parent="." instance=ExtResource("8_x4ic2")]
+position = Vector2(526, -278)
+rotation = -3.14159

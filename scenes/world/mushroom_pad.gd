@@ -16,5 +16,6 @@ func apply_velocity_impulse(block: Block) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Block:
-		apply_velocity_impulse(body)
+		if "Stone" not in body.current_modifiers:
+			apply_velocity_impulse(body)
 		animation_player.play("bounce")

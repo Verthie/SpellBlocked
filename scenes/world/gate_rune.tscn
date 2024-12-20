@@ -1,0 +1,112 @@
+[gd_scene load_steps=7 format=3 uid="uid://bmqvj3qr8ic40"]
+
+[ext_resource type="Script" path="res://scenes/world/gate_rune.gd" id="1_2hrm4"]
+[ext_resource type="Texture2D" uid="uid://ctqoljsrt1ybn" path="res://assets/sprites/objects/Runestone.png" id="1_j8hd3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ys04b"]
+size = Vector2(10, 23)
+
+[sub_resource type="Animation" id="Animation_qv1k8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0.5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_rcriv"]
+resource_name = "open"
+length = 0.9
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0.512613), Vector2(0, 1.98862), Vector2(0, 4.25), Vector2(0, 7.02399), Vector2(0, 9.97601), Vector2(0, 12.75), Vector2(0, 15.0114), Vector2(0, 16.4874), Vector2(0, 17)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0.5), Vector2(0, 1.01261), Vector2(0, 2.48862), Vector2(0, 4.75), Vector2(0, 7.52399), Vector2(0, 10.476), Vector2(0, 13.25), Vector2(0, 15.5114), Vector2(0, 16.9874), Vector2(0, 17.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yite8"]
+_data = {
+"RESET": SubResource("Animation_qv1k8"),
+"open": SubResource("Animation_rcriv")
+}
+
+[node name="GateRune" type="StaticBody2D"]
+collision_layer = 1024
+collision_mask = 5
+script = ExtResource("1_2hrm4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_j8hd3")
+hframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_ys04b")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_yite8")
+}
+speed_scale = 1.5

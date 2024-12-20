@@ -44,11 +44,10 @@ func handle_sight_obstruction() -> void:
 		EventBus.obstructed.emit(raycast_obstruction)
 
 func handle_block_creation() -> void:
-	if Input.is_action_just_pressed('cast') and !raycast_obstruction and can_cast: # and object_amount > 0 #TODO
+	if Input.is_action_just_pressed('cast') and !raycast_obstruction and can_cast and Globals.block_amount > 0:
 		EventBus.casted.emit()
+		Globals.block_amount -= 1
 		can_cast = false
-	# elif object_amount == 0: #TODO
-	# 	print("no blocks")
 
 func handle_block_modification() -> void:
 	if Input.is_action_just_pressed('cast') and !raycast_obstruction and can_modify and Globals.in_modify_state and received_body is Block: # and object_amount > 0 #TODO
@@ -59,19 +58,21 @@ func handle_block_removal() -> void:
 	if Input.is_action_just_pressed('cast_destroy') and !raycast_obstruction and can_modify and received_body is Block:
 		var block: Block = received_body
 		# Destroying block when not in modify state or no modifiers are applied
-		#if !Globals.in_modify_state: # Removing block's modifier
-			#block.destroy()
-		#else:
-			#if !block.current_modifiers.is_empty() and !Globals.in_modify_state: # Removing block's modifier
-				#block.remove_latest_modifier()
-			#else: # Removing the block instance
-				#block.destroy()
+		if !Globals.in_modify_state: # Removing block's modifier
+			block.destroy()
+			Globals.block_amount += 1
+		else:
+			if !block.current_modifiers.is_empty(): # Removing block's modifier
+				block.remove_latest_modifier()
+			else: # Removing the block instance
+				block.destroy()
+				Globals.block_amount += 1
 
 		# Destroying block only if no modifiers are applied
-		if !block.current_modifiers.is_empty(): # Removing block's modifier
-			block.remove_latest_modifier()
-		else: # Removing the block instance
-			block.destroy()
+		#if !block.current_modifiers.is_empty(): # Removing block's modifier
+			#block.remove_latest_modifier()
+		#else: # Removing the block instance
+			#block.destroy()
 
 		can_modify = false
 
