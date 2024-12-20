@@ -3,10 +3,11 @@ class_name ParentLevel
 
 const BLOCK: PackedScene = preload('res://scenes/objects/block.tscn')
 
+@export var level_block_amount: int = 99
+
 func _ready() -> void:
 	EventBus.casted.connect(_on_wand_cast)
-	# EventBus.modified_property.connect(_on_wand_modify)
-	#Globals.object_amounts = [0,0,0,0]
+	Globals.block_amount = level_block_amount
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed('restart'):

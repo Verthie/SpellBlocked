@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bqumck2g1lx6b"]
+[gd_scene load_steps=24 format=3 uid="uid://bqumck2g1lx6b"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_8d035"]
 [ext_resource type="Texture2D" uid="uid://dsgob0525kdso" path="res://assets/sprites/character/Merchant.png" id="2_m6wue"]
@@ -314,6 +314,10 @@ _data = {
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_28ecw"]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ngrhx"]
+radius = 2.0
+height = 6.0
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 collision_mask = 3574
@@ -385,7 +389,7 @@ script = ExtResource("5_nmg8e")
 
 [node name="RayCast2D" type="RayCast2D" parent="WandLogic"]
 target_position = Vector2(80, 0)
-collision_mask = 2
+collision_mask = 1026
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_mekin")
@@ -420,7 +424,15 @@ shape = SubResource("RectangleShape2D_28ecw")
 target_position = Vector2(0, 66.21)
 collision_mask = 4
 
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2048
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_ngrhx")
+
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_buffered_timer_timeout"]
 [connection signal="timeout" from="ApexTimer" to="." method="_on_apex_timer_timeout"]
 [connection signal="timeout" from="CastTimer" to="." method="_on_cast_timer_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
