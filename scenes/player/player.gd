@@ -33,6 +33,7 @@ class_name Player
 @onready var emote_animation: AnimationPlayer = $Sprites/Emotes/EmoteAnimation
 @onready var shape_cast_2d: ShapeCast2D = $ShapeCast2D
 
+var direction: float = 0.0
 var fall_time: float = 0.0
 var fall_multiplier: float = 1.0
 var is_falling: bool = false
@@ -54,16 +55,13 @@ var casting: bool = false
 func _ready() -> void:
 	EventBus.changed_interaction_state.connect(_on_interactable_state_change)
 
-
 func _process(_delta: float) -> void:
 
-	var direction: float = Input.get_axis("move_left", "move_rigt")
-
-	handle_animation(direction)
+	handle_animation()
 
 	check_top()
 
-func handle_animation(direction: float) -> void:
+func handle_animation() -> void:
 	var animation_to_play: String = ""
 
 	if get_local_mouse_position().x >= -0.125:
@@ -108,20 +106,27 @@ func handle_animation(direction: float) -> void:
 
 func check_top() -> void:
 	if shape_cast_2d.is_colliding():
-		var direction: int = 1 if get_local_mouse_position().x >= -0.125 else -1
+		var mouse_direction: int = 1 if get_local_mouse_position().x >= -0.125 else -1
 		var colliding_object: Object = shape_cast_2d.get_collider(0)
 		if colliding_object is Block:
 			var block: Block = colliding_object
-			block.velocity.x = direction * 300
+			block.velocity.x = mouse_direction * 300
 			EventBus.block_thrown.emit()
 
 func _physics_process(delta: float) -> void:
 
-	var direction: float = Input.get_axis("move_left", "move_rigt")
+	direction = Input.get_axis("move_left", "move_right")
+
+	#if Input.is_action_pressed('move_left'):
+		#direction = -1
+	#elif Input.is_action_pressed('move_right'):
+		#direction = 1
+	#elif Input.is_action_just_released('move_left') or Input.is_action_just_released('move_right'):
+		#direction = 0
 
 	handle_gravity(delta)
 
-	handle_movement(direction)
+	handle_movement()
 
 	handle_fall_through()
 
@@ -168,7 +173,7 @@ func handle_gravity(delta: float) -> void:
 		fall_multiplier = 1.0
 
 # Ruch horyzontalny
-func handle_movement(direction: float) -> void:
+func handle_movement() -> void:
 	if direction != 0:
 		velocity.x = lerp(velocity.x, direction * foot_speed, acceleration) # Akceleracja ruchu
 	else:

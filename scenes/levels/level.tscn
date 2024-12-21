@@ -45,11 +45,6 @@ tile_set = ExtResource("7_a216d")
 
 [node name="Player" parent="." instance=ExtResource("2_7aa5x")]
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(4, 4)
-limit_top = -115
-limit_bottom = 0
-
 [node name="Interactables" type="Node2D" parent="."]
 
 [node name="Items" type="Node2D" parent="."]
@@ -67,3 +62,7 @@ position = Vector2(526, 106)
 [node name="DestructionzoneTop" parent="." instance=ExtResource("8_x4ic2")]
 position = Vector2(526, -278)
 rotation = -3.14159
+
+[node name="SoundManager" type="Node" parent="."]
+
+[node name="BGM" type="AudioStreamPlayer" parent="SoundManager"]
