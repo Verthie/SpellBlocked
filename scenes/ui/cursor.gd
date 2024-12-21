@@ -84,7 +84,7 @@ func handle_sprite() -> void:
 
 	if !animation_player.is_playing():
 		if Globals.in_modify_state:
-			if !modification_allowed and area_2d.has_overlapping_bodies():
+			if (!modification_allowed and area_2d.has_overlapping_bodies()) or obstructed:
 				sprite_2d.self_modulate = Color("df989f")
 			else:
 				sprite_2d.self_modulate = Globals.block_properties[Globals.current_block_type].colour

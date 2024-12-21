@@ -51,6 +51,7 @@ hframes = 3
 frame = 1
 
 [node name="StoneModEnabled" type="Sprite2D" parent="ChoiceBar/StoneMod"]
+visible = false
 scale = Vector2(4, 4)
 texture = ExtResource("3_aend5")
 hframes = 3

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cwy1cslywntcj"
+path="res://.godot/imported/OST 7 - Hyper Retro (Loopable).ogg-01ca51868068ea1e7858fff65974bce7.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/bgm/OST 7 - Hyper Retro (Loopable).ogg"
+dest_files=["res://.godot/imported/OST 7 - Hyper Retro (Loopable).ogg-01ca51868068ea1e7858fff65974bce7.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
