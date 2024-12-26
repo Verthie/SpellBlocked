@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectSettings" load_steps=3 format=3 uid="uid://rsis2m1wvrqo"]
+
+[ext_resource type="Script" path="res://resources/scripts/sound_effect_settings.gd" id="1_050jf"]
+[ext_resource type="AudioStream" uid="uid://qhulnjovq0kb" path="res://assets/sfx/ui/menu_040.wav" id="2_u57g4"]
+
+[resource]
+script = ExtResource("1_050jf")
+limit = 10
+type = 3
+sound_effect = ExtResource("2_u57g4")
+volume = -5
+pitch_scale = 1.0
+pitch_randomness = 0.1
+pitch_alternate = false
+alternate_pitches = Array[float]([])

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectSettings" load_steps=3 format=3 uid="uid://dw5abt3sm5d2g"]
+
+[ext_resource type="Script" path="res://resources/scripts/sound_effect_settings.gd" id="1_qdxna"]
+[ext_resource type="AudioStream" uid="uid://bsqi6e71tq3bj" path="res://assets/sfx/character/Hurt.wav" id="2_35ssp"]
+
+[resource]
+script = ExtResource("1_qdxna")
+limit = 10
+type = 4
+sound_effect = ExtResource("2_35ssp")
+volume = -5
+pitch_scale = 1.0
+pitch_randomness = 0.1
+pitch_alternate = false
+alternate_pitches = Array[float]([])

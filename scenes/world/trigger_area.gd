@@ -15,6 +15,7 @@ func _on_body_entered(_body: Node2D) -> void:
 
 	if !pressure_button.turned_on:
 		animation_player.play("press", -1, 1)
+		AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.BUTTON_PRESS)
 		pressure_button.turned_on = true
 		if pressure_button.connector is LogicGate:
 			pressure_button.connector.gate_open()

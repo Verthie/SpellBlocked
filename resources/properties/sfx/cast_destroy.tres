@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectSettings" load_steps=3 format=3 uid="uid://fpjtih2r35pc"]
+
+[ext_resource type="Script" path="res://resources/scripts/sound_effect_settings.gd" id="1_1pmsn"]
+[ext_resource type="AudioStream" uid="uid://barr25fg6c0yk" path="res://assets/sfx/character/Gun.wav" id="2_yke0f"]
+
+[resource]
+script = ExtResource("1_1pmsn")
+limit = 10
+type = 5
+sound_effect = ExtResource("2_yke0f")
+volume = -5
+pitch_scale = 1.0
+pitch_randomness = 0.1
+pitch_alternate = false
+alternate_pitches = Array[float]([])

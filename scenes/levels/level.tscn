@@ -64,5 +64,3 @@ position = Vector2(526, -278)
 rotation = -3.14159
 
 [node name="SoundManager" type="Node" parent="."]
-
-[node name="BGM" type="AudioStreamPlayer" parent="SoundManager"]

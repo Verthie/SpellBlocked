@@ -61,6 +61,11 @@ func handle_collisions() -> void:
 		colliding_body = objects[object_index]
 		modification_allowed = true if colliding_body is Block else false
 
+	else:
+		cast_allowed = false
+		modification_allowed = false
+		colliding_body = null
+
 	cursor_changed_state.emit(colliding_body, cast_allowed, modification_allowed)
 
 # Zmiana wyglądu kursora
@@ -71,16 +76,24 @@ func handle_sprite() -> void:
 		just_created = true
 		created_timer.start()
 
-	if modification_allowed and Input.is_action_just_pressed('cast_destroy'):
-		animation_player.play("cast_remove")
-	elif modification_allowed and Input.is_action_just_pressed('cast') and Globals.in_modify_state:
-		var block: Block = colliding_body
-		if block.current_modifiers.size() < block.max_modifier_amount and Globals.current_block_type not in block.current_modifiers :
-			animation_player.play("cast_create")
-		else:
+	if obstructed:
+		if Input.is_action_just_pressed('cast_destroy') or Input.is_action_just_pressed('cast'):
 			animation_player.play("not_available")
-	elif !just_created and (!cast_allowed and Input.is_action_just_pressed('cast')) or (!modification_allowed and Input.is_action_just_pressed('cast_destroy')):
-		animation_player.play("not_available")
+			AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_UNAVAILABLE)
+	else:
+		if modification_allowed and Input.is_action_just_pressed('cast_destroy'):
+			animation_player.play("cast_remove")
+		elif modification_allowed and Input.is_action_just_pressed('cast') and Globals.in_modify_state:
+			var block: Block = colliding_body
+			if block.current_modifiers.size() < block.max_modifier_amount and Globals.current_block_type not in block.current_modifiers :
+				animation_player.play("cast_create")
+				AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_APPLY_MOD)
+			else:
+				animation_player.play("not_available")
+				AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_UNAVAILABLE)
+		elif !just_created and (!cast_allowed and Input.is_action_just_pressed('cast')) or (!modification_allowed and Input.is_action_just_pressed('cast_destroy')):
+			animation_player.play("not_available")
+			AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_UNAVAILABLE)
 
 	if !animation_player.is_playing():
 		if Globals.in_modify_state:
@@ -92,7 +105,6 @@ func handle_sprite() -> void:
 			sprite_2d.self_modulate = Color(1,1,1)
 		elif !cast_allowed and !Globals.in_modify_state:
 			sprite_2d.self_modulate = Color("df989f")
-
 
 	match Globals.current_cursor_type:
 		"Block":

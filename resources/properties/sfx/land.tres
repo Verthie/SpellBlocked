@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectSettings" load_steps=3 format=3 uid="uid://8jmmuf0q1bj8"]
+
+[ext_resource type="Script" path="res://resources/scripts/sound_effect_settings.gd" id="1_k1xg6"]
+[ext_resource type="AudioStream" uid="uid://dvg8i3xwj4f5c" path="res://assets/sfx/footstep/feet_14.wav" id="2_o1k0b"]
+
+[resource]
+script = ExtResource("1_k1xg6")
+limit = 1
+type = 1
+sound_effect = ExtResource("2_o1k0b")
+volume = 5
+pitch_scale = 1.0
+pitch_randomness = 0.1
+attenuation = 1.0
+max_distance = 2000.0

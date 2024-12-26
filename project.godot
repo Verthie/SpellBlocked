@@ -20,7 +20,9 @@ config/icon="res://icon.svg"
 
 Globals="*res://globals/globals.gd"
 EventBus="*res://globals/event_bus.gd"
-Cursor="*res://scenes/ui/cursor.tscn"
+Cursor="*res://globals/cursor.tscn"
+Bgm="*res://globals/bgm.tscn"
+AudioManager="*res://globals/audio_manager.tscn"
 
 [debug]
 
@@ -49,7 +51,8 @@ folder_colors={
 "res://assets/sprites/": "red",
 "res://assets/sprites/tilesets/": "orange",
 "res://assets/tilesets/": "purple",
-"res://assets/ui/": "pink"
+"res://assets/ui/": "pink",
+"res://resources/properties/sfx/": "teal"
 }
 
 [global_group]

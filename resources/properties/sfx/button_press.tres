@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectSettings" load_steps=3 format=3 uid="uid://doujngggosrxo"]
+
+[ext_resource type="Script" path="res://resources/scripts/sound_effect_settings.gd" id="1_sscqa"]
+[ext_resource type="AudioStream" uid="uid://df7s3g1o246bo" path="res://assets/sfx/footstep/feet_04.wav" id="2_i3bs7"]
+
+[resource]
+script = ExtResource("1_sscqa")
+limit = 10
+type = 9
+sound_effect = ExtResource("2_i3bs7")
+volume = 2
+pitch_scale = 1.0
+pitch_randomness = 0.08
+attenuation = 7.0
+max_distance = 2000.0
