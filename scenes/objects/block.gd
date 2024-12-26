@@ -26,13 +26,14 @@ class_name Block
 var fall_time: float = 0.0
 var fall_multiplier: float = 1.0
 
+var jump_allowed: bool = true
+
 var block_thrown: bool = false
 var falling: bool = true
 
 var current_modifiers: Array[String]
 
 var reversed_gravity: bool
-var body_on_top: bool
 
 func _ready() -> void:
 	EventBus.block_thrown.connect(apply_thrown_state)
@@ -53,6 +54,14 @@ func _physics_process(delta: float) -> void:
 
 	if !ray_cast_2d.is_colliding() or ray_cast_2d.get_collider() is Block:
 		apply_movement(Vector2(0.0,0.0), 0.0)
+		var collision_object: Object = ray_cast_2d.get_collider()
+		if collision_object is Block:
+			var block: Block = collision_object
+			if "Anti-Gravity" in block.current_modifiers:
+				jump_allowed = false
+			else:
+				jump_allowed = true
+
 
 func apply_movement(direction: Vector2, speed: float) -> void:
 	if direction.x != 0:
@@ -71,14 +80,15 @@ func apply_gravity(delta: float) -> void:
 	if !is_on_floor():
 		falling = true
 		#if velocity.y >= 0:
-		if !fall_acceleration and "Anti-Gravity" not in current_modifiers:
-			velocity.y += gravity * delta # Liniowa akceleracja
-		elif !fall_acceleration and "Anti-Gravity" in current_modifiers:
-			if anti_gravity_top.is_colliding():
-				velocity.y += -gravity * delta
-			else:
-				velocity.y += gravity * delta
-		if fall_acceleration:
+		if !fall_acceleration:
+			if "Anti-Gravity" not in current_modifiers:
+				velocity.y += gravity * delta # Liniowa akceleracja
+			elif "Anti-Gravity" in current_modifiers:
+				if anti_gravity_top.is_colliding():
+					velocity.y += -gravity * delta * 2
+				else:
+					velocity.y += gravity * delta
+		else:
 			fall_time += delta
 			fall_multiplier = pow(fall_time * fall_acceleration_rate, 2)
 			velocity.y += gravity * fall_multiplier * delta # Nieliniowa akceleracja

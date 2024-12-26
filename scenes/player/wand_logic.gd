@@ -46,6 +46,7 @@ func handle_sight_obstruction() -> void:
 func handle_block_creation() -> void:
 	if Input.is_action_just_pressed('cast') and !raycast_obstruction and can_cast and Globals.block_amount > 0:
 		EventBus.casted.emit()
+		AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST)
 		Globals.block_amount -= 1
 		can_cast = false
 
@@ -60,12 +61,15 @@ func handle_block_removal() -> void:
 		# Destroying block when not in modify state or no modifiers are applied
 		if !Globals.in_modify_state: # Removing block's modifier
 			block.destroy()
+			AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_DESTROY)
 			Globals.block_amount += 1
 		else:
 			if !block.current_modifiers.is_empty(): # Removing block's modifier
 				block.remove_latest_modifier()
+				AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_REMOVE_MOD)
 			else: # Removing the block instance
 				block.destroy()
+				AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_DESTROY)
 				Globals.block_amount += 1
 
 		# Destroying block only if no modifiers are applied

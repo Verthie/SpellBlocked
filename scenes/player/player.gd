@@ -33,11 +33,16 @@ class_name Player
 @onready var emote_animation: AnimationPlayer = $Sprites/Emotes/EmoteAnimation
 @onready var shape_cast_2d: ShapeCast2D = $ShapeCast2D
 
+var current_state: String = "idle"
+var animation_hold_states: Array = ["cast", "cast_remove"]
+var current_audio_stream: AudioStreamWAV
+
+var last_velocity: Vector2 = Vector2.ZERO
 var direction: float = 0.0
 var fall_time: float = 0.0
 var fall_multiplier: float = 1.0
 var is_falling: bool = false
-var landed: bool = false
+
 var can_jump: bool = true
 var is_jumping: bool = false
 var was_on_floor: bool
@@ -48,9 +53,9 @@ var shape_collided: bool = false
 var coyote: bool = false # Sprawdza czy postać znajduje się aktualnie w czasie coyote
 var buffered_jump: bool = false # Sprawdza czy został zainicjowany buffer jump
 var at_apex: bool = false
-var previous_state: String
 var can_cast: bool = true
-var casting: bool = false
+
+var animation_playing: bool = false
 
 func _ready() -> void:
 	EventBus.changed_interaction_state.connect(_on_interactable_state_change)
@@ -59,11 +64,55 @@ func _process(_delta: float) -> void:
 
 	handle_animation()
 
+	handle_sound()
+
+	last_velocity = velocity
+
 	check_top()
 
-func handle_animation() -> void:
-	var animation_to_play: String = ""
+func set_state() -> String:
+	var new_state: String = current_state
 
+	#print(animation_playing)
+
+	if !animation_playing:
+		if is_on_floor():
+			if direction == 0 and abs(velocity.x) <= 10:
+				new_state = "idle"
+			elif direction != 0 and abs(velocity.x) > 10:
+				new_state = "run"
+
+		if is_falling:
+			new_state = "fall"
+			if is_on_floor():
+				new_state = "land"
+
+		if is_jumping:
+			new_state = "jump"
+
+		if Input.is_action_just_pressed("cast"):
+			new_state = "cast"
+
+		if Input.is_action_just_pressed("cast_destroy"):
+			new_state = "cast_remove"
+
+	return new_state
+
+func handle_animation() -> void:
+
+	handle_sprite_flip()
+
+	if current_state != set_state():
+		print(current_state, " ", set_state())
+		current_state = set_state()
+		animation_player.play(current_state)
+
+		if current_state in animation_hold_states:
+			animation_playing = true
+			await animation_player.animation_finished
+			animation_playing = false
+
+func handle_sprite_flip() -> void:
 	if get_local_mouse_position().x >= -0.125:
 		$Sprites/Wizard.flip_h = false
 		wand_pivot.scale.x = 1
@@ -71,38 +120,11 @@ func handle_animation() -> void:
 		$Sprites/Wizard.flip_h = true
 		wand_pivot.scale.x = -1
 
-	if !casting:
-		if is_on_floor() and animation_player.current_animation != "land":
-			if direction == 0:
-				animation_to_play = "idle"
-			elif direction != 0 and animation_player.current_animation != "run":
-				animation_to_play = "run"
-
-		if is_falling:
-			animation_to_play = "fall"
-			if is_on_floor():
-				animation_to_play = "land"
-
-		if is_jumping:
-			animation_to_play = "jump"
-
-	if can_cast and !casting and Input.is_action_just_pressed("cast"):
-		casting = true
-		can_cast = false
-		animation_to_play = "cast"
-		cast_timer.start()
-
-	if can_cast and !casting and Input.is_action_just_pressed("cast_destroy"):
-		casting = true
-		can_cast = false
-		animation_to_play = "cast_remove"
-		cast_timer.start()
-
-	animation_player.play(animation_to_play)
-
-	if casting:
-		await animation_player.animation_finished
-		casting = false
+func handle_sound() -> void:
+	match current_state:
+		"land":
+			if last_velocity.y > 400:
+				AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.LAND)
 
 func check_top() -> void:
 	if shape_cast_2d.is_colliding():
@@ -229,7 +251,7 @@ func handle_push() -> void:
 # Skakanie
 func handle_jump() -> void:
 	if can_jump == false and is_on_floor():
-		if colliding_with_block and last_colliding_block.falling == true:
+		if colliding_with_block and (last_colliding_block.falling == true or !last_colliding_block.jump_allowed):
 			can_jump = false
 		else:
 			can_jump = true
@@ -240,6 +262,7 @@ func handle_jump() -> void:
 		is_jumping = true
 		can_jump = false
 		buffered_jump = false
+		AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.JUMP)
 
 	if !is_on_floor() and Input.is_action_just_pressed('jump'):
 		jump_buffer_timer.start()
@@ -282,6 +305,7 @@ func _on_buffered_timer_timeout() -> void:
 func _on_apex_timer_timeout() -> void:
 	at_apex = false
 
+#TODO Delete this:
 func _on_cast_timer_timeout() -> void:
 	can_cast = true
 
@@ -296,3 +320,6 @@ func _on_interactable_state_change(in_area: bool) -> void:
 
 func _on_area_2d_body_entered(_body: Node2D) -> void:
 	get_tree().call_deferred("reload_current_scene")
+
+#func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	#animation_playing = false

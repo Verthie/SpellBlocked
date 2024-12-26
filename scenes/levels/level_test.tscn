@@ -213,7 +213,7 @@ position = Vector2(215, 65)
 [node name="DestructionzoneTop" parent="." index="9"]
 position = Vector2(-27, -278)
 
-[node name="ScreenCamera" parent="." index="10" instance=ExtResource("10_pu430")]
+[node name="ScreenCamera" parent="." index="10" node_paths=PackedStringArray("target") instance=ExtResource("10_pu430")]
 position = Vector2(-32, -26)
 zoom = Vector2(4, 4)
 limit_top = -86

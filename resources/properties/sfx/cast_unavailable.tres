@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectSettings" load_steps=3 format=3 uid="uid://bkg2e7nqx1jis"]
+
+[ext_resource type="Script" path="res://resources/scripts/sound_effect_settings.gd" id="1_aomb1"]
+[ext_resource type="AudioStream" uid="uid://b42jtqn2ycgmb" path="res://assets/sfx/ui/Cancel.wav" id="2_tund2"]
+
+[resource]
+script = ExtResource("1_aomb1")
+limit = 1
+type = 6
+sound_effect = ExtResource("2_tund2")
+volume = -5
+pitch_scale = 1.0
+pitch_randomness = 0.1
+pitch_alternate = false
+alternate_pitches = Array[float]([])

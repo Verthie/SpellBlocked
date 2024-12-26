@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundEffectSettings" load_steps=3 format=3 uid="uid://q6bs2hp0mm7v"]
+
+[ext_resource type="Script" path="res://resources/scripts/sound_effect_settings.gd" id="1_52th1"]
+[ext_resource type="AudioStream" uid="uid://dh5w0gg54lcwe" path="res://assets/sfx/character/Jump.wav" id="2_2si6m"]
+
+[resource]
+script = ExtResource("1_52th1")
+limit = 3
+type = 0
+sound_effect = ExtResource("2_2si6m")
+volume = 0
+pitch_scale = 1.0
+pitch_randomness = 0.1

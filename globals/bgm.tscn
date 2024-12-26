@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2lj7p85u8qr0"]
+
+[ext_resource type="AudioStream" uid="uid://dspbpgsunk0i2" path="res://assets/bgm/OST 3 - Synth Fanfare (Loopable).ogg" id="1_ft1lw"]
+
+[node name="BGM" type="AudioStreamPlayer"]
+stream = ExtResource("1_ft1lw")
+autoplay = true
+bus = &"Music"
