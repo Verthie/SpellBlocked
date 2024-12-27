@@ -2,13 +2,17 @@ extends Node2D
 
 signal cursor_changed_state(colliding_body: Node, cast_allowed: bool, modification_allowed: bool)
 
+const cursor_types: Dictionary = {"Block": 0, "Select": 4}
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var area_2d: Area2D = $'.'
 @onready var created_timer: Timer = $CreatedTimer
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
-@export_enum("Block", "Grow", "Shrink", "Select", "Type") var current_cursor_type: String = "Block"
 @export var blacklist: Array[String]
+
+var current_cursor_type: String = "Block"
 
 var obstructed: bool = false
 var object_index: int = 0
@@ -18,11 +22,12 @@ var modification_allowed: bool = false
 var just_created: bool = false
 
 func _ready() -> void:
-	# TODO Ustawić połączenie z UI pod naciśnięcie przycisku - zmiana kursora
-	EventBus.obstructed.connect(change_obstructed_state)
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	EventBus.obstructed.connect(_change_obstructed_state)
+	EventBus.changed_cursor_type.connect(_change_cursor_type)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 
 func _process(_delta: float) -> void:
+
 	area_2d.position = get_global_mouse_position()
 
 	if area_2d.has_overlapping_bodies():
@@ -39,7 +44,14 @@ func _process(_delta: float) -> void:
 
 	#print(colliding_body, " ", cast_allowed, " ", modification_allowed)
 
-	handle_sprite()
+	match current_cursor_type:
+		"Select":
+			handle_ui_sprite()
+		"Block":
+			handle_gameplay_sprite()
+		_:
+			handle_gameplay_sprite()
+
 
 # Kolizja kursora z obiektami fizycznymi
 func handle_collisions() -> void:
@@ -68,8 +80,13 @@ func handle_collisions() -> void:
 
 	cursor_changed_state.emit(colliding_body, cast_allowed, modification_allowed)
 
-# Zmiana wyglądu kursora
-func handle_sprite() -> void:
+# Zmiana wyglądu kursora w trakcie przebywania w menu
+func handle_ui_sprite() -> void:
+	if Input.is_action_just_pressed('cast'):
+		animation_player.play("select")
+
+# Zmiana wyglądu kursora w trakcie gry
+func handle_gameplay_sprite() -> void:
 
 	if cast_allowed and Input.is_action_just_pressed('cast'):
 		animation_player.play("cast_create")
@@ -106,20 +123,6 @@ func handle_sprite() -> void:
 		elif !cast_allowed and !Globals.in_modify_state:
 			sprite_2d.self_modulate = Color("df989f")
 
-	match Globals.current_cursor_type:
-		"Block":
-			sprite_2d.frame = 0
-		"Grow":
-			sprite_2d.frame = 2
-		"Shrink":
-			sprite_2d.frame = 3
-		"Select":
-			sprite_2d.frame = 4
-		"Type":
-			sprite_2d.frame = 5
-		_:
-			sprite_2d.frame = 0
-
 # Funkcja przyjmująca tablicę obiektów i zwracająca tablicę nazw typów obiektów
 func object_to_type(object: Node2D) -> String:
 	return object.get_class()
@@ -133,5 +136,15 @@ func check_in_blacklist(object_name: String) -> bool:
 func _on_timer_timeout() -> void:
 	just_created = false
 
-func change_obstructed_state(state: bool) -> void:
+func _change_obstructed_state(state: bool) -> void:
 	obstructed = state
+
+func _change_cursor_type(type: String) -> void:
+	current_cursor_type = type
+	sprite_2d.frame = cursor_types[type]
+	sprite_2d.self_modulate = Color(1,1,1)
+	match type:
+		"Select":
+			sprite_2d.position = Vector2(4, 4)
+		"Block":
+			sprite_2d.position = Vector2.ZERO

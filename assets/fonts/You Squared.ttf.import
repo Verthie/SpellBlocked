@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bdyvyn2rb2ffj"
-path="res://.godot/imported/PixelOperator8.ttf-6f9f01766aff16f52046b880ffb8d367.fontdata"
+uid="uid://xl7g0uo2riwl"
+path="res://.godot/imported/You Squared.ttf-fb37f813053c20b740cf5fd34d6805f5.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/PixelOperator8.ttf"
-dest_files=["res://.godot/imported/PixelOperator8.ttf-6f9f01766aff16f52046b880ffb8d367.fontdata"]
+source_file="res://assets/fonts/You Squared.ttf"
+dest_files=["res://.godot/imported/You Squared.ttf-fb37f813053c20b740cf5fd34d6805f5.fontdata"]
 
 [params]
 

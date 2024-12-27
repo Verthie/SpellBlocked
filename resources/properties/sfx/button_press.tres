@@ -6,9 +6,9 @@
 [resource]
 script = ExtResource("1_sscqa")
 limit = 10
-type = 9
+type = 10
 sound_effect = ExtResource("2_i3bs7")
-volume = 2
+volume = 5
 pitch_scale = 1.0
 pitch_randomness = 0.08
 attenuation = 7.0

@@ -91,7 +91,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s214u"]
 
 [node name="LevelTest" instance=ExtResource("1_f3p7f")]
-position = Vector2(-128, 122)
+position = Vector2(-128, 117)
 script = ExtResource("2_if3oi")
 level_block_amount = 20
 
@@ -217,6 +217,6 @@ position = Vector2(-27, -278)
 position = Vector2(-32, -26)
 zoom = Vector2(4, 4)
 limit_top = -86
-limit_bottom = 185
+limit_bottom = 180
 editor_draw_limits = true
 target = NodePath("../Player")

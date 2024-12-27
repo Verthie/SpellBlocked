@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="BgmSettings" load_steps=14 format=3 uid="uid://c4qgrqwyt3h4b"]
+
+[ext_resource type="AudioStream" uid="uid://dspbpgsunk0i2" path="res://assets/bgm/OST 3 - Synth Fanfare (Loopable).ogg" id="1_6knsl"]
+[ext_resource type="AudioStream" uid="uid://t32t8ahpibvb" path="res://assets/bgm/OST 2 - The Good Life.ogg" id="1_afjau"]
+[ext_resource type="Script" path="res://resources/scripts/bgm_settings.gd" id="1_kxvs4"]
+[ext_resource type="AudioStream" uid="uid://445tfy8aq0a1" path="res://assets/bgm/OST 2 - The Good Life (Loopable).ogg" id="2_4xrwn"]
+[ext_resource type="AudioStream" uid="uid://brgthwvs2o235" path="res://assets/bgm/OST 4 - RETROspective (Loopable).ogg" id="2_10sfp"]
+[ext_resource type="AudioStream" uid="uid://bwf3mqfbp88x6" path="res://assets/bgm/OST 3 - Synth Fanfare.ogg" id="2_l7ebe"]
+[ext_resource type="AudioStream" uid="uid://qkd46pq4mb5r" path="res://assets/bgm/OST 5 - Chipset Chronicles (Loopable).ogg" id="3_k1rpc"]
+[ext_resource type="AudioStream" uid="uid://bf7larpivv16x" path="res://assets/bgm/OST 4 - RETROspective.ogg" id="3_napd4"]
+[ext_resource type="AudioStream" uid="uid://dbvfsyvkl1pay" path="res://assets/bgm/OST 5 - Chipset Chronicles.ogg" id="4_2tog3"]
+[ext_resource type="AudioStream" uid="uid://cliukpbfxtc5x" path="res://assets/bgm/OST 7 - Hyper Retro.ogg" id="5_l7tlf"]
+[ext_resource type="AudioStream" uid="uid://cwy1cslywntcj" path="res://assets/bgm/OST 7 - Hyper Retro (Loopable).ogg" id="5_pk3pv"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7toaq"]
+streams_count = 5
+stream_0/stream = ExtResource("1_afjau")
+stream_1/stream = ExtResource("2_l7ebe")
+stream_2/stream = ExtResource("3_napd4")
+stream_3/stream = ExtResource("4_2tog3")
+stream_4/stream = ExtResource("5_l7tlf")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_s1q4e"]
+streams_count = 5
+stream_0/stream = ExtResource("2_4xrwn")
+stream_1/stream = ExtResource("1_6knsl")
+stream_2/stream = ExtResource("2_10sfp")
+stream_3/stream = ExtResource("3_k1rpc")
+stream_4/stream = ExtResource("5_pk3pv")
+
+[resource]
+script = ExtResource("1_kxvs4")
+limit = 1
+type = 0
+music = SubResource("AudioStreamRandomizer_7toaq")
+music_loop_version = SubResource("AudioStreamRandomizer_s1q4e")
+loop = false
+volume = 0
+pitch_scale = 1.0
+attenuation = 1.0
+max_distance = 2000.0
