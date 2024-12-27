@@ -6,11 +6,10 @@
 [resource]
 script = ExtResource("1_pp6fk")
 limit = 10
-type = 8
+type = 9
 sound_effect = ExtResource("2_dp37q")
 volume = 2
 pitch_scale = 1.0
 pitch_randomness = 0.1
 attenuation = 7.0
-pitch_alternate = false
-alternate_pitches = Array[float]([])
+max_distance = 2000.0

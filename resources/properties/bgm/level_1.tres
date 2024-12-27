@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BgmSettings" load_steps=4 format=3 uid="uid://byor51r6p6yo1"]
+
+[ext_resource type="AudioStream" uid="uid://t32t8ahpibvb" path="res://assets/bgm/OST 2 - The Good Life.ogg" id="1_pdx0w"]
+[ext_resource type="AudioStream" uid="uid://445tfy8aq0a1" path="res://assets/bgm/OST 2 - The Good Life (Loopable).ogg" id="6_6b78p"]
+[ext_resource type="Script" path="res://resources/scripts/bgm_settings.gd" id="11_1m4jq"]
+
+[resource]
+script = ExtResource("11_1m4jq")
+limit = 1
+type = 1
+music = ExtResource("1_pdx0w")
+music_loop_version = ExtResource("6_6b78p")
+loop = true
+volume = 0
+pitch_scale = 1.0
+attenuation = 1.0
+max_distance = 2000.0

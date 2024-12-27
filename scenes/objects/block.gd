@@ -23,6 +23,8 @@ class_name Block
 @export var modifier_nodes: Dictionary
 @export var max_modifier_amount: int = 2
 
+var last_velocity: Vector2 = Vector2.ZERO
+
 var fall_time: float = 0.0
 var fall_multiplier: float = 1.0
 
@@ -33,11 +35,29 @@ var falling: bool = true
 
 var current_modifiers: Array[String]
 
-var reversed_gravity: bool
+var reversed_gravity: bool = false
+
+var object_on_top: Object
 
 func _ready() -> void:
 	EventBus.block_thrown.connect(apply_thrown_state)
 	apply_modifier(Globals.current_block_type)
+
+func _process(_delta: float) -> void:
+
+	handle_sound()
+
+	last_velocity = velocity
+
+func handle_sound() -> void:
+
+	if is_on_floor():
+		if last_velocity.y > 200:
+			AudioManager.create_2d_audio_at_location(position, SoundEffectSettings.SOUND_EFFECT_TYPE.BLOCK_LAND)
+		elif last_velocity.y > 50:
+			AudioManager.create_2d_audio_at_location(position, SoundEffectSettings.SOUND_EFFECT_TYPE.BLOCK_LAND_QUIET)
+
+
 
 func _physics_process(delta: float) -> void:
 
@@ -61,6 +81,13 @@ func _physics_process(delta: float) -> void:
 				jump_allowed = false
 			else:
 				jump_allowed = true
+
+	if anti_gravity_top.is_colliding():
+		object_on_top = anti_gravity_top.get_collider(0)
+		if velocity.y < 0 and object_on_top is Player:
+			velocity.y = 0
+		if ray_cast_2d.is_colliding() and ray_cast_2d.get_collider() is Block and object_on_top is Block: # block is between two blocks
+			velocity.y = 0
 
 
 func apply_movement(direction: Vector2, speed: float) -> void:

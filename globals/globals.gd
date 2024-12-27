@@ -9,6 +9,8 @@ const ANTI_GRAVITY_BLOCK_PROPERTIES: CustomResource = preload('res://scenes/obje
 
 const block_properties: Dictionary = {"None": DEFAULT_BLOCK_PROPERTIES, "Ice": ICE_BLOCK_PROPERTIES, "Stone": STONE_BLOCK_PROPERTIES, "Anti-Gravity": ANTI_GRAVITY_BLOCK_PROPERTIES}
 
+var in_modify_state: bool = false
+
 var current_block_type: String = "None"
 	#set(value):
 		#current_block_type = value
@@ -18,12 +20,8 @@ var block_amount: int:
 		block_amount = value
 		changed_block_amount.emit(block_amount)
 
-var in_modify_state: bool = false
-
 func _process(_delta: float) -> void:
 	if current_block_type == "None":
 		in_modify_state = false
 	else:
 		in_modify_state = true
-
-var current_cursor_type: String = "Block"

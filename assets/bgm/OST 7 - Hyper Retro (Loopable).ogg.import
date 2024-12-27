@@ -12,8 +12,8 @@ dest_files=["res://.godot/imported/OST 7 - Hyper Retro (Loopable).ogg-01ca518680
 
 [params]
 
-loop=false
-loop_offset=0
-bpm=0
+loop=true
+loop_offset=0.0
+bpm=0.0
 beat_count=0
 bar_beats=4

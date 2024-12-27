@@ -1,26 +1,19 @@
 extends Resource
-class_name SoundEffectSettings
+class_name BgmSettings
 
-enum SOUND_EFFECT_TYPE{
-	JUMP,
-	LAND,
-	CAST,
-	CAST_APPLY_MOD,
-	CAST_REMOVE_MOD,
-	CAST_DESTROY,
-	CAST_UNAVAILABLE,
-	BLOCK_LAND,
-	BLOCK_LAND_QUIET,
-	BLOCK_JUMP_PAD,
-	BUTTON_PRESS,
+enum MUSIC_TYPE{
+	LEVELTEST,
+	LEVEL1
 }
 
-@export_range(0, 10) var limit: int = 5
-@export var type: SOUND_EFFECT_TYPE
-@export var sound_effect: AudioStream
+@export_range(0, 10) var limit: int = 1
+@export var type: MUSIC_TYPE
+@export var music: AudioStream
+@export var music_loop_version: AudioStream
+@export var loop: bool = true
 @export_range(-40, 20) var volume: int = 0
 @export_range(0.0, 4.0, .01) var pitch_scale: float = 1.0
-@export_range(0.0, 1.0, .01) var pitch_randomness: float = 0.0
+#@export_range(0.0, 1.0, .01) var pitch_randomness: float = 0.0
 ## The volume is attenuated over distance with this as an exponent.
 @export var attenuation: float = 1.0
 ## Maximum distance from which audio is still hearable.

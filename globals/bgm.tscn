@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2lj7p85u8qr0"]
+[gd_scene load_steps=5 format=3 uid="uid://c2lj7p85u8qr0"]
 
-[ext_resource type="AudioStream" uid="uid://dspbpgsunk0i2" path="res://assets/bgm/OST 3 - Synth Fanfare (Loopable).ogg" id="1_ft1lw"]
+[ext_resource type="Script" path="res://globals/bgm.gd" id="2_1yq8e"]
+[ext_resource type="Script" path="res://resources/scripts/bgm_settings.gd" id="2_qf1p3"]
+[ext_resource type="Resource" uid="uid://c4qgrqwyt3h4b" path="res://resources/properties/bgm/level_test.tres" id="3_tftjm"]
+[ext_resource type="Resource" uid="uid://byor51r6p6yo1" path="res://resources/properties/bgm/level_1.tres" id="4_lxl2m"]
 
-[node name="BGM" type="AudioStreamPlayer"]
-stream = ExtResource("1_ft1lw")
-autoplay = true
-bus = &"Music"
+[node name="BGM" type="Node2D"]
+script = ExtResource("2_1yq8e")
+music_settings = Array[ExtResource("2_qf1p3")]([ExtResource("3_tftjm"), ExtResource("4_lxl2m")])
