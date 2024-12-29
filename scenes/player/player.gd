@@ -59,6 +59,8 @@ var animation_playing: bool = false
 
 func _ready() -> void:
 	EventBus.changed_interaction_state.connect(_on_interactable_state_change)
+	$Area2D.area_entered.connect(_on_player_death_experience)
+	$Area2D.body_entered.connect(_on_player_death_experience)
 
 func _process(_delta: float) -> void:
 
@@ -76,7 +78,7 @@ func set_state() -> String:
 	#print(animation_playing)
 
 	if !animation_playing:
-		if is_on_floor():
+		if is_on_floor() or shape_cast_2d.is_colliding():
 			if direction == 0 and abs(velocity.x) <= 10:
 				new_state = "idle"
 			elif direction != 0 and abs(velocity.x) > 10:
@@ -124,7 +126,7 @@ func handle_sound() -> void:
 	match current_state:
 		"land":
 			if last_velocity.y > 400:
-				AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.LAND)
+				AudioManager.create_audio(SoundEffectSettings.SoundEffectType.LAND)
 
 func check_top() -> void:
 	if shape_cast_2d.is_colliding():
@@ -262,7 +264,7 @@ func handle_jump() -> void:
 		is_jumping = true
 		can_jump = false
 		buffered_jump = false
-		AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.JUMP)
+		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.JUMP)
 
 	if !is_on_floor() and Input.is_action_just_pressed('jump'):
 		jump_buffer_timer.start()
@@ -317,9 +319,9 @@ func _on_interactable_state_change(in_area: bool) -> void:
 	else:
 		emote_animation.play_backwards("interaction")
 
-
-func _on_area_2d_body_entered(_body: Node2D) -> void:
-	get_tree().call_deferred("reload_current_scene")
-
-#func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	#animation_playing = false
+func _on_player_death_experience(_body: Node2D) -> void:
+	if $Area2D.has_overlapping_bodies():
+		await get_tree().create_timer(0.2).timeout
+	if $Area2D.has_overlapping_bodies() or $Area2D.has_overlapping_areas():
+		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.HURT)
+		EventBus.player_died.emit()

@@ -96,7 +96,7 @@ func handle_gameplay_sprite() -> void:
 	if obstructed:
 		if Input.is_action_just_pressed('cast_destroy') or Input.is_action_just_pressed('cast'):
 			animation_player.play("not_available")
-			AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_UNAVAILABLE)
+			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_UNAVAILABLE)
 	else:
 		if modification_allowed and Input.is_action_just_pressed('cast_destroy'):
 			animation_player.play("cast_remove")
@@ -104,13 +104,13 @@ func handle_gameplay_sprite() -> void:
 			var block: Block = colliding_body
 			if block.current_modifiers.size() < block.max_modifier_amount and Globals.current_block_type not in block.current_modifiers :
 				animation_player.play("cast_create")
-				AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_APPLY_MOD)
+				AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_APPLY_MOD)
 			else:
 				animation_player.play("not_available")
-				AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_UNAVAILABLE)
+				AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_UNAVAILABLE)
 		elif !just_created and (!cast_allowed and Input.is_action_just_pressed('cast')) or (!modification_allowed and Input.is_action_just_pressed('cast_destroy')):
 			animation_player.play("not_available")
-			AudioManager.create_audio(SoundEffectSettings.SOUND_EFFECT_TYPE.CAST_UNAVAILABLE)
+			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_UNAVAILABLE)
 
 	if !animation_player.is_playing():
 		if Globals.in_modify_state:

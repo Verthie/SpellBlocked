@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectSettings" load_steps=3 format=3 uid="uid://dck2150w82p5o"]
+
+[ext_resource type="Script" path="res://resources/scripts/sound_effect_settings.gd" id="1_jbr8r"]
+[ext_resource type="AudioStream" uid="uid://dgn0cla1dic2x" path="res://assets/sfx/hurt/hurt_006.wav" id="2_dunyj"]
+
+[resource]
+script = ExtResource("1_jbr8r")
+limit = 1
+type = 11
+sound_effect = ExtResource("2_dunyj")
+volume = 0
+pitch_scale = 1.0
+pitch_randomness = 0.1
+attenuation = 1.0
+max_distance = 2000.0

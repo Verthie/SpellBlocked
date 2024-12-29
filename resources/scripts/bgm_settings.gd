@@ -1,13 +1,13 @@
 extends Resource
 class_name BgmSettings
 
-enum MUSIC_TYPE{
+enum MusicType{
 	LEVELTEST,
 	LEVEL1
 }
 
 @export_range(0, 10) var limit: int = 1
-@export var type: MUSIC_TYPE
+@export var type: MusicType
 @export var music: AudioStream
 @export var music_loop_version: AudioStream
 @export var loop: bool = true

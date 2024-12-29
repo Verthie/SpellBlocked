@@ -1,16 +1,13 @@
 extends Node2D
 
-@export var music_settings: Array[BgmSettings]
-
 var music_dict: Dictionary = {}
 @warning_ignore('untyped_declaration')
 var current_audio
 
 func _ready() -> void:
-	for music_setting: BgmSettings in music_settings:
-		music_dict[music_setting.type] = music_setting
+	music_dict = Globals.load_resources("res://resources/properties/bgm/")
 
-func create_2d_audio_at_location(location: Vector2, type: BgmSettings.MUSIC_TYPE) -> void:
+func create_2d_audio_at_location(location: Vector2, type: BgmSettings.MusicType) -> void:
 	if music_dict.has(type):
 		var music_setting: BgmSettings = music_dict[type]
 		if music_setting.has_open_limit():
@@ -37,7 +34,7 @@ func create_2d_audio_at_location(location: Vector2, type: BgmSettings.MUSIC_TYPE
 	else:
 		push_error("Audio Manager failed to find setting for type ", type)
 
-func create_audio(type: BgmSettings.MUSIC_TYPE) -> void:
+func create_audio(type: BgmSettings.MusicType) -> void:
 	if music_dict.has(type):
 		var music_setting: BgmSettings = music_dict[type]
 		if music_setting.has_open_limit():

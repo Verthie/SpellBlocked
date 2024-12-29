@@ -20,8 +20,25 @@ var block_amount: int:
 		block_amount = value
 		changed_block_amount.emit(block_amount)
 
+var started_level: bool = false
+
 func _process(_delta: float) -> void:
 	if current_block_type == "None":
 		in_modify_state = false
 	else:
 		in_modify_state = true
+
+func load_resources(path: String) -> Dictionary:
+	var resources: Dictionary = {}
+	var dir: DirAccess = DirAccess.open(path)
+	if dir:
+		var file_names: PackedStringArray = dir.get_files()
+		if file_names:
+			for file_name: String in file_names:
+				var loaded_resource: Resource = ResourceLoader.load(path + file_name)
+
+				if "type" in loaded_resource:
+					resources[loaded_resource.type] = loaded_resource
+				else:
+					resources[file_name] = loaded_resource
+	return resources

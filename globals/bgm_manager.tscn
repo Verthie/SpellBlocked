@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2lj7p85u8qr0"]
+
+[ext_resource type="Script" path="res://globals/bgm_manager.gd" id="1_hmxcs"]
+
+[node name="BgmManager" type="Node2D"]
+script = ExtResource("1_hmxcs")

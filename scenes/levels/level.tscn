@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b0qkkisnuydja"]
+[gd_scene load_steps=13 format=3 uid="uid://b0qkkisnuydja"]
 
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_yace1"]
 [ext_resource type="PackedScene" uid="uid://bqumck2g1lx6b" path="res://scenes/player/player.tscn" id="2_7aa5x"]
@@ -11,8 +11,10 @@
 [ext_resource type="PackedScene" uid="uid://c3hfa17lbuxae" path="res://scenes/hazards/deathzone.tscn" id="7_546jt"]
 [ext_resource type="TileSet" uid="uid://c7g86xemyc2us" path="res://assets/tilesets/decor.tres" id="7_a216d"]
 [ext_resource type="PackedScene" uid="uid://bkqmw36c04h36" path="res://scenes/hazards/destructionzone.tscn" id="8_x4ic2"]
+[ext_resource type="PackedScene" uid="uid://dmi6orowpok20" path="res://scenes/levels/screen_camera.tscn" id="12_tockn"]
 
 [node name="Level" type="Node2D"]
+position = Vector2(-128, 121)
 script = ExtResource("1_yace1")
 
 [node name="TileMaps" type="Node2D" parent="."]
@@ -62,5 +64,10 @@ position = Vector2(526, 106)
 [node name="DestructionzoneTop" parent="." instance=ExtResource("8_x4ic2")]
 position = Vector2(526, -278)
 rotation = -3.14159
+
+[node name="ScreenCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("12_tockn")]
+position = Vector2(-32, -31)
+editor_draw_limits = true
+target = NodePath("../Player")
 
 [node name="SoundManager" type="Node" parent="."]

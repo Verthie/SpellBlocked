@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectSettings" load_steps=3 format=3 uid="uid://c3imsbgeucp1e"]
+
+[ext_resource type="Script" path="res://resources/scripts/sound_effect_settings.gd" id="1_fvukl"]
+[ext_resource type="AudioStream" uid="uid://h52sonk75af3" path="res://assets/sfx/ui/menu_062.wav" id="2_bcgde"]
+
+[resource]
+script = ExtResource("1_fvukl")
+limit = 10
+type = 13
+sound_effect = ExtResource("2_bcgde")
+volume = 0
+pitch_scale = 1.0
+pitch_randomness = 0.0
+attenuation = 1.0
+max_distance = 2000.0

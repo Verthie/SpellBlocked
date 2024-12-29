@@ -2,13 +2,10 @@ extends Node2D
 
 var sound_effect_dict: Dictionary = {}
 
-@export var sound_effect_settings: Array[SoundEffectSettings]
-
 func _ready() -> void:
-	for sound_effect_setting: SoundEffectSettings in sound_effect_settings:
-		sound_effect_dict[sound_effect_setting.type] = sound_effect_setting
+	sound_effect_dict = Globals.load_resources("res://resources/properties/sfx/")
 
-func create_2d_audio_at_location(location: Vector2, type: SoundEffectSettings.SOUND_EFFECT_TYPE) -> void:
+func create_2d_audio_at_location(location: Vector2, type: SoundEffectSettings.SoundEffectType) -> void:
 	if sound_effect_dict.has(type):
 		var sound_effect_setting: SoundEffectSettings = sound_effect_dict[type]
 		if sound_effect_setting.has_open_limit():
@@ -31,7 +28,7 @@ func create_2d_audio_at_location(location: Vector2, type: SoundEffectSettings.SO
 	else:
 		push_error("Audio Manager failed to find setting for type ", type)
 
-func create_audio(type: SoundEffectSettings.SOUND_EFFECT_TYPE) -> void:
+func create_audio(type: SoundEffectSettings.SoundEffectType) -> void:
 	if sound_effect_dict.has(type):
 		var sound_effect_setting: SoundEffectSettings = sound_effect_dict[type]
 		if sound_effect_setting.has_open_limit():
