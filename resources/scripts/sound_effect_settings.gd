@@ -1,7 +1,7 @@
 extends Resource
 class_name SoundEffectSettings
 
-enum SOUND_EFFECT_TYPE{
+enum SoundEffectType{
 	JUMP,
 	LAND,
 	CAST,
@@ -13,10 +13,17 @@ enum SOUND_EFFECT_TYPE{
 	BLOCK_LAND_QUIET,
 	BLOCK_JUMP_PAD,
 	BUTTON_PRESS,
+	HURT,
+	MODIFIER_SWAP,
+	UI_SELECT,
+	UI_FOCUS,
+	UI_BACK,
+	PAUSE,
+	UNPAUSE,
 }
 
 @export_range(0, 10) var limit: int = 5
-@export var type: SOUND_EFFECT_TYPE
+@export var type: SoundEffectType
 @export var sound_effect: AudioStream
 @export_range(-40, 20) var volume: int = 0
 @export_range(0.0, 4.0, .01) var pitch_scale: float = 1.0

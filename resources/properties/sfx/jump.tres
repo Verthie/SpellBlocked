@@ -5,9 +5,11 @@
 
 [resource]
 script = ExtResource("1_52th1")
-limit = 3
+limit = 10
 type = 0
 sound_effect = ExtResource("2_2si6m")
 volume = 0
 pitch_scale = 1.0
 pitch_randomness = 0.1
+attenuation = 1.0
+max_distance = 2000.0

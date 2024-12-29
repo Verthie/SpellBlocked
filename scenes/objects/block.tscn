@@ -60,18 +60,21 @@ texture = ExtResource("2_jfu3h")
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_oh7jb")
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2(0, 3)
-scale = Vector2(4.76, 1)
-target_position = Vector2(0, 3)
-collision_mask = 5
-
 [node name="Anti-GravityTop" type="ShapeCast2D" parent="."]
 position = Vector2(0, -3)
 rotation = 3.14159
 scale = Vector2(0.560004, 0.160001)
 shape = SubResource("RectangleShape2D_qm05b")
 target_position = Vector2(-1.85104e-05, 4.99999)
+collision_mask = 5
+
+[node name="ShapeCastDown" type="ShapeCast2D" parent="."]
+position = Vector2(0.000758171, 3.90803)
+rotation = 3.14159
+scale = Vector2(0.500013, 0.0248318)
+shape = SubResource("RectangleShape2D_qm05b")
+target_position = Vector2(4.52708e-06, -6.24996)
+max_results = 1
 collision_mask = 5
 
 [node name="DebugLabel" type="Label" parent="."]

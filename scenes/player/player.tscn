@@ -426,8 +426,9 @@ target_position = Vector2(0, 108.774)
 collision_mask = 4
 
 [node name="Area2D" type="Area2D" parent="."]
+scale = Vector2(0.64, 0.64)
 collision_layer = 2048
-collision_mask = 2
+collision_mask = 22
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CapsuleShape2D_ngrhx")
@@ -440,4 +441,3 @@ current = true
 [connection signal="timeout" from="ApexTimer" to="." method="_on_apex_timer_timeout"]
 [connection signal="timeout" from="CastTimer" to="." method="_on_cast_timer_timeout"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

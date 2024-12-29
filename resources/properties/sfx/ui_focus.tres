@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectSettings" load_steps=3 format=3 uid="uid://douo842u4q6oa"]
+
+[ext_resource type="Script" path="res://resources/scripts/sound_effect_settings.gd" id="1_2xcmv"]
+[ext_resource type="AudioStream" uid="uid://dcb0jtbcl26ie" path="res://assets/sfx/ui/click4.ogg" id="2_v5vds"]
+
+[resource]
+script = ExtResource("1_2xcmv")
+limit = 10
+type = 14
+sound_effect = ExtResource("2_v5vds")
+volume = 0
+pitch_scale = 1.0
+pitch_randomness = 0.0
+attenuation = 1.0
+max_distance = 2000.0

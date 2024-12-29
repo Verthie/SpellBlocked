@@ -52,7 +52,6 @@ theme_override_constants/separation = 0
 [node name="StartButton" type="Button" parent="Camera2D/Buttons"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../ExitButton")
-theme_override_colors/font_color = Color(0.629675, 0.629675, 0.629675, 1)
 theme_override_fonts/font = ExtResource("2_dipm0")
 theme_override_font_sizes/font_size = 8
 theme_override_styles/focus = SubResource("StyleBoxEmpty_bhtwa")
@@ -62,23 +61,19 @@ script = ExtResource("3_6br54")
 scene_to_switch = ExtResource("4_2po37")
 threaded = true
 transition = 1
-transition_speed = 2.5
 
 [node name="SettingsButton" type="Button" parent="Camera2D/Buttons"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.631373, 0.631373, 0.631373, 1)
 theme_override_fonts/font = ExtResource("2_dipm0")
 theme_override_font_sizes/font_size = 8
 theme_override_styles/focus = SubResource("StyleBoxEmpty_muw0v")
 text = "SETTINGS"
 flat = true
 script = ExtResource("3_6br54")
-threaded = true
 
 [node name="ExitButton" type="Button" parent="Camera2D/Buttons"]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../StartButton")
-theme_override_colors/font_color = Color(0.631373, 0.631373, 0.631373, 1)
 theme_override_fonts/font = ExtResource("2_dipm0")
 theme_override_font_sizes/font_size = 8
 theme_override_styles/focus = SubResource("StyleBoxEmpty_8suyg")

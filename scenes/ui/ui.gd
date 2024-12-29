@@ -10,6 +10,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and (event.keycode == KEY_1 or event.keycode == KEY_2 or event.keycode == KEY_3):
+		#AudioManager.create_audio(SoundEffectSettings.SoundEffectType.MODIFIER_SWAP)
 		match event.keycode:
 			KEY_1:
 				Globals.current_block_type = "Ice" if Globals.current_block_type != "Ice" else "None"

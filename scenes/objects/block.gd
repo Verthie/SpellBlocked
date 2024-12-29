@@ -2,7 +2,7 @@ extends CharacterBody2D
 class_name Block
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
-@onready var ray_cast_2d: RayCast2D = $RayCast2D
+@onready var shape_cast_down: ShapeCast2D = $ShapeCastDown
 @onready var label: Label = $DebugLabel
 @onready var overlay: Sprite2D = $Sprite2D/Overlay
 @onready var anti_gravity_top: ShapeCast2D = $'Anti-GravityTop'
@@ -50,14 +50,11 @@ func _process(_delta: float) -> void:
 	last_velocity = velocity
 
 func handle_sound() -> void:
-
 	if is_on_floor():
 		if last_velocity.y > 200:
-			AudioManager.create_2d_audio_at_location(position, SoundEffectSettings.SOUND_EFFECT_TYPE.BLOCK_LAND)
+			AudioManager.create_2d_audio_at_location(position, SoundEffectSettings.SoundEffectType.BLOCK_LAND)
 		elif last_velocity.y > 50:
-			AudioManager.create_2d_audio_at_location(position, SoundEffectSettings.SOUND_EFFECT_TYPE.BLOCK_LAND_QUIET)
-
-
+			AudioManager.create_2d_audio_at_location(position, SoundEffectSettings.SoundEffectType.BLOCK_LAND_QUIET)
 
 func _physics_process(delta: float) -> void:
 
@@ -72,21 +69,24 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-	if !ray_cast_2d.is_colliding() or ray_cast_2d.get_collider() is Block:
-		apply_movement(Vector2(0.0,0.0), 0.0)
-		var collision_object: Object = ray_cast_2d.get_collider()
+	apply_movement(Vector2(0.0,0.0), 0.0)
+
+	if shape_cast_down.is_colliding():
+		var collision_object: Object = shape_cast_down.get_collider(0)
 		if collision_object is Block:
 			var block: Block = collision_object
 			if "Anti-Gravity" in block.current_modifiers:
 				jump_allowed = false
 			else:
 				jump_allowed = true
+		else:
+			jump_allowed = true
 
 	if anti_gravity_top.is_colliding():
 		object_on_top = anti_gravity_top.get_collider(0)
 		if velocity.y < 0 and object_on_top is Player:
 			velocity.y = 0
-		if ray_cast_2d.is_colliding() and ray_cast_2d.get_collider() is Block and object_on_top is Block: # block is between two blocks
+		if shape_cast_down.is_colliding() and shape_cast_down.get_collider(0) is Block and object_on_top is Block: # block is between two blocks
 			velocity.y = 0
 
 
