@@ -87,11 +87,14 @@ func _on_player_death() -> void:
 func _restart(transition_type: TransitionManager.ShaderTransitionType = TransitionManager.ShaderTransitionType.NONE, transition_speed: float = 1.0, player_death: bool = false, text_button_restart: bool = false) -> void:
 	Globals.restarting = true
 	Globals.input_enabled = false
+
 	if player_death:
 		$ScreenCamera.add_trauma(0.3)
 		await get_tree().create_timer(0.3).timeout
+
+	TransitionManager.layer = 3
 	if transition_type == TransitionManager.ShaderTransitionType.NONE:
-		get_tree().reload_current_scene()
+		SceneSwitcher.goto_scene(SceneSwitcher.current_level.scene_file_path)
 	else:
 		TransitionManager.play_shader_transition(transition_type, true, transition_speed)
 		await TransitionManager.finished
@@ -99,7 +102,7 @@ func _restart(transition_type: TransitionManager.ShaderTransitionType = Transiti
 			BgmManager._next_track()
 			Globals.game_paused = false
 			get_tree().paused = false
-		get_tree().reload_current_scene()
+		SceneSwitcher.goto_scene(SceneSwitcher.current_level.scene_file_path)
 		TransitionManager.play_shader_transition(transition_type, false, transition_speed, true)
 
 
@@ -109,7 +112,7 @@ func level_pause() -> void:
 
 	if !is_dark_background:
 		TransitionManager.layer = 1
-		TransitionManager.play_shader_transition(TransitionManager.ShaderTransitionType.DARK_BLUR, true, 5.0, false, 0.0, 0.0, 0.65)
+		TransitionManager.blur_game(0.6, 5.0)
 		await TransitionManager.finished
 	is_dark_background = true
 
@@ -130,7 +133,7 @@ func level_unpause() -> void:
 	EventBus.changed_cursor_type.emit("Block")
 
 	TransitionManager.layer = 3
-	TransitionManager.play_shader_transition(TransitionManager.ShaderTransitionType.DARK_BLUR, true, 5.0, true, 0.0, 0.65, 0.0)
+	TransitionManager.blur_game(0.6, 5.0, true)
 	await TransitionManager.finished
 	is_dark_background = false
 

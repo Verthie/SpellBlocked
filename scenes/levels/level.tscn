@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b0qkkisnuydja"]
+[gd_scene load_steps=15 format=3 uid="uid://b0qkkisnuydja"]
 
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_yace1"]
 [ext_resource type="PackedScene" uid="uid://bqumck2g1lx6b" path="res://scenes/player/player.tscn" id="2_7aa5x"]
@@ -9,7 +9,9 @@
 [ext_resource type="TileSet" uid="uid://beb2w5g0vr2d1" path="res://assets/tilesets/background_elements.tres" id="4_w1n7g"]
 [ext_resource type="PackedScene" uid="uid://c3hfa17lbuxae" path="res://scenes/hazards/deathzone.tscn" id="7_546jt"]
 [ext_resource type="TileSet" uid="uid://c7g86xemyc2us" path="res://assets/tilesets/decor.tres" id="7_a216d"]
+[ext_resource type="TileSet" uid="uid://c3daah0ow334j" path="res://assets/tilesets/liquids.tres" id="8_fb3fy"]
 [ext_resource type="PackedScene" uid="uid://bkqmw36c04h36" path="res://scenes/hazards/destructionzone.tscn" id="8_x4ic2"]
+[ext_resource type="Script" path="res://scenes/world/liquids.gd" id="9_vyrn7"]
 [ext_resource type="PackedScene" uid="uid://dmi6orowpok20" path="res://scenes/levels/screen_camera.tscn" id="12_tockn"]
 [ext_resource type="PackedScene" uid="uid://clpflpxtp3g2h" path="res://scenes/ui/ui.tscn" id="13_uyyk0"]
 
@@ -43,6 +45,11 @@ tile_set = ExtResource("4_w1n7g")
 
 [node name="Decor" type="TileMapLayer" parent="TileMaps"]
 tile_set = ExtResource("7_a216d")
+
+[node name="Liquids" type="TileMapLayer" parent="TileMaps"]
+z_index = 2
+tile_set = ExtResource("8_fb3fy")
+script = ExtResource("9_vyrn7")
 
 [node name="LevelElements" type="Node2D" parent="."]
 

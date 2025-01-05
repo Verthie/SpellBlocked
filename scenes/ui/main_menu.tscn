@@ -84,7 +84,6 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_bhtwa")
 text = "CONTINUE"
 flat = true
 script = ExtResource("3_6br54")
-scene_to_switch = ExtResource("4_2po37")
 threaded = true
 transition = 2
 

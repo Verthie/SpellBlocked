@@ -56,12 +56,14 @@ var buffered_jump: bool = false # Sprawdza czy został zainicjowany buffer jump
 var at_apex: bool = false
 var can_cast: bool = true
 
+var player_splashed: bool = false
+
 var animation_playing: bool = false
 
 func _ready() -> void:
 	EventBus.changed_interaction_state.connect(_on_interactable_state_change)
-	$Area2D.area_entered.connect(_on_player_death_experience)
-	$Area2D.body_entered.connect(_on_player_death_experience)
+	$DeathArea.area_entered.connect(_on_player_death_experience)
+	$DeathArea.body_entered.connect(_on_player_death_experience)
 
 func _process(_delta: float) -> void:
 
@@ -323,9 +325,12 @@ func _on_interactable_state_change(in_area: bool) -> void:
 	else:
 		emote_animation.play_backwards("interaction")
 
-func _on_player_death_experience(_body: Node2D) -> void:
-	if $Area2D.has_overlapping_bodies():
-		await get_tree().create_timer(0.2).timeout
-	if $Area2D.has_overlapping_bodies() or $Area2D.has_overlapping_areas():
+func _on_player_death_experience(body: Node2D) -> void:
+	if $DeathArea.has_overlapping_bodies():
+		if body is TileMapLayer:
+			EventBus.object_splashed.emit(Vector2i(position))
+		else:
+			await get_tree().create_timer(0.2).timeout
+	if $DeathArea.has_overlapping_bodies() or $DeathArea.has_overlapping_areas():
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.HURT)
 		EventBus.player_died.emit()

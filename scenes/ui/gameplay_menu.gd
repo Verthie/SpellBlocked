@@ -70,6 +70,7 @@ func _on_button_pressed(button: ButtonMenu) -> void:
 			if button.transition == TransitionManager.TransitionType.NONE:
 				SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
 			else:
+				hide()
 				TransitionManager.layer = 3
 				TransitionManager.play_shader_transition(button.transition, true, button.transition_speed)
 				await TransitionManager.finished

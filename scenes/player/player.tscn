@@ -389,7 +389,7 @@ libraries = {
 script = ExtResource("5_nmg8e")
 
 [node name="RayCast2D" type="RayCast2D" parent="WandLogic"]
-target_position = Vector2(80, 0)
+target_position = Vector2(22, 0)
 collision_mask = 1026
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -425,12 +425,12 @@ shape = SubResource("RectangleShape2D_28ecw")
 target_position = Vector2(0, 108.774)
 collision_mask = 4
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="DeathArea" type="Area2D" parent="."]
 scale = Vector2(0.64, 0.64)
 collision_layer = 2048
-collision_mask = 22
+collision_mask = 4118
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathArea"]
 shape = SubResource("CapsuleShape2D_ngrhx")
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]

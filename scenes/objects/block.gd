@@ -42,6 +42,8 @@ var object_on_top: Object
 func _ready() -> void:
 	EventBus.block_thrown.connect(apply_thrown_state)
 	apply_modifier(Globals.current_block_type)
+	$SplashArea.area_entered.connect(_on_block_destruction)
+	$SplashArea.body_entered.connect(_on_block_destruction)
 
 func _process(_delta: float) -> void:
 
@@ -184,6 +186,9 @@ func destroy() -> void:
 
 func apply_thrown_state() -> void:
 	block_thrown = true
+
+func _on_block_destruction(body: Node2D) -> void:
+	EventBus.object_splashed.emit(Vector2i(position))
 
 func _on_attributes_friction_changed(new_friction: float) -> void:
 	friction = new_friction

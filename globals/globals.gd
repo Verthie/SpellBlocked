@@ -21,6 +21,8 @@ var restarting: bool = false
 var game_paused: bool = false
 var input_enabled: bool = true
 
+var liquid_height_level: int = 0
+
 var block_amount: int:
 	set(value):
 		block_amount = value
