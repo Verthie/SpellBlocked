@@ -1,6 +1,4 @@
-extends Node2D
-
-signal cursor_changed_state(colliding_body: Node, cast_allowed: bool, modification_allowed: bool)
+extends Area2D
 
 const cursor_types: Dictionary = {"Block": 0, "Select": 4}
 
@@ -8,7 +6,6 @@ const cursor_types: Dictionary = {"Block": 0, "Select": 4}
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var area_2d: Area2D = $'.'
 @onready var created_timer: Timer = $CreatedTimer
-@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
 @export var blacklist: Array[String]
 
@@ -40,7 +37,7 @@ func _process(_delta: float) -> void:
 		modification_allowed = false
 		colliding_body = null
 
-		cursor_changed_state.emit(colliding_body, cast_allowed, modification_allowed)
+		EventBus.cursor_changed_state.emit(colliding_body, cast_allowed, modification_allowed)
 
 	#print(colliding_body, " ", cast_allowed, " ", modification_allowed)
 
@@ -48,10 +45,15 @@ func _process(_delta: float) -> void:
 		"Select":
 			handle_ui_sprite()
 		"Block":
-			handle_gameplay_sprite()
+			if Globals.restarting:
+				obstructed = false
+			else:
+				handle_gameplay_sprite()
 		_:
-			handle_gameplay_sprite()
-
+			if Globals.restarting:
+				obstructed = false
+			else:
+				handle_gameplay_sprite()
 
 # Kolizja kursora z obiektami fizycznymi
 func handle_collisions() -> void:
@@ -62,23 +64,31 @@ func handle_collisions() -> void:
 	#print(objects_names)
 	#print(objects_types)
 
-	if objects_names.any(check_in_blacklist):
-		cast_allowed = false
-		modification_allowed = false
-		colliding_body = null
-
-	elif "CharacterBody2D" in objects_types:
+	if "CharacterBody2D" in objects_types:
 		cast_allowed = false
 		object_index = objects_types.find("CharacterBody2D")
 		colliding_body = objects[object_index]
+		#var number_of_objects: int = objects_types.count("CharacterBody2D")
+		#for object_index in range(number_of_objects):
+			#var object = objects[object_index]
+			#var block: Block
+			#if object is Block:
+				#block = object
+			#if Globals.in_modify_state and !block.current_modifiers.has(Globals.current_block_type):
+				#colliding_body = block
 		modification_allowed = true if colliding_body is Block else false
+
+	elif objects_names.any(check_in_blacklist):
+		cast_allowed = false
+		modification_allowed = false
+		colliding_body = null
 
 	else:
 		cast_allowed = false
 		modification_allowed = false
 		colliding_body = null
 
-	cursor_changed_state.emit(colliding_body, cast_allowed, modification_allowed)
+	EventBus.cursor_changed_state.emit(colliding_body, cast_allowed, modification_allowed)
 
 # Zmiana wyglądu kursora w trakcie przebywania w menu
 func handle_ui_sprite() -> void:

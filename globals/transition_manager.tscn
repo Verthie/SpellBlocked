@@ -1,13 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://gfekg1a0uwj5"]
+[gd_scene load_steps=7 format=3 uid="uid://gfekg1a0uwj5"]
 
 [ext_resource type="Script" path="res://globals/transition_manager.gd" id="1_4o8np"]
+[ext_resource type="Shader" path="res://resources/shaders/transitions/dark_blur.gdshader" id="2_decqp"]
 
 [sub_resource type="Animation" id="Animation_kefxg"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DissolveRect:modulate")
+tracks/0/path = NodePath("Overlay:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -16,6 +17,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Overlay:material:shader_parameter/progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_n3m4r"]
 resource_name = "dissolve"
@@ -23,7 +36,7 @@ length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DissolveRect:modulate")
+tracks/0/path = NodePath("Overlay:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -39,8 +52,14 @@ _data = {
 "dissolve": SubResource("Animation_n3m4r")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u03y5"]
+shader = ExtResource("2_decqp")
+shader_parameter/lod = 0.0
+shader_parameter/progress = 0.0
+
 [node name="TransitionManager" type="CanvasLayer"]
-layer = 2
+process_mode = 3
+layer = 3
 script = ExtResource("1_4o8np")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -48,8 +67,10 @@ libraries = {
 "": SubResource("AnimationLibrary_wtdd6")
 }
 
-[node name="DissolveRect" type="ColorRect" parent="."]
+[node name="Overlay" type="ColorRect" parent="."]
 modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+material = SubResource("ShaderMaterial_u03y5")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

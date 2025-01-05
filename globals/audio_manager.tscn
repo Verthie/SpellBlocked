@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://globals/audio_manager.gd" id="1_0uqol"]
 
 [node name="AudioManager" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_0uqol")

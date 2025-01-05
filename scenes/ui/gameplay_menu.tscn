@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=3 uid="uid://c05lxfd53xfj7"]
+
+[ext_resource type="Script" path="res://scenes/ui/gameplay_menu.gd" id="1_dx3uy"]
+[ext_resource type="FontFile" uid="uid://xl7g0uo2riwl" path="res://assets/fonts/You Squared.ttf" id="3_c5qnx"]
+[ext_resource type="Script" path="res://scenes/ui/button_menu.gd" id="4_fvf2m"]
+[ext_resource type="PackedScene" uid="uid://bv06i720pwpdq" path="res://scenes/ui/main_menu.tscn" id="6_fixk7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bhtwa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_muw0v"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8suyg"]
+
+[node name="GameplayMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dx3uy")
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -85.0
+offset_right = 220.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="ResumeButton" type="Button" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../ExitButton")
+theme_override_colors/font_color = Color(0.629675, 0.629675, 0.629675, 1)
+theme_override_fonts/font = ExtResource("3_c5qnx")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bhtwa")
+text = "RESUME"
+flat = true
+script = ExtResource("4_fvf2m")
+
+[node name="SettingsButton" type="Button" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.631373, 0.631373, 0.631373, 1)
+theme_override_fonts/font = ExtResource("3_c5qnx")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/focus = SubResource("StyleBoxEmpty_muw0v")
+text = "SETTINGS"
+flat = true
+script = ExtResource("4_fvf2m")
+
+[node name="RestartButton" type="Button" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../ExitButton")
+theme_override_colors/font_color = Color(0.629675, 0.629675, 0.629675, 1)
+theme_override_fonts/font = ExtResource("3_c5qnx")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bhtwa")
+text = "RESTART"
+flat = true
+script = ExtResource("4_fvf2m")
+
+[node name="ExitButton" type="Button" parent="Buttons"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../RestartButton")
+theme_override_colors/font_color = Color(0.631373, 0.631373, 0.631373, 1)
+theme_override_fonts/font = ExtResource("3_c5qnx")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/focus = SubResource("StyleBoxEmpty_8suyg")
+text = "EXIT TO MENU"
+flat = true
+script = ExtResource("4_fvf2m")
+scene_to_switch = ExtResource("6_fixk7")
+transition = 2

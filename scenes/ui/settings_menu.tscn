@@ -1,0 +1,425 @@
+[gd_scene load_steps=19 format=3 uid="uid://b367ng688hwhe"]
+
+[ext_resource type="Script" path="res://scenes/ui/settings_menu.gd" id="1_ucy6c"]
+[ext_resource type="FontFile" uid="uid://xl7g0uo2riwl" path="res://assets/fonts/You Squared.ttf" id="2_2a7sa"]
+[ext_resource type="Texture2D" uid="uid://d4g2htua6tsmc" path="res://assets/ui/setting_buttons/setting_buttons_check_disabled.png" id="3_gnodu"]
+[ext_resource type="StyleBox" uid="uid://by5omw7v8psrt" path="res://resources/ui_themes/settings_button_focus.tres" id="4_pn0iq"]
+[ext_resource type="StyleBox" uid="uid://dllm2cge1cdoh" path="res://resources/ui_themes/settings_button_hover_press.tres" id="5_1pqq3"]
+[ext_resource type="Script" path="res://scenes/ui/setting_button.gd" id="6_ap8jd"]
+[ext_resource type="Texture2D" uid="uid://bl6sujyqk8ujn" path="res://assets/ui/setting_buttons/setting_buttons_check_enabled.png" id="7_24ido"]
+[ext_resource type="Texture2D" uid="uid://suij878wb74x" path="res://assets/ui/setting_buttons/setting_buttons_left_disabled.png" id="8_amqw2"]
+[ext_resource type="Texture2D" uid="uid://dc0rurq1sam27" path="res://assets/ui/setting_buttons/setting_buttons_right_disabled.png" id="9_3bafp"]
+[ext_resource type="Texture2D" uid="uid://co2mjhbuxyfrd" path="res://assets/ui/setting_buttons/setting_buttons_left_enabled.png" id="9_l5ttp"]
+[ext_resource type="Texture2D" uid="uid://cnbe1cfnaie2i" path="res://assets/ui/setting_buttons/setting_buttons_right_enabled.png" id="11_6lsq6"]
+[ext_resource type="Texture2D" uid="uid://d25tb87e6b3jc" path="res://assets/ui/setting_bar.png" id="12_58v1m"]
+[ext_resource type="Script" path="res://scenes/ui/volume_button.gd" id="12_rersi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jlxun"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_itbcn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nv5ak"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gfoth"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_md62t"]
+
+[node name="SettingsMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_ucy6c")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 0.1
+offset_bottom = 35.0
+grow_horizontal = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("2_2a7sa")
+theme_override_font_sizes/font_size = 40
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.1
+anchor_right = 0.8
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_top = 110
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="Fullscreen" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("2_2a7sa")
+theme_override_font_sizes/font_size = 26
+text = "FULLSCREEN"
+vertical_alignment = 1
+
+[node name="FullscreenButton" type="Button" parent="MarginContainer/VBoxContainer/Fullscreen" groups=["Buttons", "Setting_Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 6
+focus_neighbor_left = NodePath("../../Resolution/HBox/Left")
+focus_neighbor_top = NodePath("../../../../TextButtons/ApplyButton")
+focus_neighbor_right = NodePath("../../Resolution/HBox/Right")
+focus_neighbor_bottom = NodePath("../../Resolution/HBox/Left")
+theme_override_styles/focus = ExtResource("4_pn0iq")
+theme_override_styles/hover_pressed = ExtResource("5_1pqq3")
+theme_override_styles/hover = ExtResource("4_pn0iq")
+theme_override_styles/pressed = ExtResource("5_1pqq3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jlxun")
+toggle_mode = true
+action_mode = 0
+icon = ExtResource("3_gnodu")
+script = ExtResource("6_ap8jd")
+unpressed_image = ExtResource("3_gnodu")
+pressed_image = ExtResource("7_24ido")
+
+[node name="Resolution" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Resolution"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("2_2a7sa")
+theme_override_font_sizes/font_size = 26
+text = "RESOLUTION"
+vertical_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Resolution"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 25
+
+[node name="Left" type="Button" parent="MarginContainer/VBoxContainer/Resolution/HBox" groups=["Buttons", "Setting_Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_stretch_ratio = 0.2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../../Fullscreen/FullscreenButton")
+focus_neighbor_right = NodePath("../Right")
+focus_neighbor_bottom = NodePath("../../../Volume/HBox/VolumeLeft")
+theme_override_styles/focus = ExtResource("4_pn0iq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_itbcn")
+theme_override_styles/hover_pressed = ExtResource("5_1pqq3")
+theme_override_styles/hover = ExtResource("4_pn0iq")
+theme_override_styles/pressed = ExtResource("5_1pqq3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jlxun")
+action_mode = 0
+icon = ExtResource("8_amqw2")
+script = ExtResource("6_ap8jd")
+unpressed_image = ExtResource("8_amqw2")
+pressed_image = ExtResource("9_l5ttp")
+
+[node name="OptionLabel" type="Label" parent="MarginContainer/VBoxContainer/Resolution/HBox"]
+custom_minimum_size = Vector2(0, 26.52)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_2a7sa")
+theme_override_font_sizes/font_size = 26
+text = "1280x720"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Right" type="Button" parent="MarginContainer/VBoxContainer/Resolution/HBox" groups=["Buttons", "Setting_Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_stretch_ratio = 0.2
+focus_neighbor_left = NodePath("../Left")
+focus_neighbor_top = NodePath("../../../Fullscreen/FullscreenButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../../Volume/HBox/VolumeRight")
+theme_override_styles/focus = ExtResource("4_pn0iq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nv5ak")
+theme_override_styles/hover_pressed = ExtResource("5_1pqq3")
+theme_override_styles/hover = ExtResource("4_pn0iq")
+theme_override_styles/pressed = ExtResource("5_1pqq3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jlxun")
+action_mode = 0
+icon = ExtResource("9_3bafp")
+script = ExtResource("6_ap8jd")
+unpressed_image = ExtResource("9_3bafp")
+pressed_image = ExtResource("11_6lsq6")
+
+[node name="Volume" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Volume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("2_2a7sa")
+theme_override_font_sizes/font_size = 26
+text = "VOLUME"
+vertical_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Volume"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_constants/separation = 71
+
+[node name="VolumeLeft" type="Button" parent="MarginContainer/VBoxContainer/Volume/HBox" node_paths=PackedStringArray("volume_bar") groups=["Buttons", "Setting_Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_stretch_ratio = 0.2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../../Resolution/HBox/Left")
+focus_neighbor_right = NodePath("../VolumeRight")
+focus_neighbor_bottom = NodePath("../../../Music/HBox/MusicLeft")
+theme_override_styles/focus = ExtResource("4_pn0iq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_itbcn")
+theme_override_styles/hover_pressed = ExtResource("5_1pqq3")
+theme_override_styles/hover = ExtResource("4_pn0iq")
+theme_override_styles/pressed = ExtResource("5_1pqq3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jlxun")
+action_mode = 0
+icon = ExtResource("8_amqw2")
+script = ExtResource("12_rersi")
+volume_bar = NodePath("../OptionLabel/VolumeBar")
+left_button = true
+bus = "Master"
+unpressed_image = ExtResource("8_amqw2")
+pressed_image = ExtResource("9_l5ttp")
+
+[node name="OptionLabel" type="Control" parent="MarginContainer/VBoxContainer/Volume/HBox"]
+custom_minimum_size = Vector2(144, 26.52)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VolumeBar" type="Sprite2D" parent="MarginContainer/VBoxContainer/Volume/HBox/OptionLabel"]
+position = Vector2(72, 16)
+scale = Vector2(4, 4)
+texture = ExtResource("12_58v1m")
+vframes = 6
+frame = 5
+
+[node name="VolumeRight" type="Button" parent="MarginContainer/VBoxContainer/Volume/HBox" node_paths=PackedStringArray("volume_bar") groups=["Buttons", "Setting_Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_stretch_ratio = 0.2
+focus_neighbor_left = NodePath("../VolumeLeft")
+focus_neighbor_top = NodePath("../../../Resolution/HBox/Right")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../../Music/HBox/MusicRight")
+theme_override_styles/focus = ExtResource("4_pn0iq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nv5ak")
+theme_override_styles/hover_pressed = ExtResource("5_1pqq3")
+theme_override_styles/hover = ExtResource("4_pn0iq")
+theme_override_styles/pressed = ExtResource("5_1pqq3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jlxun")
+action_mode = 0
+icon = ExtResource("9_3bafp")
+script = ExtResource("12_rersi")
+volume_bar = NodePath("../OptionLabel/VolumeBar")
+bus = "Master"
+unpressed_image = ExtResource("9_3bafp")
+pressed_image = ExtResource("11_6lsq6")
+
+[node name="Music" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Music"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("2_2a7sa")
+theme_override_font_sizes/font_size = 26
+text = "MUSIC"
+vertical_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Music"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_constants/separation = 71
+
+[node name="MusicLeft" type="Button" parent="MarginContainer/VBoxContainer/Music/HBox" node_paths=PackedStringArray("volume_bar") groups=["Buttons", "Setting_Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 6
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../../Volume/HBox/VolumeLeft")
+focus_neighbor_right = NodePath("../MusicRight")
+focus_neighbor_bottom = NodePath("../../../Sfx/HBox/SfxLeft")
+theme_override_styles/focus = ExtResource("4_pn0iq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_itbcn")
+theme_override_styles/hover_pressed = ExtResource("5_1pqq3")
+theme_override_styles/hover = ExtResource("4_pn0iq")
+theme_override_styles/pressed = ExtResource("5_1pqq3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jlxun")
+action_mode = 0
+icon = ExtResource("8_amqw2")
+script = ExtResource("12_rersi")
+volume_bar = NodePath("../OptionLabel/VolumeBar")
+left_button = true
+bus = "Music"
+unpressed_image = ExtResource("8_amqw2")
+pressed_image = ExtResource("9_l5ttp")
+
+[node name="OptionLabel" type="Control" parent="MarginContainer/VBoxContainer/Music/HBox"]
+custom_minimum_size = Vector2(144, 26.52)
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="VolumeBar" type="Sprite2D" parent="MarginContainer/VBoxContainer/Music/HBox/OptionLabel"]
+position = Vector2(72, 16)
+scale = Vector2(4, 4)
+texture = ExtResource("12_58v1m")
+vframes = 6
+frame = 3
+
+[node name="MusicRight" type="Button" parent="MarginContainer/VBoxContainer/Music/HBox" node_paths=PackedStringArray("volume_bar") groups=["Buttons", "Setting_Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 6
+focus_neighbor_left = NodePath("../MusicLeft")
+focus_neighbor_top = NodePath("../../../Volume/HBox/VolumeRight")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../../Sfx/HBox/SfxRight")
+theme_override_styles/focus = ExtResource("4_pn0iq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nv5ak")
+theme_override_styles/hover_pressed = ExtResource("5_1pqq3")
+theme_override_styles/hover = ExtResource("4_pn0iq")
+theme_override_styles/pressed = ExtResource("5_1pqq3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jlxun")
+action_mode = 0
+icon = ExtResource("9_3bafp")
+script = ExtResource("12_rersi")
+volume_bar = NodePath("../OptionLabel/VolumeBar")
+bus = "Music"
+unpressed_image = ExtResource("9_3bafp")
+pressed_image = ExtResource("11_6lsq6")
+
+[node name="Sfx" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Sfx"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("2_2a7sa")
+theme_override_font_sizes/font_size = 26
+text = "SFX"
+vertical_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Sfx"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_constants/separation = 71
+
+[node name="SfxLeft" type="Button" parent="MarginContainer/VBoxContainer/Sfx/HBox" node_paths=PackedStringArray("volume_bar") groups=["Buttons", "Setting_Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 6
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../../Music/HBox/MusicLeft")
+focus_neighbor_right = NodePath("../SfxRight")
+focus_neighbor_bottom = NodePath("../../../../../TextButtons/ApplyButton")
+theme_override_styles/focus = ExtResource("4_pn0iq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_itbcn")
+theme_override_styles/hover_pressed = ExtResource("5_1pqq3")
+theme_override_styles/hover = ExtResource("4_pn0iq")
+theme_override_styles/pressed = ExtResource("5_1pqq3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jlxun")
+action_mode = 0
+icon = ExtResource("8_amqw2")
+script = ExtResource("12_rersi")
+volume_bar = NodePath("../OptionLabel/VolumeBar")
+left_button = true
+bus = "SFX"
+unpressed_image = ExtResource("8_amqw2")
+pressed_image = ExtResource("9_l5ttp")
+
+[node name="OptionLabel" type="Control" parent="MarginContainer/VBoxContainer/Sfx/HBox"]
+custom_minimum_size = Vector2(144, 26.52)
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="VolumeBar" type="Sprite2D" parent="MarginContainer/VBoxContainer/Sfx/HBox/OptionLabel"]
+position = Vector2(72, 16)
+scale = Vector2(4, 4)
+texture = ExtResource("12_58v1m")
+vframes = 6
+frame = 3
+
+[node name="SfxRight" type="Button" parent="MarginContainer/VBoxContainer/Sfx/HBox" node_paths=PackedStringArray("volume_bar") groups=["Buttons", "Setting_Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 6
+focus_neighbor_left = NodePath("../SfxLeft")
+focus_neighbor_top = NodePath("../../../Music/HBox/MusicRight")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../../../../TextButtons/ApplyButton")
+theme_override_styles/focus = ExtResource("4_pn0iq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nv5ak")
+theme_override_styles/hover_pressed = ExtResource("5_1pqq3")
+theme_override_styles/hover = ExtResource("4_pn0iq")
+theme_override_styles/pressed = ExtResource("5_1pqq3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jlxun")
+action_mode = 0
+icon = ExtResource("9_3bafp")
+script = ExtResource("12_rersi")
+volume_bar = NodePath("../OptionLabel/VolumeBar")
+bus = "SFX"
+unpressed_image = ExtResource("9_3bafp")
+pressed_image = ExtResource("11_6lsq6")
+
+[node name="TextButtons" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.212
+anchor_top = 0.887
+anchor_right = 0.778
+anchor_bottom = 0.887
+offset_top = -31.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+alignment = 1
+
+[node name="BackButton" type="Button" parent="TextButtons" groups=["Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../MarginContainer/VBoxContainer/Sfx/HBox/SfxLeft")
+focus_neighbor_bottom = NodePath("../../MarginContainer/VBoxContainer/Fullscreen/FullscreenButton")
+theme_override_colors/font_color = Color(0.629675, 0.629675, 0.629675, 1)
+theme_override_fonts/font = ExtResource("2_2a7sa")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/focus = SubResource("StyleBoxEmpty_gfoth")
+text = "BACK"
+flat = true
+
+[node name="ApplyButton" type="Button" parent="TextButtons" groups=["Buttons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_top = NodePath("../../MarginContainer/VBoxContainer/Sfx/HBox/SfxLeft")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../MarginContainer/VBoxContainer/Fullscreen/FullscreenButton")
+theme_override_colors/font_color = Color(0.631373, 0.631373, 0.631373, 1)
+theme_override_fonts/font = ExtResource("2_2a7sa")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/focus = SubResource("StyleBoxEmpty_md62t")
+text = "APPLY"
+flat = true
+
+[connection signal="pressed" from="TextButtons/ApplyButton" to="." method="_on_apply_button_pressed"]

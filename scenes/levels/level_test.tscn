@@ -194,20 +194,20 @@ impulse_force = 250
 position = Vector2(-119, 13)
 connector = NodePath("../../TileMaps/GateRune")
 
-[node name="Player" parent="." index="2"]
-position = Vector2(0, -13)
-
 [node name="Interactables#InteractableArea" parent="Interactables" index="0" instance=ExtResource("5_b06aa")]
 position = Vector2(108, -9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Interactables#InteractableArea" index="0"]
 shape = SubResource("RectangleShape2D_s214u")
 
+[node name="Player" parent="." index="3"]
+position = Vector2(0, -13)
+
 [node name="Items#Key" parent="Items" index="0" instance=ExtResource("2_g43sp")]
 position = Vector2(-51, 11)
 
 [node name="Deathzone" parent="." index="7"]
-position = Vector2(-30, 54)
+position = Vector2(-32, 51)
 
 [node name="DestructionzoneBottom" parent="." index="8"]
 position = Vector2(215, 65)

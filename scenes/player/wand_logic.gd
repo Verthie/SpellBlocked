@@ -14,10 +14,12 @@ var received_body: Node2D
 var body_type: String = ""
 
 func _ready() -> void:
-	# object_amount = Globals.object_amount #TODO
-	Cursor.cursor_changed_state.connect(_on_cursor_state_change)
+	EventBus.cursor_changed_state.connect(_on_cursor_state_change)
 
 func _process(_delta: float) -> void:
+
+	if !Globals.input_enabled or Globals.game_paused:
+		return
 
 	handle_sight_obstruction()
 

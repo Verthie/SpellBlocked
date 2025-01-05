@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkeo03eva6vnw"]
+
+[ext_resource type="Script" path="res://globals/interface_cursor.gd" id="1_8htop"]
+[ext_resource type="PackedScene" uid="uid://dblro3am354bj" path="res://globals/cursor.tscn" id="2_wdtp8"]
+
+[node name="InterfaceCursor" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_8htop")
+
+[node name="Cursor" parent="." instance=ExtResource("2_wdtp8")]
