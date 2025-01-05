@@ -7,13 +7,14 @@
 [ext_resource type="TileSet" uid="uid://cwa4cldhrpdvk" path="res://assets/tilesets/ground_nd_plane.tres" id="3_pluxv"]
 [ext_resource type="TileSet" uid="uid://bh1ffdsew3di7" path="res://assets/tilesets/bridges.tres" id="4_hlqh0"]
 [ext_resource type="TileSet" uid="uid://beb2w5g0vr2d1" path="res://assets/tilesets/background_elements.tres" id="4_w1n7g"]
-[ext_resource type="PackedScene" uid="uid://clpflpxtp3g2h" path="res://scenes/ui/ui.tscn" id="5_rj7pd"]
 [ext_resource type="PackedScene" uid="uid://c3hfa17lbuxae" path="res://scenes/hazards/deathzone.tscn" id="7_546jt"]
 [ext_resource type="TileSet" uid="uid://c7g86xemyc2us" path="res://assets/tilesets/decor.tres" id="7_a216d"]
 [ext_resource type="PackedScene" uid="uid://bkqmw36c04h36" path="res://scenes/hazards/destructionzone.tscn" id="8_x4ic2"]
 [ext_resource type="PackedScene" uid="uid://dmi6orowpok20" path="res://scenes/levels/screen_camera.tscn" id="12_tockn"]
+[ext_resource type="PackedScene" uid="uid://clpflpxtp3g2h" path="res://scenes/ui/ui.tscn" id="13_uyyk0"]
 
 [node name="Level" type="Node2D"]
+process_mode = 1
 position = Vector2(-128, 121)
 script = ExtResource("1_yace1")
 
@@ -45,15 +46,15 @@ tile_set = ExtResource("7_a216d")
 
 [node name="LevelElements" type="Node2D" parent="."]
 
-[node name="Player" parent="." instance=ExtResource("2_7aa5x")]
-
 [node name="Interactables" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("2_7aa5x")]
 
 [node name="Items" type="Node2D" parent="."]
 
 [node name="Blocks" type="Node2D" parent="."]
 
-[node name="UI" parent="." instance=ExtResource("5_rj7pd")]
+[node name="UI" parent="." instance=ExtResource("13_uyyk0")]
 
 [node name="Deathzone" parent="." instance=ExtResource("7_546jt")]
 position = Vector2(0, 105)
@@ -71,3 +72,7 @@ editor_draw_limits = true
 target = NodePath("../Player")
 
 [node name="SoundManager" type="Node" parent="."]
+
+[node name="Menu" type="CanvasLayer" parent="."]
+process_mode = 3
+visible = false

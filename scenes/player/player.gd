@@ -47,6 +47,7 @@ var can_jump: bool = true
 var is_jumping: bool = false
 var was_on_floor: bool
 var just_left_ledge: bool
+var pushing: bool = false
 var last_colliding_block: Block
 var colliding_with_block: bool = false
 var shape_collided: bool = false
@@ -64,9 +65,10 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 
-	handle_animation()
+	if Globals.game_paused:
+		return
 
-	handle_sound()
+	handle_animation()
 
 	last_velocity = velocity
 
@@ -81,7 +83,7 @@ func set_state() -> String:
 		if is_on_floor() or shape_cast_2d.is_colliding():
 			if direction == 0 and abs(velocity.x) <= 10:
 				new_state = "idle"
-			elif direction != 0 and abs(velocity.x) > 10:
+			elif direction != 0 and (abs(velocity.x) > 10 or pushing):
 				new_state = "run"
 
 		if is_falling:
@@ -92,11 +94,12 @@ func set_state() -> String:
 		if is_jumping:
 			new_state = "jump"
 
-		if Input.is_action_just_pressed("cast"):
-			new_state = "cast"
+		if Globals.input_enabled:
+			if Input.is_action_just_pressed("cast"):
+				new_state = "cast"
 
-		if Input.is_action_just_pressed("cast_destroy"):
-			new_state = "cast_remove"
+			if Input.is_action_just_pressed("cast_destroy"):
+				new_state = "cast_remove"
 
 	return new_state
 
@@ -105,7 +108,7 @@ func handle_animation() -> void:
 	handle_sprite_flip()
 
 	if current_state != set_state():
-		print(current_state, " ", set_state())
+		#print(current_state, " ", set_state())
 		current_state = set_state()
 		animation_player.play(current_state)
 
@@ -139,14 +142,13 @@ func check_top() -> void:
 
 func _physics_process(delta: float) -> void:
 
-	direction = Input.get_axis("move_left", "move_right")
+	if Globals.game_paused:
+		return
 
-	#if Input.is_action_pressed('move_left'):
-		#direction = -1
-	#elif Input.is_action_pressed('move_right'):
-		#direction = 1
-	#elif Input.is_action_just_released('move_left') or Input.is_action_just_released('move_right'):
-		#direction = 0
+	if Globals.input_enabled:
+		direction = Input.get_axis("move_left", "move_right")
+	else:
+		direction = 0
 
 	handle_gravity(delta)
 
@@ -164,7 +166,8 @@ func _physics_process(delta: float) -> void:
 
 	handle_coyote()
 
-	handle_jump()
+	if Globals.input_enabled:
+		handle_jump()
 
 	#handle_edge_detection()
 
@@ -233,6 +236,7 @@ func handle_push() -> void:
 		var colliding_object: Object = collision.get_collider()
 		#print(colliding_object)
 		if colliding_object is Block:
+			pushing = true
 			last_colliding_block = colliding_object
 			colliding_with_block = true
 			if collision.get_normal().y == 0:

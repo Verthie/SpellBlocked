@@ -58,6 +58,19 @@ func create_audio(type: BgmSettings.MusicType) -> void:
 	else:
 		push_error("Audio Manager failed to find setting for type ", type)
 
+func remove_audio() -> void:
+	get_child(0).queue_free()
+
+func stop_audio() -> void:
+	if get_child(0):
+		var audio: AudioStreamPlayer = get_child(0)
+		audio.stop()
+
+func play_audio() -> void:
+	if get_child(0):
+		var audio: AudioStreamPlayer = get_child(0)
+		audio.play()
+
 func _next_track() -> void:
 	if current_audio.stream is AudioStreamRandomizer:
 		current_audio.play()

@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://globals/cursor.gd" id="1_t6031"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5bnp"]
-size = Vector2(6, 6.17)
+size = Vector2(6, 6)
 
 [sub_resource type="Animation" id="Animation_cdu0d"]
 length = 0.001
@@ -183,6 +183,7 @@ _data = {
 }
 
 [node name="Cursor" type="Area2D"]
+process_mode = 3
 collision_layer = 512
 collision_mask = 1031
 script = ExtResource("1_t6031")
@@ -192,10 +193,10 @@ blacklist = Array[String](["FGFirstPlane", "Player", "PressureButton"])
 shape = SubResource("RectangleShape2D_u5bnp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+process_mode = 3
 z_index = 100
 texture = ExtResource("1_3kqbg")
 hframes = 6
-frame = 4
 metadata/_aseprite_wizard_interface_config_ = {
 "animation_section": false,
 "layer_section": false,

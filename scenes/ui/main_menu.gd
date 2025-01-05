@@ -1,19 +1,25 @@
 extends Control
 
-@onready var buttons: VBoxContainer = $Camera2D/Buttons
-@onready var start_button: ButtonMenu = $Camera2D/Buttons/StartButton
+@onready var buttons: VBoxContainer = $Buttons
+@onready var new_game_button: ButtonMenu = $Buttons/NewGameButton
 
 var button_array: Array[ButtonMenu]
 
 var arrow_clicked: bool = false
 var mouse_on_button: bool = false
-#var cursor_hidden: bool = false
 
 var scene_paths: Dictionary = {}
 
 func _ready() -> void:
+	_load_settings()
+
 	EventBus.changed_cursor_type.emit("Select")
+	Cursor.hide()
+	InterfaceCursor.show()
+	InterfaceCursor.set_cursor_size(6)
 	Globals.started_level = false
+
+	SceneSwitcher.fallback_scene_path = scene_file_path
 
 	for button: ButtonMenu in buttons.get_children():
 		button.mouse_entered.connect(_on_mouse_entered.bind(button))
@@ -29,8 +35,12 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if !mouse_on_button and (Input.is_action_just_pressed("ui_down") or Input.is_action_just_pressed("ui_up")):
 		if !arrow_clicked:
-			start_button.grab_focus()
+			new_game_button.grab_focus()
 			arrow_clicked = true
+
+	if Input.is_action_just_pressed('quit'):
+		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+		get_tree().quit()
 
 		#Cursor.sprite_2d.visible = false
 
@@ -38,19 +48,19 @@ func _process(_delta: float) -> void:
 		#Cursor.sprite_2d.visible = true
 
 func _on_button_pressed(button: ButtonMenu) -> void:
-	if button.name == $Camera2D/Buttons/ExitButton.name:
+	if button.name == $Buttons/ExitButton.name:
 		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 		get_tree().quit()
 	else:
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_SELECT)
 		if button.scene_to_switch != null:
-			SceneSwitcher.fallback_scenes.append(SceneSwitcher.current_scene)
 			if button.transition == TransitionManager.TransitionType.NONE:
 				SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
 			else:
-				await TransitionManager.play_transition(button.transition, false, button.transition_speed)
+				TransitionManager.play_shader_transition(button.transition, true, button.transition_speed)
+				await TransitionManager.finished
 				SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
-				TransitionManager.play_transition(button.transition, true, button.transition_speed)
+				TransitionManager.play_shader_transition(button.transition, false, button.transition_speed, true, 0.3)
 		else:
 			pass
 
@@ -73,3 +83,25 @@ func _on_mouse_exited() -> void:
 func _on_button_focused() -> void:
 	if !mouse_on_button:
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_FOCUS)
+
+func _load_settings() -> void:
+	var video_data: Dictionary = SaveDataManager.load_video_settings()
+	var audio_data: Dictionary = SaveDataManager.load_audio_settings()
+
+	if video_data["fullscreen"]:
+		DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_FULLSCREEN)
+	if !video_data["fullscreen"]:
+		DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
+		DisplayServer.window_set_size(video_data["resolution"])
+		var screen_size: Vector2i = DisplayServer.screen_get_size()
+		var window_size: Vector2i = DisplayServer.window_get_size()
+		DisplayServer.window_set_position(Vector2i((screen_size.x/2) - (window_size.x/2),(screen_size.y/2)-(window_size.y/2)))
+
+	AudioServer.set_bus_volume_db(0, audio_data["master_volume"])
+	AudioServer.set_bus_volume_db(1, audio_data["music_volume"])
+	AudioServer.set_bus_volume_db(2, audio_data["sfx_volume"])
+
+	Globals.volumes[0] = audio_data["master_volume"]
+	Globals.volumes[1] = audio_data["music_volume"]
+	Globals.volumes[2] = audio_data["sfx_volume"]

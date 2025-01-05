@@ -1,0 +1,86 @@
+[gd_scene load_steps=9 format=3 uid="uid://bv06i720pwpdq"]
+
+[ext_resource type="Script" path="res://scenes/ui/main_menu.gd" id="1_yuus7"]
+[ext_resource type="FontFile" uid="uid://xl7g0uo2riwl" path="res://assets/fonts/You Squared.ttf" id="2_dipm0"]
+[ext_resource type="FontFile" uid="uid://bbedox742mwja" path="res://assets/fonts/bitbybit_ outline2.ttf" id="2_q4wje"]
+[ext_resource type="Script" path="res://scenes/ui/button_menu.gd" id="3_6br54"]
+[ext_resource type="PackedScene" uid="uid://ci5p2tdc7kiqp" path="res://scenes/levels/level_test.tscn" id="4_2po37"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bhtwa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_muw0v"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8suyg"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yuus7")
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+zoom = Vector2(6, 6)
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Camera2D"]
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_q4wje")
+theme_override_font_sizes/font_size = 14
+text = "SPELLBLOCKED"
+
+[node name="Buttons" type="VBoxContainer" parent="Camera2D"]
+offset_left = -36.0
+offset_top = 10.0
+offset_right = 72.0
+grow_horizontal = 2
+scale = Vector2(0.689239, 0.689239)
+size_flags_horizontal = 4
+theme_override_constants/separation = 0
+
+[node name="StartButton" type="Button" parent="Camera2D/Buttons"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../ExitButton")
+theme_override_colors/font_color = Color(0.629675, 0.629675, 0.629675, 1)
+theme_override_fonts/font = ExtResource("2_dipm0")
+theme_override_font_sizes/font_size = 8
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bhtwa")
+text = "START"
+flat = true
+script = ExtResource("3_6br54")
+scene_to_switch = ExtResource("4_2po37")
+threaded = true
+transition_speed = 2.5
+
+[node name="SettingsButton" type="Button" parent="Camera2D/Buttons"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.631373, 0.631373, 0.631373, 1)
+theme_override_fonts/font = ExtResource("2_dipm0")
+theme_override_font_sizes/font_size = 8
+theme_override_styles/focus = SubResource("StyleBoxEmpty_muw0v")
+text = "SETTINGS"
+flat = true
+script = ExtResource("3_6br54")
+threaded = true
+
+[node name="ExitButton" type="Button" parent="Camera2D/Buttons"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../StartButton")
+theme_override_colors/font_color = Color(0.631373, 0.631373, 0.631373, 1)
+theme_override_fonts/font = ExtResource("2_dipm0")
+theme_override_font_sizes/font_size = 8
+theme_override_styles/focus = SubResource("StyleBoxEmpty_8suyg")
+text = "EXIT"
+flat = true
+script = ExtResource("3_6br54")

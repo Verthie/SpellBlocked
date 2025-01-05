@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dempbjvy8rqlr"]
+
+[ext_resource type="Texture2D" uid="uid://bl6sujyqk8ujn" path="res://assets/ui/setting_buttons/setting_buttons_check_enabled.png" id="1_rwg30"]
+[ext_resource type="Texture2D" uid="uid://d4g2htua6tsmc" path="res://assets/ui/setting_buttons/setting_buttons_check_disabled.png" id="2_sv2fe"]
+
+[resource]
+CheckButton/icons/checked = ExtResource("1_rwg30")
+CheckButton/icons/unchecked = ExtResource("2_sv2fe")
