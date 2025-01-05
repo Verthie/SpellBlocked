@@ -197,6 +197,7 @@ quit={
 2d_physics/layer_10="Cursor"
 2d_physics/layer_11="Level Elements"
 2d_physics/layer_12="SafeGuard"
+2d_physics/layer_13="Tilemap"
 
 [rendering]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bpo0xs7635pyd"]
+[gd_scene load_steps=12 format=3 uid="uid://bpo0xs7635pyd"]
 
 [ext_resource type="Script" path="res://scenes/objects/block.gd" id="1_h5gay"]
 [ext_resource type="Texture2D" uid="uid://gu22vg6khci6" path="res://assets/sprites/objects/CrateBW.png" id="2_jfu3h"]
@@ -13,6 +13,9 @@
 size = Vector2(10, 7)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qm05b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xh77h"]
+size = Vector2(10, 6)
 
 [node name="Block" type="CharacterBody2D"]
 collision_layer = 4
@@ -112,6 +115,14 @@ modifier = ExtResource("7_4nveb")
 [node name="Anti-Gravity" type="Node" parent="Modifiers"]
 script = ExtResource("5_ush3f")
 modifier = ExtResource("8_sjvg6")
+
+[node name="SplashArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4096
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SplashArea"]
+shape = SubResource("RectangleShape2D_xh77h")
 
 [connection signal="friction_changed" from="Attributes" to="." method="_on_attributes_friction_changed"]
 [connection signal="gravity_changed" from="Attributes" to="." method="_on_attributes_gravity_changed"]

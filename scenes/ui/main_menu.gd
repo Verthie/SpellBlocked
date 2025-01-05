@@ -21,6 +21,13 @@ func _ready() -> void:
 
 	SceneSwitcher.fallback_scene_path = scene_file_path
 
+	var game_progress_data: Dictionary = SaveDataManager.load_game_progress()
+
+	var save_level_number: int = game_progress_data["level"]
+
+	#var save_level_scene_path: String = 'res://scenes/levels/level_' + str(save_level_number) + '.tscn'
+	var save_level_scene_path: String = 'res://scenes/levels/level_' + 'test' + '.tscn'
+
 	for button: ButtonMenu in buttons.get_children():
 		button.mouse_entered.connect(_on_mouse_entered.bind(button))
 		button.mouse_exited.connect(_on_mouse_exited)
@@ -31,6 +38,11 @@ func _ready() -> void:
 			scene_paths[button.name] = button.scene_to_switch.resource_path
 			if button.threaded:
 				ResourceLoader.load_threaded_request(scene_paths[button.name])
+		elif button == $Buttons/ContinueButton:
+			scene_paths[button.name] = save_level_scene_path
+			if button.threaded:
+				ResourceLoader.load_threaded_request(scene_paths[button.name])
+
 
 func _process(_delta: float) -> void:
 	if !mouse_on_button and (Input.is_action_just_pressed("ui_down") or Input.is_action_just_pressed("ui_up")):
@@ -53,12 +65,14 @@ func _on_button_pressed(button: ButtonMenu) -> void:
 		get_tree().quit()
 	else:
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_SELECT)
-		if button.scene_to_switch != null:
+		if button.scene_to_switch != null or button == $Buttons/ContinueButton:
 			if button.transition == TransitionManager.TransitionType.NONE:
 				SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
 			else:
 				TransitionManager.play_shader_transition(button.transition, true, button.transition_speed)
 				await TransitionManager.finished
+				if button == $Buttons/NewGameButton:
+					SaveDataManager.clear_game_progress()
 				SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
 				TransitionManager.play_shader_transition(button.transition, false, button.transition_speed, true, 0.3)
 		else:
