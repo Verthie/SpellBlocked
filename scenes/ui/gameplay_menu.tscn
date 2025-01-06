@@ -67,7 +67,6 @@ script = ExtResource("4_fvf2m")
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-focus_neighbor_top = NodePath("../ExitButton")
 theme_override_colors/font_color = Color(0.629675, 0.629675, 0.629675, 1)
 theme_override_fonts/font = ExtResource("3_c5qnx")
 theme_override_font_sizes/font_size = 36
@@ -78,7 +77,7 @@ script = ExtResource("4_fvf2m")
 
 [node name="ExitButton" type="Button" parent="Buttons"]
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../RestartButton")
+focus_neighbor_bottom = NodePath("../ResumeButton")
 theme_override_colors/font_color = Color(0.631373, 0.631373, 0.631373, 1)
 theme_override_fonts/font = ExtResource("3_c5qnx")
 theme_override_font_sizes/font_size = 36

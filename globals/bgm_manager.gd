@@ -3,74 +3,107 @@ extends Node2D
 var music_dict: Dictionary = {}
 @warning_ignore('untyped_declaration')
 var current_audio
+var current_music_setting: BgmSettings
 
 func _ready() -> void:
 	music_dict = Globals.load_resources("res://resources/properties/bgm/")
+	EventBus.game_restarted.connect(_on_game_restart)
+	EventBus.level_finished.connect(_on_level_finished)
+	EventBus.level_exited.connect(_on_level_exited)
 
 func create_2d_audio_at_location(location: Vector2, type: BgmSettings.MusicType) -> void:
 	if music_dict.has(type):
-		var music_setting: BgmSettings = music_dict[type]
-		if music_setting.has_open_limit():
-			music_setting.change_audio_count(1)
-			var new_2d_audio: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
-			add_child(new_2d_audio)
+		current_music_setting = music_dict[type]
+		if current_music_setting.has_open_limit():
+			current_music_setting.change_audio_count(1)
+			current_audio = AudioStreamPlayer2D.new()
+			add_child(current_audio)
 
-			new_2d_audio.position = location
-			new_2d_audio.bus = "Music"
-			new_2d_audio.stream = music_setting.music if !music_setting.loop else music_setting.music_loop_version
-			new_2d_audio.volume_db = music_setting.volume
-			new_2d_audio.pitch_scale = music_setting.pitch_scale
-			new_2d_audio.attenuation = music_setting.attenuation
-			new_2d_audio.max_distance = music_setting.max_distance
+			current_audio.position = location
+			current_audio.bus = "Music"
+			current_audio.stream = current_music_setting.music if !current_music_setting.loop else current_music_setting.music_loop_version
+			current_audio.volume_db = current_music_setting.volume
+			current_audio.pitch_scale = current_music_setting.pitch_scale
+			current_audio.attenuation = current_music_setting.attenuation
+			current_audio.max_distance = current_music_setting.max_distance
 
-			if !music_setting.loop and new_2d_audio.stream is not AudioStreamRandomizer:
-				new_2d_audio.finished.connect(music_setting.on_audio_finished)
-				new_2d_audio.finished.connect(new_2d_audio.queue_free)
-			elif !music_setting.loop and new_2d_audio.stream is AudioStreamRandomizer:
-				current_audio = new_2d_audio
-				new_2d_audio.finished.connect(_next_track)
+			current_audio = current_audio
 
-			new_2d_audio.play()
+			if !current_music_setting.loop and current_audio.stream is not AudioStreamRandomizer:
+				current_audio.finished.connect(current_music_setting.on_audio_finished)
+				current_audio.finished.connect(current_audio.queue_free)
+			elif !current_music_setting.loop and current_audio.stream is AudioStreamRandomizer:
+				current_audio.finished.connect(_next_track)
+
+			play_audio()
 	else:
 		push_error("Audio Manager failed to find setting for type ", type)
 
 func create_audio(type: BgmSettings.MusicType) -> void:
 	if music_dict.has(type):
-		var music_setting: BgmSettings = music_dict[type]
-		if music_setting.has_open_limit():
-			music_setting.change_audio_count(1)
-			var new_audio: AudioStreamPlayer = AudioStreamPlayer.new()
-			add_child(new_audio)
+		current_music_setting = music_dict[type]
+		if current_music_setting.has_open_limit():
+			current_music_setting.change_audio_count(1)
+			current_audio = AudioStreamPlayer.new()
+			add_child(current_audio)
 
-			new_audio.bus = "Music"
-			new_audio.stream = music_setting.music if !music_setting.loop else music_setting.music_loop_version
-			new_audio.volume_db = music_setting.volume
-			new_audio.pitch_scale = music_setting.pitch_scale
+			current_audio.bus = "Music"
+			current_audio.stream = current_music_setting.music if !current_music_setting.loop else current_music_setting.music_loop_version
+			current_audio.volume_db = current_music_setting.volume
+			current_audio.pitch_scale = current_music_setting.pitch_scale
 
-			if !music_setting.loop and new_audio.stream is not AudioStreamRandomizer:
-				new_audio.finished.connect(music_setting.on_audio_finished)
-				new_audio.finished.connect(new_audio.queue_free)
-			elif !music_setting.loop and new_audio.stream is AudioStreamRandomizer:
-				current_audio = new_audio
-				new_audio.finished.connect(_next_track)
+			if !current_music_setting.loop and current_audio.stream is not AudioStreamRandomizer:
+				current_audio.finished.connect(current_music_setting.on_audio_finished)
+				current_audio.finished.connect(current_audio.queue_free)
+			elif !current_music_setting.loop and current_audio.stream is AudioStreamRandomizer:
+				current_audio.finished.connect(_next_track)
 
-			new_audio.play()
+			play_audio()
 	else:
 		push_error("Audio Manager failed to find setting for type ", type)
 
-func remove_audio() -> void:
-	get_child(0).queue_free()
+func remove_audio(fade_in_out: bool = true, fade_duration: float = 0.5) -> void:
+	if fade_in_out:
+		current_music_setting.on_audio_finished()
+		await _fade_volume(fade_in_out, fade_duration)
+		current_audio.queue_free()
+		_fade_volume(fade_duration, false)
+	else:
+		current_audio.queue_free()
 
-func stop_audio() -> void:
+func stop_audio(fade_out: bool = false, fade_duration: float = 0.5) -> void:
+	if fade_out:
+		await _fade_volume(fade_out, fade_duration)
 	if get_child(0):
 		var audio: AudioStreamPlayer = get_child(0)
 		audio.stop()
 
 func play_audio() -> void:
-	if get_child(0):
-		var audio: AudioStreamPlayer = get_child(0)
-		audio.play()
+	await _fade_volume(false)
+	current_audio.play()
+
+func _fade_volume(fade_out: bool = true, fade_duration: float = 0.5) -> void:
+	var tween: Tween = create_tween()
+	if fade_out:
+		await tween.tween_method(_set_bus_volume, Globals.volumes[1], -40.0, fade_duration).finished
+	if !fade_out:
+		await tween.tween_method(_set_bus_volume, AudioServer.get_bus_volume_db(1), Globals.volumes[1], fade_duration).finished
 
 func _next_track() -> void:
 	if current_audio.stream is AudioStreamRandomizer:
+		await get_tree().create_timer(0.5).timeout
 		current_audio.play()
+
+func _set_bus_volume(value: float) -> void:
+	AudioServer.set_bus_volume_db(1, value)
+
+func _on_game_restart() -> void:
+	await stop_audio()
+	await play_audio()
+
+func _on_level_finished() -> void:
+	await remove_audio()
+
+func _on_level_exited() -> void:
+	stop_audio()
+	await remove_audio()

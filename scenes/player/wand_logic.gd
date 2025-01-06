@@ -58,21 +58,26 @@ func handle_block_modification() -> void:
 		block.apply_modifier(Globals.current_block_type)
 
 func handle_block_removal() -> void:
-	if Input.is_action_just_pressed('cast_destroy') and !raycast_obstruction and can_modify and received_body is Block:
-		var block: Block = received_body
-		# Destroying block when not in modify state or no modifiers are applied
-		if !Globals.in_modify_state: # Removing block's modifier
-			block.destroy()
-			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_DESTROY)
-			Globals.block_amount += 1
-		else:
-			if !block.current_modifiers.is_empty(): # Removing block's modifier
-				block.remove_latest_modifier()
-				AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_REMOVE_MOD)
-			else: # Removing the block instance
+	if Input.is_action_just_pressed('cast_destroy'):
+		if !raycast_obstruction and can_modify and received_body is Block:
+			var block: Block = received_body
+			# Destroying block when not in modify state or no modifiers are applied
+			if !Globals.in_modify_state: # Removing the block instance
+				EventBus.block_removed.emit()
 				block.destroy()
 				AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_DESTROY)
 				Globals.block_amount += 1
+			else:
+				if !block.current_modifiers.is_empty(): # Removing block's modifier
+					block.remove_latest_modifier()
+					AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_REMOVE_MOD)
+				else: # Removing the block instance
+					EventBus.block_removed.emit()
+					block.destroy()
+					AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_DESTROY)
+					Globals.block_amount += 1
+		else:
+			EventBus.block_removal_rejected.emit()
 
 		# Destroying block only if no modifiers are applied
 		#if !block.current_modifiers.is_empty(): # Removing block's modifier

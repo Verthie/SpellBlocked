@@ -19,14 +19,18 @@ func _ready() -> void:
 	InterfaceCursor.set_cursor_size(6)
 	Globals.started_level = false
 
-	SceneSwitcher.fallback_scene_path = scene_file_path
+	SceneSwitcher.fallback_scene_path = scene_file_path # used by settings_menu
 
 	var game_progress_data: Dictionary = SaveDataManager.load_game_progress()
 
 	var save_level_number: int = game_progress_data["level"]
 
-	#var save_level_scene_path: String = 'res://scenes/levels/level_' + str(save_level_number) + '.tscn'
-	var save_level_scene_path: String = 'res://scenes/levels/level_' + 'test' + '.tscn'
+	var save_level_scene_path: String
+
+	if save_level_number > 0:
+		save_level_scene_path = 'res://scenes/levels/level_' + str(save_level_number) + '.tscn'
+	else:
+		save_level_scene_path = 'res://scenes/levels/level_test.tscn'
 
 	for button: ButtonMenu in buttons.get_children():
 		button.mouse_entered.connect(_on_mouse_entered.bind(button))
@@ -45,14 +49,15 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if !mouse_on_button and (Input.is_action_just_pressed("ui_down") or Input.is_action_just_pressed("ui_up")):
-		if !arrow_clicked:
-			new_game_button.grab_focus()
-			arrow_clicked = true
+	if !TransitionManager.transitioning:
+		if !mouse_on_button and (Input.is_action_just_pressed("ui_down") or Input.is_action_just_pressed("ui_up")):
+			if !arrow_clicked:
+				new_game_button.grab_focus()
+				arrow_clicked = true
 
-	if Input.is_action_just_pressed('quit'):
-		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
-		get_tree().quit()
+		if Input.is_action_just_pressed('quit'):
+			get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+			get_tree().quit()
 
 		#Cursor.sprite_2d.visible = false
 
@@ -60,23 +65,24 @@ func _process(_delta: float) -> void:
 		#Cursor.sprite_2d.visible = true
 
 func _on_button_pressed(button: ButtonMenu) -> void:
-	if button.name == $Buttons/ExitButton.name:
-		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
-		get_tree().quit()
-	else:
-		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_SELECT)
-		if button.scene_to_switch != null or button == $Buttons/ContinueButton:
-			if button.transition == TransitionManager.TransitionType.NONE:
-				SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
-			else:
-				TransitionManager.play_shader_transition(button.transition, true, button.transition_speed)
-				await TransitionManager.finished
-				if button == $Buttons/NewGameButton:
-					SaveDataManager.clear_game_progress()
-				SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
-				TransitionManager.play_shader_transition(button.transition, false, button.transition_speed, true, 0.3)
+	if !TransitionManager.transitioning:
+		if button.name == $Buttons/ExitButton.name:
+			get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+			get_tree().quit()
 		else:
-			pass
+			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_SELECT)
+			if button.scene_to_switch != null or button == $Buttons/ContinueButton:
+				if button.transition == TransitionManager.TransitionType.NONE:
+					SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
+				else:
+					TransitionManager.play_shader_transition(button.transition, true, button.transition_speed)
+					await TransitionManager.finished
+					if button == $Buttons/NewGameButton:
+						SaveDataManager.clear_game_progress()
+					SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
+					TransitionManager.play_shader_transition(button.transition, false, button.transition_speed, true, 0.3)
+			else:
+				pass
 
 func _on_mouse_entered(passed_button: ButtonMenu) -> void:
 	mouse_on_button = true
@@ -112,10 +118,9 @@ func _load_settings() -> void:
 		var window_size: Vector2i = DisplayServer.window_get_size()
 		DisplayServer.window_set_position(Vector2i((screen_size.x/2) - (window_size.x/2),(screen_size.y/2)-(window_size.y/2)))
 
-	AudioServer.set_bus_volume_db(0, audio_data["master_volume"])
-	AudioServer.set_bus_volume_db(1, audio_data["music_volume"])
-	AudioServer.set_bus_volume_db(2, audio_data["sfx_volume"])
-
-	Globals.volumes[0] = audio_data["master_volume"]
-	Globals.volumes[1] = audio_data["music_volume"]
-	Globals.volumes[2] = audio_data["sfx_volume"]
+	for i in range(AudioServer.bus_count - 1):
+		var key_name: String = AudioServer.get_bus_name(i).to_lower() + '_volume'
+		AudioServer.set_bus_volume_db(i, audio_data[key_name])
+		Globals.volumes[i] = audio_data[key_name]
+		if audio_data[key_name] == -25:
+			AudioServer.set_bus_mute(i, true)
