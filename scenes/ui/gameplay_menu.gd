@@ -34,17 +34,18 @@ func _ready() -> void:
 				ResourceLoader.load_threaded_request(scene_paths[button.name])
 
 func _process(_delta: float) -> void:
-	if keyboard_key_triggers.any(func(action: String) -> bool: return Input.is_action_just_pressed(action)):
-		if !arrow_clicked and !mouse_on_button:
-			resume_button.grab_focus()
-			arrow_clicked = true
+	if !TransitionManager.transitioning:
+		if keyboard_key_triggers.any(func(action: String) -> bool: return Input.is_action_just_pressed(action)):
+			if !arrow_clicked and !mouse_on_button:
+				resume_button.grab_focus()
+				arrow_clicked = true
 
-	if Input.is_action_just_pressed('quit'):
-		InterfaceCursor.layer = 1
-		InterfaceCursor.hide()
-		Cursor.show()
-		EventBus.game_resumed.emit()
-		queue_free()
+		if Input.is_action_just_pressed('quit'):
+			InterfaceCursor.layer = 1
+			InterfaceCursor.hide()
+			Cursor.show()
+			EventBus.game_resumed.emit()
+			queue_free()
 
 		#Cursor.sprite_2d.visible = false
 
@@ -52,36 +53,36 @@ func _process(_delta: float) -> void:
 		#Cursor.sprite_2d.visible = true
 
 func _on_button_pressed(button: ButtonMenu) -> void:
-	InterfaceCursor.layer = 1
-	if button == $Buttons/RestartButton:
-		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_BACK)
-		EventBus.game_restarted.emit()
-	elif button == $Buttons/ResumeButton:
-		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_SELECT)
-		EventBus.game_resumed.emit()
-		InterfaceCursor.hide()
-		Cursor.show()
-	elif button == $Buttons/SettingsButton:
-		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_SELECT)
-		EventBus.gameplay_settings_entered.emit()
-	else:
-		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_SELECT)
-		if button.scene_to_switch != null:
-			if button.transition == TransitionManager.TransitionType.NONE:
-				SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
-			else:
-				hide()
-				TransitionManager.layer = 3
-				TransitionManager.play_shader_transition(button.transition, true, button.transition_speed)
-				await TransitionManager.finished
-				if button == $Buttons/ExitButton:
-					BgmManager.stop_audio()
-					Globals.game_paused = false
-					get_tree().paused = false
-					AudioManager.remove_all_audio()
-				SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
-				TransitionManager.play_shader_transition(button.transition, false, button.transition_speed, true, 0.3)
-	queue_free()
+	if !TransitionManager.transitioning:
+		InterfaceCursor.layer = 1
+		if button == $Buttons/RestartButton:
+			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_BACK)
+			EventBus.game_restarted.emit()
+		elif button == $Buttons/ResumeButton:
+			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_SELECT)
+			EventBus.game_resumed.emit()
+			InterfaceCursor.hide()
+			Cursor.show()
+		elif button == $Buttons/SettingsButton:
+			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_SELECT)
+			EventBus.gameplay_settings_entered.emit()
+		else:
+			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_SELECT)
+			if button.scene_to_switch != null:
+				if button.transition == TransitionManager.TransitionType.NONE:
+					SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
+				else:
+					hide()
+					TransitionManager.layer = 3
+					TransitionManager.play_shader_transition(button.transition, true, button.transition_speed)
+					await TransitionManager.finished
+					if button == $Buttons/ExitButton:
+						EventBus.level_exited.emit()
+						Globals.game_paused = false
+						get_tree().paused = false
+					SceneSwitcher.goto_scene(scene_paths[button.name], button.threaded)
+					TransitionManager.play_shader_transition(button.transition, false, button.transition_speed, true, 0.3)
+		queue_free()
 
 func _on_mouse_entered(passed_button: ButtonMenu) -> void:
 	mouse_on_button = true

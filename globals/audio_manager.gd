@@ -1,9 +1,11 @@
 extends Node2D
 
 var sound_effect_dict: Dictionary = {}
+signal finished
 
 func _ready() -> void:
 	sound_effect_dict = Globals.load_resources("res://resources/properties/sfx/")
+	EventBus.level_exited.connect(_on_level_exited)
 
 func create_2d_audio_at_location(location: Vector2, type: SoundEffectSettings.SoundEffectType, forced_pitch: float = 0.0) -> void:
 	if sound_effect_dict.has(type):
@@ -51,3 +53,6 @@ func create_audio(type: SoundEffectSettings.SoundEffectType, forced_pitch: float
 func remove_all_audio() -> void:
 	for node: AudioStreamPlayer in get_children():
 		node.queue_free()
+
+func _on_level_exited() -> void:
+	remove_all_audio()

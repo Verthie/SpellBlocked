@@ -1,16 +1,15 @@
 extends Node2D
 class_name ParentLevel
 
-signal game_restarted
-
 const GAMEPLAY_MENU_PATH: String = 'res://scenes/ui/gameplay_menu.tscn'
 const BLOCK: PackedScene = preload('res://scenes/objects/block.tscn')
 
 @export_category("Level Settings")
-@export var level_block_amount: int = 99
+@export var level_id: int = 0
+@export var level_block_amount: int = 20
 @export var level_music: BgmSettings.MusicType = BgmSettings.MusicType.LEVELTEST
 @export var init_cursor_position: Vector2 = Vector2(640,360)
-## If true resets the cursor's position to the center of the viewport
+## If true resets the cursor's position to the init_cursor_position on game restart
 @export var reset_cursor_position_on_restart: bool = false
 ## If true reloads the whole scene on death, if false only restarts player's position
 @export var full_level_restart_on_death: bool = true
@@ -29,6 +28,8 @@ var settings_node: Control = null
 var is_dark_background: bool = false
 
 func _ready() -> void:
+	SaveDataManager.save_game_progress("level", level_id)
+
 	EventBus.casted.connect(_on_wand_cast)
 	EventBus.changed_cursor_type.emit("Block")
 	EventBus.player_died.connect(_on_player_death)
@@ -39,7 +40,10 @@ func _ready() -> void:
 	Cursor.show()
 	InterfaceCursor.hide()
 	Globals.block_amount = level_block_amount
+	if SceneSwitcher.current_level == null:
+		SceneSwitcher.current_level = self
 	SceneSwitcher.fallback_scene_path = scene_file_path
+	$UI.show()
 	menu_scene = ResourceLoader.load('res://scenes/ui/gameplay_menu.tscn')
 	settings_scene = ResourceLoader.load('res://scenes/ui/settings_menu.tscn')
 	if reset_cursor_position_on_restart:
@@ -48,13 +52,11 @@ func _ready() -> void:
 		if !Globals.started_level:
 			Input.warp_mouse(init_cursor_position)
 	Globals.started_level = true
-	BgmManager.create_audio(level_music)
-	if Globals.restarting:
+	await BgmManager.create_audio(level_music)
+	if Globals.switching:
 		await get_tree().create_timer(restart_input_block_time).timeout
 		Globals.input_enabled = true
-		Globals.restarting = false
-	else:
-		BgmManager.play_audio()
+		Globals.switching = false
 	if Globals.game_paused:
 		level_unpause()
 		Globals.game_paused = false
@@ -64,10 +66,9 @@ func _process(_delta: float) -> void:
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_BACK)
 		call_deferred("_restart", TransitionManager.ShaderTransitionType.CURVED_DIAMONDS, 1)
 
-	if Input.is_action_just_pressed('quit') and !Globals.restarting and !TransitionManager.transitioning:
+	if Input.is_action_just_pressed('quit') and !Globals.switching and !TransitionManager.transitioning:
 		if !Globals.game_paused:
 			#AudioServer.set_bus_mute(1, true)
-			SceneSwitcher.fallback_scene_path = self.scene_file_path
 			level_pause()
 		else:
 			#AudioServer.set_bus_mute(1, false)
@@ -81,11 +82,11 @@ func _on_wand_cast() -> void:
 func _on_player_death() -> void:
 	if !full_level_restart_on_death:
 		$Player.position = initial_player_position
-	elif !Globals.restarting:
+	elif !Globals.switching:
 		call_deferred("_restart", TransitionManager.ShaderTransitionType.CURVED_DIAMONDS,  1, true)
 
 func _restart(transition_type: TransitionManager.ShaderTransitionType = TransitionManager.ShaderTransitionType.NONE, transition_speed: float = 1.0, player_death: bool = false, text_button_restart: bool = false) -> void:
-	Globals.restarting = true
+	Globals.switching = true
 	Globals.input_enabled = false
 
 	if player_death:
@@ -99,7 +100,6 @@ func _restart(transition_type: TransitionManager.ShaderTransitionType = Transiti
 		TransitionManager.play_shader_transition(transition_type, true, transition_speed)
 		await TransitionManager.finished
 		if text_button_restart:
-			BgmManager._next_track()
 			Globals.game_paused = false
 			get_tree().paused = false
 		SceneSwitcher.goto_scene(SceneSwitcher.current_level.scene_file_path)

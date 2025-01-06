@@ -62,6 +62,7 @@ script = ExtResource("9_vyrn7")
 [node name="Blocks" type="Node2D" parent="."]
 
 [node name="UI" parent="." instance=ExtResource("13_uyyk0")]
+visible = false
 
 [node name="Deathzone" parent="." instance=ExtResource("7_546jt")]
 position = Vector2(0, 105)
@@ -75,6 +76,8 @@ rotation = -3.14159
 
 [node name="ScreenCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("12_tockn")]
 position = Vector2(-32, -31)
+limit_top = -85
+limit_bottom = 185
 editor_draw_limits = true
 target = NodePath("../Player")
 

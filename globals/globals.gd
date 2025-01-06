@@ -17,7 +17,8 @@ var current_block_type: String = "None"
 	#set(value):
 		#current_block_type = value
 
-var restarting: bool = false
+var current_level_id: int = 0
+var switching: bool = false
 var game_paused: bool = false
 var input_enabled: bool = true
 

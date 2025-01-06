@@ -21,6 +21,8 @@ var just_created: bool = false
 func _ready() -> void:
 	EventBus.obstructed.connect(_change_obstructed_state)
 	EventBus.changed_cursor_type.connect(_change_cursor_type)
+	EventBus.block_removed.connect(_on_block_removed)
+	EventBus.block_removal_rejected.connect(_play_not_available)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 
 func _process(_delta: float) -> void:
@@ -45,12 +47,12 @@ func _process(_delta: float) -> void:
 		"Select":
 			handle_ui_sprite()
 		"Block":
-			if Globals.restarting:
+			if Globals.switching:
 				obstructed = false
 			else:
 				handle_gameplay_sprite()
 		_:
-			if Globals.restarting:
+			if Globals.switching:
 				obstructed = false
 			else:
 				handle_gameplay_sprite()
@@ -105,22 +107,17 @@ func handle_gameplay_sprite() -> void:
 
 	if obstructed:
 		if Input.is_action_just_pressed('cast_destroy') or Input.is_action_just_pressed('cast'):
-			animation_player.play("not_available")
-			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_UNAVAILABLE)
+			_play_not_available()
 	else:
-		if modification_allowed and Input.is_action_just_pressed('cast_destroy'):
-			animation_player.play("cast_remove")
-		elif modification_allowed and Input.is_action_just_pressed('cast') and Globals.in_modify_state:
+		if modification_allowed and Input.is_action_just_pressed('cast') and Globals.in_modify_state:
 			var block: Block = colliding_body
 			if block.current_modifiers.size() < block.max_modifier_amount and Globals.current_block_type not in block.current_modifiers :
 				animation_player.play("cast_create")
 				AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_APPLY_MOD)
 			else:
-				animation_player.play("not_available")
-				AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_UNAVAILABLE)
-		elif !just_created and (!cast_allowed and Input.is_action_just_pressed('cast')) or (!modification_allowed and Input.is_action_just_pressed('cast_destroy')):
-			animation_player.play("not_available")
-			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_UNAVAILABLE)
+				_play_not_available()
+		elif !just_created and (!cast_allowed and Input.is_action_just_pressed('cast')):
+			_play_not_available()
 
 	if !animation_player.is_playing():
 		if Globals.in_modify_state:
@@ -148,6 +145,10 @@ func _on_timer_timeout() -> void:
 
 func _change_obstructed_state(state: bool) -> void:
 	obstructed = state
+	if obstructed:
+		sprite_2d.self_modulate = Color(sprite_2d.self_modulate, 0.65)
+	else:
+		sprite_2d.self_modulate = Color(sprite_2d.self_modulate, 1)
 
 func _change_cursor_type(type: String) -> void:
 	current_cursor_type = type
@@ -158,3 +159,10 @@ func _change_cursor_type(type: String) -> void:
 			sprite_2d.position = Vector2(4, 4)
 		"Block":
 			sprite_2d.position = Vector2.ZERO
+
+func _play_not_available() -> void:
+	animation_player.play("not_available")
+	AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_UNAVAILABLE)
+
+func _on_block_removed() -> void:
+	animation_player.play("cast_remove")

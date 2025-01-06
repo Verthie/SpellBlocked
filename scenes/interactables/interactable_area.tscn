@@ -5,6 +5,8 @@
 [node name="InteractableArea" type="Area2D"]
 collision_layer = 64
 script = ExtResource("1_lwiqc")
+scene_to_switch = null
+trigger_on_area_enter = false
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
