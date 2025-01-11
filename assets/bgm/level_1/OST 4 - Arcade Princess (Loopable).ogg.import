@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://byuv240e4qdw0"
+path="res://.godot/imported/OST 4 - Arcade Princess (Loopable).ogg-6dbe66caaebec2eeb2c2ee7bfe6189ee.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/bgm/level_1/OST 4 - Arcade Princess (Loopable).ogg"
+dest_files=["res://.godot/imported/OST 4 - Arcade Princess (Loopable).ogg-6dbe66caaebec2eeb2c2ee7bfe6189ee.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

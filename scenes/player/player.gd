@@ -57,6 +57,7 @@ var at_apex: bool = false
 var can_cast: bool = true
 
 var player_splashed: bool = false
+var wand_enabled: bool = true
 
 var animation_playing: bool = false
 
@@ -96,7 +97,7 @@ func set_state() -> String:
 		if is_jumping:
 			new_state = "jump"
 
-		if Globals.input_enabled:
+		if Globals.input_enabled and !Globals.casting_disabled:
 			if Input.is_action_just_pressed("cast"):
 				new_state = "cast"
 
@@ -334,3 +335,9 @@ func _on_player_death_experience(body: Node2D) -> void:
 	if $DeathArea.has_overlapping_bodies() or $DeathArea.has_overlapping_areas():
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.HURT)
 		EventBus.player_died.emit()
+
+func set_wand_sprite(state: bool = true) -> void:
+	if state:
+		$Sprites/WandPivot/Wand.show()
+	else:
+		$Sprites/WandPivot/Wand.hide()

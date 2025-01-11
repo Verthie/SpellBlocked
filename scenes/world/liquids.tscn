@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dom0uwm4ow0uw"]
+
+[ext_resource type="TileSet" uid="uid://c3daah0ow334j" path="res://assets/tilesets/liquids.tres" id="1_rnyf6"]
+[ext_resource type="Script" path="res://scenes/world/liquids.gd" id="2_vr2od"]
+
+[node name="Liquids" type="TileMapLayer"]
+z_index = 2
+tile_set = ExtResource("1_rnyf6")
+script = ExtResource("2_vr2od")

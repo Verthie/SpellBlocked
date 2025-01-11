@@ -1,16 +1,54 @@
-[gd_resource type="Resource" script_class="BgmSettings" load_steps=4 format=3 uid="uid://byor51r6p6yo1"]
+[gd_resource type="Resource" script_class="BgmSettings" load_steps=10 format=3 uid="uid://byor51r6p6yo1"]
 
-[ext_resource type="AudioStream" uid="uid://t32t8ahpibvb" path="res://assets/bgm/OST 2 - The Good Life.ogg" id="1_pdx0w"]
-[ext_resource type="AudioStream" uid="uid://445tfy8aq0a1" path="res://assets/bgm/OST 2 - The Good Life (Loopable).ogg" id="6_6b78p"]
+[ext_resource type="AudioStream" uid="uid://citkdik4x611u" path="res://assets/bgm/level_1/arcade_princess_p1.ogg" id="1_ir0oy"]
+[ext_resource type="AudioStream" uid="uid://c761f51oqp4nx" path="res://assets/bgm/level_1/arcade_princess_p2.ogg" id="2_nofrh"]
+[ext_resource type="AudioStream" uid="uid://textg01v808d" path="res://assets/bgm/level_1/arcade_princess_p3.ogg" id="3_vucgr"]
+[ext_resource type="AudioStream" uid="uid://btyhctaex435u" path="res://assets/bgm/level_1/arcade_princess_p4.ogg" id="4_c623p"]
+[ext_resource type="AudioStream" uid="uid://cbispkugyyo3w" path="res://assets/bgm/level_1/arcade_princess_p4-5.ogg" id="5_7gyb4"]
+[ext_resource type="AudioStream" uid="uid://cag16jrfya0se" path="res://assets/bgm/level_1/arcade_princess_p5.ogg" id="6_cjjar"]
+[ext_resource type="AudioStream" uid="uid://l1spxqitmhtj" path="res://assets/bgm/level_1/arcade_princess_p6.ogg" id="7_t24yo"]
 [ext_resource type="Script" path="res://resources/scripts/bgm_settings.gd" id="11_1m4jq"]
+
+[sub_resource type="AudioStreamInteractive" id="AudioStreamInteractive_1b3vm"]
+clip_count = 7
+clip_0/name = &"intro"
+clip_0/stream = ExtResource("1_ir0oy")
+clip_0/auto_advance = 1
+clip_0/next_clip = 1
+clip_1/name = &"jumping_to_the_top"
+clip_1/stream = ExtResource("2_nofrh")
+clip_1/auto_advance = 0
+clip_2/name = &"blocks_appear"
+clip_2/stream = ExtResource("3_vucgr")
+clip_2/auto_advance = 0
+clip_3/name = &"through_the_caves"
+clip_3/stream = ExtResource("4_c623p")
+clip_3/auto_advance = 0
+clip_4/name = &"no_way_back"
+clip_4/stream = ExtResource("5_7gyb4")
+clip_4/auto_advance = 1
+clip_4/next_clip = 5
+clip_5/name = &"making_it_out"
+clip_5/stream = ExtResource("6_cjjar")
+clip_5/auto_advance = 0
+clip_6/name = &"reached_the_end"
+clip_6/stream = ExtResource("7_t24yo")
+clip_6/auto_advance = 0
+_transitions = {
+Vector2i(1, 0): {
+"fade_beats": 1,
+"fade_mode": 4,
+"from_time": 1,
+"to_time": 0
+}
+}
 
 [resource]
 script = ExtResource("11_1m4jq")
 limit = 1
 type = 1
-music = ExtResource("1_pdx0w")
-music_loop_version = ExtResource("6_6b78p")
-loop = true
+music = SubResource("AudioStreamInteractive_1b3vm")
+loop = false
 volume = 0
 pitch_scale = 1.0
 attenuation = 1.0

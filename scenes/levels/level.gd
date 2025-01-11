@@ -6,6 +6,7 @@ const BLOCK: PackedScene = preload('res://scenes/objects/block.tscn')
 
 @export_category("Level Settings")
 @export var level_id: int = 0
+@export var allow_casting: bool = true
 @export var level_block_amount: int = 20
 @export var level_music: BgmSettings.MusicType = BgmSettings.MusicType.LEVELTEST
 @export var init_cursor_position: Vector2 = Vector2(640,360)
@@ -37,13 +38,21 @@ func _ready() -> void:
 	EventBus.game_paused.connect(level_pause)
 	EventBus.game_resumed.connect(level_unpause)
 	EventBus.gameplay_settings_entered.connect(_on_settings_enter)
+
 	Cursor.show()
 	InterfaceCursor.hide()
+
+	if !allow_casting:
+		Globals.casting_disabled = true
+		$UI.hide()
+		$Player.set_wand_sprite(false)
+	else:
+		$UI.show()
+
 	Globals.block_amount = level_block_amount
 	if SceneSwitcher.current_level == null:
 		SceneSwitcher.current_level = self
 	SceneSwitcher.fallback_scene_path = scene_file_path
-	$UI.show()
 	menu_scene = ResourceLoader.load('res://scenes/ui/gameplay_menu.tscn')
 	settings_scene = ResourceLoader.load('res://scenes/ui/settings_menu.tscn')
 	if reset_cursor_position_on_restart:
@@ -52,7 +61,7 @@ func _ready() -> void:
 		if !Globals.started_level:
 			Input.warp_mouse(init_cursor_position)
 	Globals.started_level = true
-	await BgmManager.create_audio(level_music)
+	BgmManager.create_audio(level_music)
 	if Globals.switching:
 		await get_tree().create_timer(restart_input_block_time).timeout
 		Globals.input_enabled = true

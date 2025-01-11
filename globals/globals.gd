@@ -22,6 +22,8 @@ var switching: bool = false
 var game_paused: bool = false
 var input_enabled: bool = true
 
+var casting_disabled: bool = false
+
 var liquid_height_level: int = 0
 
 var block_amount: int:
