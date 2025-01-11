@@ -1,17 +1,14 @@
-[gd_scene load_steps=15 format=3 uid="uid://b0qkkisnuydja"]
+[gd_scene load_steps=12 format=3 uid="uid://b0qkkisnuydja"]
 
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_yace1"]
 [ext_resource type="PackedScene" uid="uid://bqumck2g1lx6b" path="res://scenes/player/player.tscn" id="2_7aa5x"]
 [ext_resource type="TileSet" uid="uid://pyjwaxj30ab" path="res://assets/tilesets/background.tres" id="2_nvkav"]
 [ext_resource type="TileSet" uid="uid://duef7jgbqvoir" path="res://assets/tilesets/ground.tres" id="3_kclcj"]
 [ext_resource type="TileSet" uid="uid://cwa4cldhrpdvk" path="res://assets/tilesets/ground_nd_plane.tres" id="3_pluxv"]
-[ext_resource type="TileSet" uid="uid://bh1ffdsew3di7" path="res://assets/tilesets/bridges.tres" id="4_hlqh0"]
 [ext_resource type="TileSet" uid="uid://beb2w5g0vr2d1" path="res://assets/tilesets/background_elements.tres" id="4_w1n7g"]
 [ext_resource type="PackedScene" uid="uid://c3hfa17lbuxae" path="res://scenes/hazards/deathzone.tscn" id="7_546jt"]
 [ext_resource type="TileSet" uid="uid://c7g86xemyc2us" path="res://assets/tilesets/decor.tres" id="7_a216d"]
-[ext_resource type="TileSet" uid="uid://c3daah0ow334j" path="res://assets/tilesets/liquids.tres" id="8_fb3fy"]
 [ext_resource type="PackedScene" uid="uid://bkqmw36c04h36" path="res://scenes/hazards/destructionzone.tscn" id="8_x4ic2"]
-[ext_resource type="Script" path="res://scenes/world/liquids.gd" id="9_vyrn7"]
 [ext_resource type="PackedScene" uid="uid://dmi6orowpok20" path="res://scenes/levels/screen_camera.tscn" id="12_tockn"]
 [ext_resource type="PackedScene" uid="uid://clpflpxtp3g2h" path="res://scenes/ui/ui.tscn" id="13_uyyk0"]
 
@@ -27,29 +24,29 @@ z_index = -10
 tile_set = ExtResource("2_nvkav")
 
 [node name="FGThirdPlane" type="TileMapLayer" parent="TileMaps"]
+z_index = -3
 tile_set = ExtResource("3_pluxv")
 
 [node name="BGElementsThirdPlane" type="TileMapLayer" parent="TileMaps"]
+z_index = -3
 tile_set = ExtResource("4_w1n7g")
 
 [node name="FGSecondPlane" type="TileMapLayer" parent="TileMaps"]
-tile_set = ExtResource("4_hlqh0")
+z_index = -2
+tile_set = ExtResource("3_kclcj")
 
 [node name="FGFirstPlane" type="TileMapLayer" parent="TileMaps" groups=["Tilemaps"]]
+z_index = -1
 tile_set = ExtResource("3_kclcj")
 
 [node name="BGElementsFirstPlane" type="TileMapLayer" parent="TileMaps"]
+z_index = -1
 tile_set = ExtResource("4_w1n7g")
 
 [node name="Platforms" type="Node2D" parent="TileMaps"]
 
 [node name="Decor" type="TileMapLayer" parent="TileMaps"]
 tile_set = ExtResource("7_a216d")
-
-[node name="Liquids" type="TileMapLayer" parent="TileMaps"]
-z_index = 2
-tile_set = ExtResource("8_fb3fy")
-script = ExtResource("9_vyrn7")
 
 [node name="LevelElements" type="Node2D" parent="."]
 

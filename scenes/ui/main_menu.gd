@@ -118,7 +118,7 @@ func _load_settings() -> void:
 		var window_size: Vector2i = DisplayServer.window_get_size()
 		DisplayServer.window_set_position(Vector2i((screen_size.x/2) - (window_size.x/2),(screen_size.y/2)-(window_size.y/2)))
 
-	for i in range(AudioServer.bus_count - 1):
+	for i: int in range(AudioServer.bus_count - 1):
 		var key_name: String = AudioServer.get_bus_name(i).to_lower() + '_volume'
 		AudioServer.set_bus_volume_db(i, audio_data[key_name])
 		Globals.volumes[i] = audio_data[key_name]

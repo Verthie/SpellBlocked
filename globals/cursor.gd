@@ -100,10 +100,13 @@ func handle_ui_sprite() -> void:
 # Zmiana wyglądu kursora w trakcie gry
 func handle_gameplay_sprite() -> void:
 
+
 	if cast_allowed and Input.is_action_just_pressed('cast'):
 		animation_player.play("cast_create")
 		just_created = true
 		created_timer.start()
+	elif Globals.casting_disabled:
+		return
 
 	if obstructed:
 		if Input.is_action_just_pressed('cast_destroy') or Input.is_action_just_pressed('cast'):

@@ -18,10 +18,10 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 
-	if !Globals.input_enabled or Globals.game_paused:
-		return
-
 	handle_sight_obstruction()
+
+	if !Globals.input_enabled or Globals.game_paused or Globals.casting_disabled:
+		return
 
 	# Block creation functionality
 	handle_block_creation()
