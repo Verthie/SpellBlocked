@@ -188,7 +188,7 @@ func apply_thrown_state() -> void:
 	block_thrown = true
 
 func _on_block_destruction(_body: Node2D) -> void:
-	EventBus.object_splashed.emit(Vector2i(position))
+	EventBus.object_splashed.emit(self, Vector2i(position))
 
 func _on_attributes_friction_changed(new_friction: float) -> void:
 	friction = new_friction

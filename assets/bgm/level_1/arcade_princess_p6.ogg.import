@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/arcade_princess_p6.ogg-b3f44d1a25713f110f906e
 [params]
 
 loop=false
-loop_offset=0
-bpm=0
+loop_offset=0.0
+bpm=138.0
 beat_count=0
 bar_beats=4

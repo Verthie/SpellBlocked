@@ -4,6 +4,6 @@
 [ext_resource type="Script" path="res://scenes/world/liquids.gd" id="2_vr2od"]
 
 [node name="Liquids" type="TileMapLayer"]
-z_index = 2
+z_index = -2
 tile_set = ExtResource("1_rnyf6")
 script = ExtResource("2_vr2od")

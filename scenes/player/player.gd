@@ -24,18 +24,21 @@ class_name Player
 @onready var jump_gravity: float = (2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
 @onready var fall_gravity: float = (2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)
 
-@onready var coyote_timer: Timer = $CoyoteTimer
-@onready var jump_buffer_timer: Timer = $JumpBufferTimer
-@onready var apex_timer: Timer = $ApexTimer
-@onready var cast_timer: Timer = $CastTimer
+@onready var coyote_timer: Timer = $Timers/CoyoteTimer
+@onready var jump_buffer_timer: Timer = $Timers/JumpBufferTimer
+@onready var apex_timer: Timer = $Timers/ApexTimer
+@onready var flip_timer: Timer = $Timers/FlipTimer
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var wand_pivot: Marker2D = $Sprites/WandPivot
 @onready var emote_animation: AnimationPlayer = $Sprites/Emotes/EmoteAnimation
 @onready var shape_cast_2d: ShapeCast2D = $ShapeCast2D
 
 var current_state: String = "idle"
-var animation_hold_states: Array = ["cast", "cast_remove"]
+var animation_hold_states: Array = ["cast", "cast_remove", "land"]
 var current_audio_stream: AudioStreamWAV
+
+var mouse_direction: int
 
 var last_velocity: Vector2 = Vector2.ZERO
 var direction: float = 0.0
@@ -54,7 +57,8 @@ var shape_collided: bool = false
 var coyote: bool = false # Sprawdza czy postać znajduje się aktualnie w czasie coyote
 var buffered_jump: bool = false # Sprawdza czy został zainicjowany buffer jump
 var at_apex: bool = false
-var can_cast: bool = true
+var can_flip: bool = true
+var direction_locked: bool = false
 
 var player_splashed: bool = false
 var wand_enabled: bool = true
@@ -71,7 +75,12 @@ func _process(_delta: float) -> void:
 	if Globals.game_paused:
 		return
 
+	if !direction_locked:
+		mouse_direction = 1 if get_local_mouse_position().x >= -0.125 else -1
+
 	handle_animation()
+
+	handle_direction_lock()
 
 	last_velocity = velocity
 
@@ -103,6 +112,12 @@ func set_state() -> String:
 
 			if Input.is_action_just_pressed("cast_destroy"):
 				new_state = "cast_remove"
+	elif current_state == "land":
+		if Input.is_action_just_pressed("cast"):
+			new_state = "cast"
+
+		if Input.is_action_just_pressed("cast_destroy"):
+			new_state = "cast_remove"
 
 	return new_state
 
@@ -113,6 +128,7 @@ func handle_animation() -> void:
 	if current_state != set_state():
 		#print(current_state, " ", set_state())
 		current_state = set_state()
+
 		animation_player.play(current_state)
 
 		if current_state in animation_hold_states:
@@ -121,12 +137,33 @@ func handle_animation() -> void:
 			animation_playing = false
 
 func handle_sprite_flip() -> void:
-	if get_local_mouse_position().x >= -0.125:
-		$Sprites/Wizard.flip_h = false
-		wand_pivot.scale.x = 1
-	else:
-		$Sprites/Wizard.flip_h = true
-		wand_pivot.scale.x = -1
+	if !direction_locked:
+		if direction > 0:
+			can_flip = false
+			flip_sprite(false)
+			flip_timer.start()
+		elif direction < 0:
+			can_flip = false
+			flip_sprite(true)
+			flip_timer.start()
+		else:
+			if can_flip:
+				if mouse_direction == 1 and $Sprites/Wizard.flip_h:
+					flip_sprite(false)
+				elif mouse_direction == -1 and !$Sprites/Wizard.flip_h:
+					flip_sprite(true)
+
+func flip_sprite(state: bool = false) -> void:
+	$Sprites/Wizard.flip_h = state
+	wand_pivot.scale.x = 1 if !state else -1
+
+func handle_direction_lock() -> void:
+
+	if Input.is_action_pressed('direction_lock'):
+		direction_locked = true
+
+	if Input.is_action_just_released('direction_lock'):
+		direction_locked = false
 
 func handle_sound() -> void:
 	match current_state:
@@ -136,7 +173,6 @@ func handle_sound() -> void:
 
 func check_top() -> void:
 	if shape_cast_2d.is_colliding():
-		var mouse_direction: int = 1 if get_local_mouse_position().x >= -0.125 else -1
 		var colliding_object: Object = shape_cast_2d.get_collider(0)
 		if colliding_object is Block:
 			var block: Block = colliding_object
@@ -314,9 +350,8 @@ func _on_buffered_timer_timeout() -> void:
 func _on_apex_timer_timeout() -> void:
 	at_apex = false
 
-#TODO Delete this:
-func _on_cast_timer_timeout() -> void:
-	can_cast = true
+func _on_flip_timer_timeout() -> void:
+	can_flip = true
 
 # Odtwarzanie animacji emotikony po przechwyceniu sygnału od obszaru (area2D)
 func _on_interactable_state_change(in_area: bool) -> void:
@@ -329,7 +364,7 @@ func _on_interactable_state_change(in_area: bool) -> void:
 func _on_player_death_experience(body: Node2D) -> void:
 	if $DeathArea.has_overlapping_bodies():
 		if body is TileMapLayer:
-			EventBus.object_splashed.emit(Vector2i(position))
+			EventBus.object_splashed.emit(self, Vector2i(position))
 		else:
 			await get_tree().create_timer(0.2).timeout
 	if $DeathArea.has_overlapping_bodies() or $DeathArea.has_overlapping_areas():
