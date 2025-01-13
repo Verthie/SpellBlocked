@@ -52,11 +52,21 @@ tile_set = ExtResource("7_a216d")
 
 [node name="Interactables" type="Node2D" parent="."]
 
+[node name="Checkpoints" type="Node2D" parent="Interactables"]
+
+[node name="SceneSwitchers" type="Node2D" parent="Interactables"]
+
+[node name="Signs" type="Node2D" parent="Interactables"]
+
+[node name="InteractiveMusic" type="Node2D" parent="Interactables"]
+
 [node name="Player" parent="." instance=ExtResource("2_7aa5x")]
 
 [node name="Items" type="Node2D" parent="."]
 
 [node name="Blocks" type="Node2D" parent="."]
+
+[node name="LevelBlocks" type="Node2D" parent="."]
 
 [node name="UI" parent="." instance=ExtResource("13_uyyk0")]
 visible = false

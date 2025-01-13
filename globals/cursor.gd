@@ -100,7 +100,6 @@ func handle_ui_sprite() -> void:
 # Zmiana wyglądu kursora w trakcie gry
 func handle_gameplay_sprite() -> void:
 
-
 	if cast_allowed and Input.is_action_just_pressed('cast'):
 		animation_player.play("cast_create")
 		just_created = true
@@ -159,8 +158,10 @@ func _change_cursor_type(type: String) -> void:
 	sprite_2d.self_modulate = Color(1,1,1)
 	match type:
 		"Select":
+			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 			sprite_2d.position = Vector2(4, 4)
 		"Block":
+			Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 			sprite_2d.position = Vector2.ZERO
 
 func _play_not_available() -> void:

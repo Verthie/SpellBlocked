@@ -56,6 +56,7 @@ func _on_button_pressed(button: ButtonMenu) -> void:
 	if !TransitionManager.transitioning:
 		InterfaceCursor.layer = 1
 		if button == $Buttons/RestartButton:
+			Globals.reset_level_checkpoint()
 			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_BACK)
 			EventBus.game_restarted.emit()
 		elif button == $Buttons/ResumeButton:

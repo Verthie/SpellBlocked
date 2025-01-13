@@ -4,6 +4,7 @@ var music_dict: Dictionary = {}
 @warning_ignore('untyped_declaration')
 var current_audio
 var current_music_setting: BgmSettings
+var current_clip_index: int = 0
 
 func _ready() -> void:
 	music_dict = Globals.load_resources("res://resources/properties/bgm/")
@@ -29,11 +30,12 @@ func create_2d_audio_at_location(location: Vector2, type: BgmSettings.MusicType)
 
 			current_audio = current_audio
 
-			if !current_music_setting.loop and current_audio.stream is not AudioStreamRandomizer:
-				current_audio.finished.connect(current_music_setting.on_audio_finished)
-				current_audio.finished.connect(current_audio.queue_free)
-			elif !current_music_setting.loop and current_audio.stream is AudioStreamRandomizer:
-				current_audio.finished.connect(_next_track)
+			if !current_music_setting.loop:
+				if current_audio.stream is not AudioStreamRandomizer:
+					current_audio.finished.connect(current_music_setting.on_audio_finished)
+					current_audio.finished.connect(current_audio.queue_free)
+				elif current_audio.stream is AudioStreamRandomizer:
+					current_audio.finished.connect(_next_track)
 
 			play_audio()
 	else:
@@ -52,11 +54,12 @@ func create_audio(type: BgmSettings.MusicType) -> void:
 			current_audio.volume_db = current_music_setting.volume
 			current_audio.pitch_scale = current_music_setting.pitch_scale
 
-			if !current_music_setting.loop and current_audio.stream is not AudioStreamRandomizer:
-				current_audio.finished.connect(current_music_setting.on_audio_finished)
-				current_audio.finished.connect(current_audio.queue_free)
-			elif !current_music_setting.loop and current_audio.stream is AudioStreamRandomizer:
-				current_audio.finished.connect(_next_track)
+			if !current_music_setting.loop:
+				if current_audio.stream is not AudioStreamRandomizer:
+					current_audio.finished.connect(current_music_setting.on_audio_finished)
+					current_audio.finished.connect(current_audio.queue_free)
+				elif current_audio.stream is AudioStreamRandomizer:
+					current_audio.finished.connect(_next_track)
 
 			play_audio()
 	else:
@@ -82,6 +85,14 @@ func play_audio() -> void:
 	await _fade_volume(false)
 	current_audio.play()
 
+func set_interactive_audioclip(clip_index: int = 0) -> void:
+	if current_audio.stream is AudioStreamInteractive and clip_index != current_clip_index:
+		if current_audio.stream.get_clip_name(clip_index) != null:
+			current_clip_index = clip_index
+			var clip_name: String = current_audio.stream.get_clip_name(clip_index)
+			print(clip_name)
+			current_audio.set("parameters/switch_to_clip", clip_name)
+
 func _fade_volume(fade_out: bool = true, fade_duration: float = 0.5) -> void:
 	var tween: Tween = create_tween()
 	if fade_out:
@@ -99,11 +110,16 @@ func _set_bus_volume(value: float) -> void:
 
 func _on_game_restart() -> void:
 	await stop_audio()
+	AudioServer.set_bus_mute(1, true)
+	set_interactive_audioclip()
 	await play_audio()
+	AudioServer.set_bus_mute(1, false)
 
 func _on_level_finished() -> void:
 	await remove_audio()
 
 func _on_level_exited() -> void:
-	stop_audio()
+	await stop_audio()
+	AudioServer.set_bus_mute(1, true)
 	await remove_audio()
+	AudioServer.set_bus_mute(1, false)
