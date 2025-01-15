@@ -5,9 +5,9 @@
 [ext_resource type="Script" path="res://scenes/objects/block_modifier/attribute_container.gd" id="3_wd6a0"]
 [ext_resource type="Script" path="res://scenes/objects/block_modifier/attribute.gd" id="4_rgpo2"]
 [ext_resource type="Script" path="res://scenes/objects/block_modifier/modifier.gd" id="5_ush3f"]
-[ext_resource type="Resource" uid="uid://buoyx8o3bcbgf" path="res://scenes/objects/block_properties/ice_block_properties.tres" id="6_fr7se"]
-[ext_resource type="Resource" uid="uid://hac6f1kbvlxr" path="res://scenes/objects/block_properties/stone_block_properties.tres" id="7_4nveb"]
-[ext_resource type="Resource" uid="uid://ds5p78pv4dkia" path="res://scenes/objects/block_properties/anti-gravity_block_properties.tres" id="8_sjvg6"]
+[ext_resource type="Resource" uid="uid://buoyx8o3bcbgf" path="res://resources/properties/block_types/ice_block_properties.tres" id="6_fr7se"]
+[ext_resource type="Resource" uid="uid://hac6f1kbvlxr" path="res://resources/properties/block_types/stone_block_properties.tres" id="7_4nveb"]
+[ext_resource type="Resource" uid="uid://ds5p78pv4dkia" path="res://resources/properties/block_types/anti-gravity_block_properties.tres" id="8_sjvg6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oh7jb"]
 size = Vector2(10, 7)
@@ -29,7 +29,7 @@ platform_floor_layers = 4294967294
 safe_margin = 0.001
 script = ExtResource("1_h5gay")
 modifier_nodes = {
-"Anti-Gravity": NodePath("Modifiers/Anti-Gravity"),
+"Gravity": NodePath("Modifiers/Gravity"),
 "Ice": NodePath("Modifiers/Ice"),
 "Stone": NodePath("Modifiers/Stone")
 }
@@ -112,7 +112,7 @@ modifier = ExtResource("6_fr7se")
 script = ExtResource("5_ush3f")
 modifier = ExtResource("7_4nveb")
 
-[node name="Anti-Gravity" type="Node" parent="Modifiers"]
+[node name="Gravity" type="Node" parent="Modifiers"]
 script = ExtResource("5_ush3f")
 modifier = ExtResource("8_sjvg6")
 

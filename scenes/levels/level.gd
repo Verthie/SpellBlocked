@@ -9,9 +9,13 @@ const BLOCK: PackedScene = preload('res://scenes/objects/block.tscn')
 @export_category("Level Settings")
 @export var level_id: int = 0
 @export var allow_casting: bool = true
-@export var level_block_amount: int = 20
+@export var allow_throwing: bool = true
+@export var allow_modifying: bool = true
+@export var allowed_modifiers: Array[String] = ["Ice", "Stone", "Gravity"]
+@export_range(1, 100, 1) var level_block_amount: int = 20
 @export var level_music: BgmSettings.MusicType = BgmSettings.MusicType.LEVELTEST
 @export var init_cursor_position: Vector2 = Vector2(640,360)
+@export var auto_restart_on_death: bool = true
 ## If true resets the cursor's position to the init_cursor_position on game restart
 @export var reset_cursor_position_on_restart: bool = false
 ## If true reloads the whole scene on death, if false only restarts player's position
@@ -46,12 +50,21 @@ func _ready() -> void:
 	Cursor.show()
 	InterfaceCursor.hide()
 
-	if !allow_casting:
-		Globals.casting_disabled = true
-		$UI.hide()
-		$Player.set_wand_sprite(false)
-	else:
-		$UI.show()
+	Globals.casting_disabled = !allow_casting
+	$UI.visible = allow_casting
+	$Player.set_wand_sprite(allow_casting)
+	Globals.throwing_disabled = !allow_throwing
+	Globals.modifying_disabled = !allow_modifying
+	$UI/ChoiceBar.visible = allow_modifying
+
+	if allow_modifying:
+		var ui_mods: Array[Node] = $UI.choice_bar
+		Globals.allowed_modifiers = allowed_modifiers
+		for modifier: Control in ui_mods:
+			if modifier.name in allowed_modifiers:
+				modifier.show()
+			else:
+				modifier.hide()
 
 	Globals.block_amount = level_block_amount
 	if SceneSwitcher.current_level == null:
@@ -81,7 +94,7 @@ func _ready() -> void:
 				$ScreenCamera.position.x = camera_times_position_x * 305
 				#print($ScreenCamera.position.x)
 			elif parameter == "music_clip_index":
-				BgmManager.set_interactive_audioclip(checkpoint_parameters[parameter])
+				BgmManager.set_checkpoint_clip_index(checkpoint_parameters[parameter])
 
 	if Globals.switching:
 		await get_tree().create_timer(restart_input_block_time).timeout
@@ -95,37 +108,41 @@ func _input(event: InputEvent) -> void:
 	if !Globals.switching and !TransitionManager.transitioning:
 		if event.is_action_pressed('restart'):
 			restarted_or_exited.emit('restart')
+			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_BACK)
 			call_deferred("_restart", TransitionManager.ShaderTransitionType.CURVED_DIAMONDS, 1)
 		elif event.is_action_pressed('quit'):
 			if !Globals.game_paused:
 				_level_pause()
 			else:
 				_level_unpause()
-			#restarted_or_exited.emit('quit')
 
 func _on_wand_cast() -> void:
 	var block_instance: Block = BLOCK.instantiate()
 	block_instance.position = get_local_mouse_position()
 	$Blocks.add_child(block_instance)
 
-func _on_checkpoint_enter(checkpoint_id: int, save_parameters: int) -> void:
+func _on_checkpoint_enter(checkpoint_id: int, save_parameters: int, chosen_clip_index: int = -1) -> void:
 	print("saving")
-	print("current clip index: ", BgmManager.current_clip_index)
-	Globals.set_level_checkpoint(checkpoint_id, save_parameters, level_id, $Player.position, BgmManager.current_clip_index)
+	var checkpoint_clip_index: int = chosen_clip_index if chosen_clip_index >= 0 else BgmManager.current_clip_index
+	BgmManager.current_clip_index = checkpoint_clip_index
+	print("current clip index: ", checkpoint_clip_index)
+	Globals.set_level_checkpoint(checkpoint_id, save_parameters, level_id, $Player.position, checkpoint_clip_index)
 
 func _on_player_death() -> void:
 	if !full_level_restart_on_death:
 		$Player.position = initial_player_position
 	elif !Globals.switching:
 		$ScreenCamera.add_trauma(0.3)
-		Globals.switching = true
-		Globals.input_enabled = false
-		await get_tree().create_timer(1).timeout
-		Globals.switching = false
-		await restarted_or_exited
+		if auto_restart_on_death:
+			call_deferred("_restart", TransitionManager.ShaderTransitionType.CURVED_DIAMONDS, 1)
+		else:
+			Globals.switching = true
+			Globals.input_enabled = false
+			await get_tree().create_timer(0.5).timeout
+			Globals.switching = false
+			await restarted_or_exited
 
 func _restart(transition_type: TransitionManager.ShaderTransitionType = TransitionManager.ShaderTransitionType.NONE, transition_speed: float = 1.0, text_button_restart: bool = false) -> void:
-	AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_BACK)
 	Globals.switching = true
 	Globals.input_enabled = false
 

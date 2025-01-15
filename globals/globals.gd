@@ -2,20 +2,22 @@ extends Node
 
 signal changed_block_amount(value: int)
 
-const DEFAULT_BLOCK_PROPERTIES: CustomResource = preload('res://scenes/objects/block_properties/default_block_properties.tres')
-const ICE_BLOCK_PROPERTIES: CustomResource = preload('res://scenes/objects/block_properties/ice_block_properties.tres')
-const STONE_BLOCK_PROPERTIES: CustomResource = preload('res://scenes/objects/block_properties/stone_block_properties.tres')
-const ANTI_GRAVITY_BLOCK_PROPERTIES: CustomResource = preload('res://scenes/objects/block_properties/anti-gravity_block_properties.tres')
+const DEFAULT_BLOCK_PROPERTIES: CustomResource = preload('res://resources/properties/block_types/default_block_properties.tres')
+const ICE_BLOCK_PROPERTIES: CustomResource = preload('res://resources/properties/block_types/ice_block_properties.tres')
+const STONE_BLOCK_PROPERTIES: CustomResource = preload('res://resources/properties/block_types/stone_block_properties.tres')
+const ANTI_GRAVITY_BLOCK_PROPERTIES: CustomResource = preload('res://resources/properties/block_types/anti-gravity_block_properties.tres')
 
-const block_properties: Dictionary = {"None": DEFAULT_BLOCK_PROPERTIES, "Ice": ICE_BLOCK_PROPERTIES, "Stone": STONE_BLOCK_PROPERTIES, "Anti-Gravity": ANTI_GRAVITY_BLOCK_PROPERTIES}
+const block_properties: Dictionary = {"None": DEFAULT_BLOCK_PROPERTIES, "Ice": ICE_BLOCK_PROPERTIES, "Stone": STONE_BLOCK_PROPERTIES, "Gravity": ANTI_GRAVITY_BLOCK_PROPERTIES}
 
 var volumes: Array[int] = [0, -10, -10]
 
+var allowed_modifiers: Array[String] = ["Ice", "Stone", "Gravity"]
 var in_modify_state: bool = false
 
-var current_block_type: String = "None"
-	#set(value):
-		#current_block_type = value
+var current_block_type: String = "None":
+	set(value):
+		current_block_type = value
+		Cursor.change_cursor_color(block_properties[current_block_type].cursor_colour)
 
 var current_level_id: int = 0
 var switching: bool = false
@@ -23,6 +25,8 @@ var game_paused: bool = false
 var input_enabled: bool = true
 
 var casting_disabled: bool = false
+var throwing_disabled: bool = false
+var modifying_disabled: bool = false
 
 var level_checkpoint: Dictionary = {}
 var previous_checkpoint_id: int = 0
@@ -94,7 +98,7 @@ func set_pause_subtree(root: Node, pause: bool) -> void:
 	for setter: String in process_setters:
 		root.propagate_call(setter, [!pause])
 
-func set_level_checkpoint(checkpoint_id: int, saved_parameters: int, level_id = 1, player_pos: Vector2 = Vector2(0,0), music_clip_index: int = 0) -> void:
+func set_level_checkpoint(checkpoint_id: int, saved_parameters: int, level_id: int = 1, player_pos: Vector2 = Vector2(0,0), music_clip_index: int = 0) -> void:
 	reset_level_checkpoint()
 	var checkpoint_parameters: Dictionary = {}
 	match saved_parameters:

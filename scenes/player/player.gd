@@ -50,6 +50,7 @@ var can_jump: bool = true
 var is_jumping: bool = false
 var was_on_floor: bool
 var just_left_ledge: bool
+var forced_floor_state: bool = false
 var pushing: bool = false
 var last_colliding_block: Block
 var colliding_with_block: bool = false
@@ -80,11 +81,9 @@ func _process(_delta: float) -> void:
 
 	handle_animation()
 
-	handle_direction_lock()
-
-	last_velocity = velocity
-
-	check_top()
+	if !Globals.throwing_disabled:
+		handle_direction_lock()
+		check_top()
 
 func set_state() -> String:
 	var new_state: String = current_state
@@ -191,6 +190,8 @@ func _physics_process(delta: float) -> void:
 
 	handle_gravity(delta)
 
+	last_velocity = velocity
+
 	handle_movement()
 
 	handle_fall_through()
@@ -228,6 +229,13 @@ func handle_gravity(delta: float) -> void:
 				fall_time += delta
 				fall_multiplier = pow(fall_time * fall_acceleration_rate, 2)
 				velocity.y += fall_gravity * fall_multiplier * delta # Nieliniowa akceleracja
+
+			# preventing getting stuck in between blocks or walls
+			if velocity.y > 25 and abs(get_position_delta().y) < 0.05:
+				can_jump = true
+				forced_floor_state = true
+				print(velocity)
+				print(get_position_delta())
 
 		velocity.y = min(velocity.y, max_fall_speed) # Clamp prędkości spadania
 		#print(" velocity.y: ", roundf(velocity.y))
@@ -295,18 +303,19 @@ func handle_push() -> void:
 
 # Skakanie
 func handle_jump() -> void:
-	if can_jump == false and is_on_floor():
+	if can_jump == false and (is_on_floor() or forced_floor_state):
 		if colliding_with_block and (last_colliding_block.falling == true or !last_colliding_block.jump_allowed):
 			can_jump = false
 		else:
 			can_jump = true
 		is_jumping = false
 
-	if can_jump and (Input.is_action_just_pressed("jump") or buffered_jump) and (is_on_floor() or coyote):
+	if can_jump and (Input.is_action_just_pressed("jump") or buffered_jump) and (is_on_floor() or coyote or forced_floor_state):
 		velocity.y = jump_velocity
 		is_jumping = true
 		can_jump = false
 		buffered_jump = false
+		forced_floor_state = false
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.JUMP)
 
 	if !is_on_floor() and Input.is_action_just_pressed('jump'):

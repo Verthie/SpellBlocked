@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 		var collision_object: Object = shape_cast_down.get_collider(0)
 		if collision_object is Block:
 			var block: Block = collision_object
-			if "Anti-Gravity" in block.current_modifiers:
+			if "Gravity" in block.current_modifiers:
 				jump_allowed = false
 			else:
 				jump_allowed = true
@@ -101,7 +101,7 @@ func apply_movement(direction: Vector2, speed: float) -> void:
 		velocity.x = lerp(velocity.x, 0.0, friction) # Tarcie
 
 func apply_gravity(delta: float) -> void:
-	if "Anti-Gravity" in current_modifiers:
+	if "Gravity" in current_modifiers:
 		reversed_gravity = true
 	else:
 		reversed_gravity = false
@@ -110,9 +110,9 @@ func apply_gravity(delta: float) -> void:
 		falling = true
 		#if velocity.y >= 0:
 		if !fall_acceleration:
-			if "Anti-Gravity" not in current_modifiers:
+			if "Gravity" not in current_modifiers:
 				velocity.y += gravity * delta # Liniowa akceleracja
-			elif "Anti-Gravity" in current_modifiers:
+			elif "Gravity" in current_modifiers:
 				if anti_gravity_top.is_colliding():
 					velocity.y += -gravity * delta * 2
 				else:
