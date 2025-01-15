@@ -8,11 +8,11 @@ extends Area2D
 		#test()
 		notify_property_list_changed()
 #
-#@export var is_scene_switch: bool = false:
-	#set(value):
-		#if value == is_scene_switch : return
-		#is_scene_switch = value
-		#notify_property_list_changed()
+@export var is_scene_switch: bool = false:
+	set(value):
+		if value == is_scene_switch : return
+		is_scene_switch = value
+		notify_property_list_changed()
 
 # Dynamic export properties
 var scene_to_switch: PackedScene
@@ -41,16 +41,16 @@ func _get_property_list():
 	if Engine.is_editor_hint():
 		var ret: Array = []
 		if is_sign:
-			#set("is_scene_switch", false)
-			ret.clear()
-			# This is how you add a normal variable, like String (TYPE_STRING), int (TYPE_INT)...etc
-		else:
-			set("is_sign", false)
-			#set("is_scene_switch", true)
-			ret.clear()
+			#ret.clear()
+			ret.append({
+			"name": &"ICON", # <- name can now be plain
+			"type": TYPE_STRING,
+			"usage": PROPERTY_USAGE_DEFAULT
+			})
+		if is_scene_switch:
+			#ret.clear()
 			ret.append({
 				"name": &"scene_to_switch",
-				"class_name": &"PackedScene",
 				"type": TYPE_OBJECT,
 				"usage": PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE,
 				"hint": PROPERTY_HINT_RESOURCE_TYPE,

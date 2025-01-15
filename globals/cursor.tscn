@@ -221,8 +221,8 @@ libraries = {
 "": SubResource("AnimationLibrary_fl356")
 }
 
-[node name="CreatedTimer" type="Timer" parent="."]
-wait_time = 0.2
+[node name="ActionTimer" type="Timer" parent="."]
+wait_time = 0.3
 one_shot = true
 
-[connection signal="timeout" from="CreatedTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="ActionTimer" to="." method="_on_timer_timeout"]

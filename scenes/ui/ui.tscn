@@ -11,6 +11,7 @@ layer = 0
 script = ExtResource("1_mt7kg")
 
 [node name="ChoiceBar" type="HBoxContainer" parent="."]
+visible = false
 anchors_preset = -1
 anchor_left = 0.42
 anchor_top = 0.836
@@ -21,52 +22,55 @@ offset_right = 4.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="IceMod" type="Control" parent="ChoiceBar"]
+[node name="Ice" type="Control" parent="ChoiceBar"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 
-[node name="IceModDisabled" type="Sprite2D" parent="ChoiceBar/IceMod"]
+[node name="IceModDisabled" type="Sprite2D" parent="ChoiceBar/Ice"]
 scale = Vector2(4, 4)
 texture = ExtResource("2_7ymn0")
 hframes = 3
 
-[node name="IceModEnabled" type="Sprite2D" parent="ChoiceBar/IceMod"]
+[node name="IceModEnabled" type="Sprite2D" parent="ChoiceBar/Ice"]
 visible = false
 scale = Vector2(4, 4)
 texture = ExtResource("3_aend5")
 hframes = 3
 
-[node name="StoneMod" type="Control" parent="ChoiceBar"]
+[node name="Stone" type="Control" parent="ChoiceBar"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 
-[node name="StoneModDisabled" type="Sprite2D" parent="ChoiceBar/StoneMod"]
+[node name="StoneModDisabled" type="Sprite2D" parent="ChoiceBar/Stone"]
 scale = Vector2(4, 4)
 texture = ExtResource("2_7ymn0")
 hframes = 3
 frame = 1
 
-[node name="StoneModEnabled" type="Sprite2D" parent="ChoiceBar/StoneMod"]
+[node name="StoneModEnabled" type="Sprite2D" parent="ChoiceBar/Stone"]
 visible = false
 scale = Vector2(4, 4)
 texture = ExtResource("3_aend5")
 hframes = 3
 frame = 1
 
-[node name="GravityMod" type="Control" parent="ChoiceBar"]
+[node name="Gravity" type="Control" parent="ChoiceBar"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 
-[node name="GravityModDisabled" type="Sprite2D" parent="ChoiceBar/GravityMod"]
+[node name="GravityModDisabled" type="Sprite2D" parent="ChoiceBar/Gravity"]
 scale = Vector2(4, 4)
 texture = ExtResource("2_7ymn0")
 hframes = 3
 frame = 2
 
-[node name="GravityModEnabled" type="Sprite2D" parent="ChoiceBar/GravityMod"]
+[node name="GravityModEnabled" type="Sprite2D" parent="ChoiceBar/Gravity"]
 visible = false
 scale = Vector2(4, 4)
 texture = ExtResource("3_aend5")

@@ -1,11 +1,12 @@
 [gd_resource type="Resource" script_class="CustomResource" load_steps=2 format=3 uid="uid://ds5p78pv4dkia"]
 
-[ext_resource type="Script" path="res://scenes/objects/block_properties/block_properties.gd" id="1_o1i0u"]
+[ext_resource type="Script" path="res://resources/properties/block_types/block_properties.gd" id="1_46o1c"]
 
 [resource]
-script = ExtResource("1_o1i0u")
+script = ExtResource("1_46o1c")
 type_name = "None"
 friction = 0.175
 gravity = -300.0
 colour = Color(0.654813, 0.634225, 0.939261, 1)
+cursor_colour = Color(0.534909, 0.490616, 0.8988, 1)
 modifier_overlay_opacity = 0.5

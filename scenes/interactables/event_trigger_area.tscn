@@ -1,12 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://ckr102h8pc7gf"]
 
-[ext_resource type="Script" path="res://scenes/interactables/interactable_area.gd" id="1_lwiqc"]
+[ext_resource type="Script" path="res://scenes/interactables/event_trigger_area.gd" id="1_06348"]
 
-[node name="InteractableArea" type="Area2D"]
+[node name="EventTriggerArea" type="Area2D"]
 collision_layer = 64
-script = ExtResource("1_lwiqc")
-scene_to_switch = null
-trigger_on_area_enter = false
+script = ExtResource("1_06348")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

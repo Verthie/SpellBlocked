@@ -27,19 +27,24 @@ tile_set = ExtResource("2_nvkav")
 z_index = -3
 tile_set = ExtResource("3_pluxv")
 
-[node name="BGElementsThirdPlane" type="TileMapLayer" parent="TileMaps"]
+[node name="BGThirdPlane" type="TileMapLayer" parent="TileMaps"]
 z_index = -3
-tile_set = ExtResource("4_w1n7g")
+position = Vector2(0, -1)
+tile_set = ExtResource("3_pluxv")
 
 [node name="FGSecondPlane" type="TileMapLayer" parent="TileMaps"]
 z_index = -2
 tile_set = ExtResource("3_kclcj")
 
+[node name="BGSecondPlane" type="TileMapLayer" parent="TileMaps"]
+z_index = -2
+tile_set = ExtResource("4_w1n7g")
+
 [node name="FGFirstPlane" type="TileMapLayer" parent="TileMaps" groups=["Tilemaps"]]
 z_index = -1
 tile_set = ExtResource("3_kclcj")
 
-[node name="BGElementsFirstPlane" type="TileMapLayer" parent="TileMaps"]
+[node name="BGFirstPlane" type="TileMapLayer" parent="TileMaps"]
 z_index = -1
 tile_set = ExtResource("4_w1n7g")
 
@@ -69,7 +74,6 @@ tile_set = ExtResource("7_a216d")
 [node name="LevelBlocks" type="Node2D" parent="."]
 
 [node name="UI" parent="." instance=ExtResource("13_uyyk0")]
-visible = false
 
 [node name="Deathzone" parent="." instance=ExtResource("7_546jt")]
 position = Vector2(0, 105)

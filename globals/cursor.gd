@@ -5,25 +5,38 @@ const cursor_types: Dictionary = {"Block": 0, "Select": 4}
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var area_2d: Area2D = $'.'
-@onready var created_timer: Timer = $CreatedTimer
+@onready var action_timer: Timer = $ActionTimer
 
 @export var blacklist: Array[String]
 
 var current_cursor_type: String = "Block"
+var current_cursor_color: Color = Color('ffffff')
 
 var obstructed: bool = false
 var object_index: int = 0
 var colliding_body: Node
 var cast_allowed: bool = false
 var modification_allowed: bool = false
-var just_created: bool = false
+var just_made_action: bool = false
 
 func _ready() -> void:
 	EventBus.obstructed.connect(_change_obstructed_state)
 	EventBus.changed_cursor_type.connect(_change_cursor_type)
+	EventBus.casted.connect(_play_block_cast)
+	EventBus.applied_modification.connect(_play_block_cast)
+	EventBus.removed_modification.connect(_play_block_cast)
 	EventBus.block_removed.connect(_on_block_removed)
-	EventBus.block_removal_rejected.connect(_play_not_available)
+	EventBus.block_action_rejected.connect(_play_not_available)
+	animation_player.animation_finished.connect(_reset_cursor_color.unbind(1))
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+
+func _input(event: InputEvent) -> void:
+	if current_cursor_type == "Select":
+		if event.is_action_pressed('cast'):
+			animation_player.play("select")
+	elif current_cursor_type == "Block" and Globals.casting_disabled:
+		if event.is_action_pressed('cast'):
+			_play_block_cast()
 
 func _process(_delta: float) -> void:
 
@@ -43,19 +56,8 @@ func _process(_delta: float) -> void:
 
 	#print(colliding_body, " ", cast_allowed, " ", modification_allowed)
 
-	match current_cursor_type:
-		"Select":
-			handle_ui_sprite()
-		"Block":
-			if Globals.switching:
-				obstructed = false
-			else:
-				handle_gameplay_sprite()
-		_:
-			if Globals.switching:
-				obstructed = false
-			else:
-				handle_gameplay_sprite()
+	if Globals.switching:
+		obstructed = false
 
 # Kolizja kursora z obiektami fizycznymi
 func handle_collisions() -> void:
@@ -92,34 +94,11 @@ func handle_collisions() -> void:
 
 	EventBus.cursor_changed_state.emit(colliding_body, cast_allowed, modification_allowed)
 
-# Zmiana wyglądu kursora w trakcie przebywania w menu
-func handle_ui_sprite() -> void:
-	if Input.is_action_just_pressed('cast'):
-		animation_player.play("select")
-
 # Zmiana wyglądu kursora w trakcie gry
 func handle_gameplay_sprite() -> void:
 
-	if cast_allowed and Input.is_action_just_pressed('cast'):
-		animation_player.play("cast_create")
-		just_created = true
-		created_timer.start()
-	elif Globals.casting_disabled:
+	if Globals.casting_disabled:
 		return
-
-	if obstructed:
-		if Input.is_action_just_pressed('cast_destroy') or Input.is_action_just_pressed('cast'):
-			_play_not_available()
-	else:
-		if modification_allowed and Input.is_action_just_pressed('cast') and Globals.in_modify_state:
-			var block: Block = colliding_body
-			if block.current_modifiers.size() < block.max_modifier_amount and Globals.current_block_type not in block.current_modifiers :
-				animation_player.play("cast_create")
-				AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_APPLY_MOD)
-			else:
-				_play_not_available()
-		elif !just_created and (!cast_allowed and Input.is_action_just_pressed('cast')):
-			_play_not_available()
 
 	if !animation_player.is_playing():
 		if Globals.in_modify_state:
@@ -127,10 +106,17 @@ func handle_gameplay_sprite() -> void:
 				sprite_2d.self_modulate = Color("df989f")
 			else:
 				sprite_2d.self_modulate = Globals.block_properties[Globals.current_block_type].colour
-		elif cast_allowed or just_created:
-			sprite_2d.self_modulate = Color(1,1,1)
+		#elif cast_allowed or just_made_action:
+			#sprite_2d.self_modulate = Color(1,1,1)
 		elif !cast_allowed and !Globals.in_modify_state:
 			sprite_2d.self_modulate = Color("df989f")
+
+func change_cursor_color(color: Color = Color("ffffff")) -> void:
+	current_cursor_color = color
+	sprite_2d.self_modulate = color
+
+func _reset_cursor_color() -> void:
+	sprite_2d.self_modulate = current_cursor_color
 
 # Funkcja przyjmująca tablicę obiektów i zwracająca tablicę nazw typów obiektów
 func object_to_type(object: Node2D) -> String:
@@ -143,7 +129,7 @@ func check_in_blacklist(object_name: String) -> bool:
 	return object_name in blacklist
 
 func _on_timer_timeout() -> void:
-	just_created = false
+	just_made_action = false
 
 func _change_obstructed_state(state: bool) -> void:
 	obstructed = state
@@ -165,8 +151,18 @@ func _change_cursor_type(type: String) -> void:
 			sprite_2d.position = Vector2.ZERO
 
 func _play_not_available() -> void:
-	animation_player.play("not_available")
-	AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_UNAVAILABLE)
+	if just_made_action:
+		animation_player.play('cast_create')
+	else:
+		animation_player.play("not_available")
+		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_UNAVAILABLE)
 
 func _on_block_removed() -> void:
 	animation_player.play("cast_remove")
+	just_made_action = true
+	action_timer.start()
+
+func _play_block_cast() -> void:
+	animation_player.play('cast_create')
+	just_made_action = true
+	action_timer.start()
