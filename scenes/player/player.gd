@@ -73,7 +73,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 
-	if Globals.game_paused:
+	if Globals.game_paused or Globals.playing_cutscene:
 		return
 
 	if !direction_locked:

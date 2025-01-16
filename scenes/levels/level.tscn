@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b0qkkisnuydja"]
+[gd_scene load_steps=13 format=3 uid="uid://b0qkkisnuydja"]
 
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_yace1"]
 [ext_resource type="PackedScene" uid="uid://bqumck2g1lx6b" path="res://scenes/player/player.tscn" id="2_7aa5x"]
@@ -10,6 +10,7 @@
 [ext_resource type="TileSet" uid="uid://c7g86xemyc2us" path="res://assets/tilesets/decor.tres" id="7_a216d"]
 [ext_resource type="PackedScene" uid="uid://bkqmw36c04h36" path="res://scenes/hazards/destructionzone.tscn" id="8_x4ic2"]
 [ext_resource type="PackedScene" uid="uid://dmi6orowpok20" path="res://scenes/levels/screen_camera.tscn" id="12_tockn"]
+[ext_resource type="Script" path="res://scenes/levels/level_cutscene.gd" id="12_wy55y"]
 [ext_resource type="PackedScene" uid="uid://clpflpxtp3g2h" path="res://scenes/ui/ui.tscn" id="13_uyyk0"]
 
 [node name="Level" type="Node2D"]
@@ -23,37 +24,52 @@ script = ExtResource("1_yace1")
 z_index = -10
 tile_set = ExtResource("2_nvkav")
 
-[node name="FGThirdPlane" type="TileMapLayer" parent="TileMaps"]
-z_index = -3
+[node name="DarkFifthPlane" type="TileMapLayer" parent="TileMaps"]
+modulate = Color(0.670588, 0.670588, 0.670588, 1)
+z_index = -4
 tile_set = ExtResource("3_pluxv")
 
-[node name="BGThirdPlane" type="TileMapLayer" parent="TileMaps"]
+[node name="DarkFourthPlane" type="TileMapLayer" parent="TileMaps"]
+modulate = Color(0.670588, 0.670588, 0.670588, 1)
+z_index = -4
+tile_set = ExtResource("3_pluxv")
+
+[node name="FGThirdPlane" type="TileMapLayer" parent="TileMaps"]
 z_index = -3
-position = Vector2(0, -1)
 tile_set = ExtResource("3_pluxv")
 
 [node name="FGSecondPlane" type="TileMapLayer" parent="TileMaps"]
 z_index = -2
 tile_set = ExtResource("3_kclcj")
 
-[node name="BGSecondPlane" type="TileMapLayer" parent="TileMaps"]
-z_index = -2
-tile_set = ExtResource("4_w1n7g")
-
 [node name="FGFirstPlane" type="TileMapLayer" parent="TileMaps" groups=["Tilemaps"]]
 z_index = -1
 tile_set = ExtResource("3_kclcj")
+
+[node name="BGThirdPlane" type="TileMapLayer" parent="TileMaps"]
+z_index = -3
+tile_set = ExtResource("4_w1n7g")
+
+[node name="BGSecondPlane" type="TileMapLayer" parent="TileMaps"]
+z_index = -2
+tile_set = ExtResource("4_w1n7g")
 
 [node name="BGFirstPlane" type="TileMapLayer" parent="TileMaps"]
 z_index = -1
 tile_set = ExtResource("4_w1n7g")
 
-[node name="Platforms" type="Node2D" parent="TileMaps"]
-
 [node name="Decor" type="TileMapLayer" parent="TileMaps"]
 tile_set = ExtResource("7_a216d")
 
 [node name="LevelElements" type="Node2D" parent="."]
+
+[node name="Items" type="Node2D" parent="LevelElements"]
+
+[node name="Blocks" type="Node2D" parent="LevelElements"]
+
+[node name="Platforms" type="Node2D" parent="LevelElements"]
+
+[node name="Mechanisms" type="Node2D" parent="LevelElements"]
 
 [node name="Interactables" type="Node2D" parent="."]
 
@@ -67,21 +83,19 @@ tile_set = ExtResource("7_a216d")
 
 [node name="Player" parent="." instance=ExtResource("2_7aa5x")]
 
-[node name="Items" type="Node2D" parent="."]
-
 [node name="Blocks" type="Node2D" parent="."]
-
-[node name="LevelBlocks" type="Node2D" parent="."]
 
 [node name="UI" parent="." instance=ExtResource("13_uyyk0")]
 
-[node name="Deathzone" parent="." instance=ExtResource("7_546jt")]
+[node name="Zones" type="Node2D" parent="."]
+
+[node name="Deathzone" parent="Zones" instance=ExtResource("7_546jt")]
 position = Vector2(0, 105)
 
-[node name="DestructionzoneBottom" parent="." instance=ExtResource("8_x4ic2")]
+[node name="DestructionzoneBottom" parent="Zones" instance=ExtResource("8_x4ic2")]
 position = Vector2(526, 106)
 
-[node name="DestructionzoneTop" parent="." instance=ExtResource("8_x4ic2")]
+[node name="DestructionzoneTop" parent="Zones" instance=ExtResource("8_x4ic2")]
 position = Vector2(526, -278)
 rotation = -3.14159
 
@@ -89,11 +103,13 @@ rotation = -3.14159
 position = Vector2(-32, -31)
 limit_top = -85
 limit_bottom = 185
+limit_smoothed = true
 editor_draw_limits = true
 target = NodePath("../Player")
-
-[node name="SoundManager" type="Node" parent="."]
 
 [node name="Menu" type="CanvasLayer" parent="."]
 process_mode = 3
 visible = false
+
+[node name="CutsceneManager" type="Node" parent="."]
+script = ExtResource("12_wy55y")

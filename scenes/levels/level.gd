@@ -72,7 +72,6 @@ func _ready() -> void:
 	SceneSwitcher.fallback_scene_path = scene_file_path
 	menu_scene = ResourceLoader.load('res://scenes/ui/gameplay_menu.tscn')
 	settings_scene = ResourceLoader.load('res://scenes/ui/settings_menu.tscn')
-	ResourceLoader.load_threaded_request(SceneSwitcher.current_level.scene_file_path)
 	if reset_cursor_position_on_restart:
 		Input.warp_mouse(init_cursor_position)
 	else:
@@ -87,14 +86,13 @@ func _ready() -> void:
 		for parameter: String in checkpoint_parameters:
 			if parameter == "player_position":
 				$Player.position = checkpoint_parameters[parameter]
-				#print(checkpoint_parameters[parameter])
-				#print($Player.position)
-				var camera_times_position_x: int = $Player.position.x / 180
-				#print(camera_times_position_x)
-				$ScreenCamera.position.x = camera_times_position_x * 305
-				#print($ScreenCamera.position.x)
+				#var camera_times_position_x: int = $Player.position.x / 180
+				#$ScreenCamera.position.x = camera_times_position_x * 305
+				var screen_camera: Camera2D = $ScreenCamera
+				var screen_size: Vector2 = screen_camera.screen_size
+				screen_camera.position = (screen_camera.target.global_position / screen_size).floor() * screen_size + screen_size/2
 			elif parameter == "music_clip_index":
-				BgmManager.set_checkpoint_clip_index(checkpoint_parameters[parameter])
+				BgmManager.set_interactive_audioclip(checkpoint_parameters[parameter])
 
 	if Globals.switching:
 		await get_tree().create_timer(restart_input_block_time).timeout
@@ -103,6 +101,11 @@ func _ready() -> void:
 	if Globals.game_paused:
 		_level_unpause()
 		Globals.game_paused = false
+
+	if !Globals.quick_restarted:
+		$CutsceneManager.play_level_enter_cutscene()
+	else:
+		Globals.quick_restarted = false
 
 func _input(event: InputEvent) -> void:
 	if !Globals.switching and !TransitionManager.transitioning:
@@ -122,10 +125,17 @@ func _on_wand_cast() -> void:
 	$Blocks.add_child(block_instance)
 
 func _on_checkpoint_enter(checkpoint_id: int, save_parameters: int, chosen_clip_index: int = -1) -> void:
-	print("saving")
 	var checkpoint_clip_index: int = chosen_clip_index if chosen_clip_index >= 0 else BgmManager.current_clip_index
-	BgmManager.current_clip_index = checkpoint_clip_index
-	print("current clip index: ", checkpoint_clip_index)
+
+	match save_parameters:
+		1:
+			print("saving only position")
+		3:
+			print("saving position and music clip")
+			BgmManager.set_checkpoint_clip_index(checkpoint_clip_index)
+			#print("chosen_clip_index: ", chosen_clip_index)
+			#print("checkpoint clip index: ", checkpoint_clip_in dex)
+
 	Globals.set_level_checkpoint(checkpoint_id, save_parameters, level_id, $Player.position, checkpoint_clip_index)
 
 func _on_player_death() -> void:
@@ -155,8 +165,9 @@ func _restart(transition_type: TransitionManager.ShaderTransitionType = Transiti
 		if text_button_restart:
 			Globals.game_paused = false
 			get_tree().paused = false
-
-		SceneSwitcher.goto_scene(SceneSwitcher.current_level.scene_file_path, true)
+		else:
+			EventBus.quick_restarted.emit()
+		SceneSwitcher.goto_scene(SceneSwitcher.current_level.scene_file_path)
 		TransitionManager.play_shader_transition(transition_type, false, transition_speed, true)
 
 
