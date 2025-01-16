@@ -37,7 +37,7 @@ clip_6/auto_advance = 0
 _transitions = {
 Vector2i(-1, -1): {
 "fade_beats": 2,
-"fade_mode": 2,
+"fade_mode": 3,
 "from_time": 1,
 "to_time": 0
 },
@@ -71,51 +71,15 @@ Vector2i(0, 2): {
 "from_time": 1,
 "to_time": 0
 },
-Vector2i(1, 0): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
-},
-Vector2i(1, 1): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
-},
 Vector2i(1, 2): {
 "fade_beats": 1,
 "fade_mode": 3,
 "from_time": 1,
 "to_time": 0
 },
-Vector2i(2, 0): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
-},
-Vector2i(2, 1): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
-},
 Vector2i(2, 3): {
 "fade_beats": 5,
 "fade_mode": 3,
-"from_time": 1,
-"to_time": 0
-},
-Vector2i(3, 0): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
-},
-Vector2i(3, 1): {
-"fade_beats": 2,
-"fade_mode": 2,
 "from_time": 1,
 "to_time": 0
 },
@@ -137,35 +101,11 @@ Vector2i(3, 5): {
 "from_time": 3,
 "to_time": 1
 },
-Vector2i(4, 0): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
-},
-Vector2i(4, 1): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
-},
 Vector2i(4, 5): {
 "fade_beats": 1,
 "fade_mode": 0,
 "from_time": 3,
 "to_time": 1
-},
-Vector2i(5, 0): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
-},
-Vector2i(5, 1): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
 },
 Vector2i(5, 5): {
 "fade_beats": 1,
@@ -178,18 +118,6 @@ Vector2i(5, 6): {
 "fade_mode": 0,
 "from_time": 3,
 "to_time": 1
-},
-Vector2i(6, 0): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
-},
-Vector2i(6, 1): {
-"fade_beats": 2,
-"fade_mode": 2,
-"from_time": 1,
-"to_time": 0
 }
 }
 

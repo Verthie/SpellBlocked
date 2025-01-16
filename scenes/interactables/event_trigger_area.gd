@@ -56,7 +56,7 @@ var clip_index: int = 0
 ## The id of the checkpoint, for each checkpoint in the level this value must be unique
 var checkpoint_id: int = 1
 ## When music is interactive, clip with this index will play when going back to checkpoint, value: -1 => plays the clip that was last played
-var on_checkpoint_clip_index: int = -1
+var clip_index_on_checkpoint: int = -1
 ## The parameters that are saved when reaching checkpoint
 var save_parameters: int = 3
 
@@ -89,7 +89,7 @@ func _input(event: InputEvent) -> void:
 			BgmManager.set_interactive_audioclip(clip_index)
 
 		if is_checkpoint and Globals.previous_checkpoint_id != checkpoint_id:
-				EventBus.entered_checkpoint.emit(checkpoint_id, save_parameters, on_checkpoint_clip_index)
+				EventBus.entered_checkpoint.emit(checkpoint_id, save_parameters, clip_index_on_checkpoint)
 
 		if is_scene_switch and scene_to_switch:
 			_enter_next_level(scene_to_switch.resource_path)
@@ -127,7 +127,7 @@ func _get_property_list():
 				"hint": PROPERTY_HINT_RANGE
 			})
 			ret.append({
-				"name": &"on_checkpoint_clip_index",
+				"name": &"clip_index_on_checkpoint",
 				"type": TYPE_INT,
 				"usage": PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE,
 				"hint_string": "-1,100",
@@ -174,7 +174,7 @@ func _on_body_entered(_body: Node2D) -> void:
 			BgmManager.triggered_clip_switch.emit(clip_index)
 
 		if is_checkpoint and Globals.previous_checkpoint_id != checkpoint_id:
-			EventBus.entered_checkpoint.emit(checkpoint_id, save_parameters, on_checkpoint_clip_index)
+			EventBus.entered_checkpoint.emit(checkpoint_id, save_parameters, clip_index_on_checkpoint)
 
 		if is_scene_switch and scene_to_switch:
 			_enter_next_level(scene_to_switch.resource_path)

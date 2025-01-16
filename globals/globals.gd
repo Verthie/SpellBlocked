@@ -23,6 +23,8 @@ var current_level_id: int = 0
 var switching: bool = false
 var game_paused: bool = false
 var input_enabled: bool = true
+var playing_cutscene: bool = false
+var quick_restarted: bool = false
 
 var casting_disabled: bool = false
 var throwing_disabled: bool = false
@@ -42,11 +44,9 @@ var started_level: bool = false
 
 var initial_block_positions: Array[Vector2i] = []
 
-func _process(_delta: float) -> void:
-	if current_block_type == "None":
-		in_modify_state = false
-	else:
-		in_modify_state = true
+func _ready() -> void:
+	EventBus.changed_block_type.connect(_check_modify_state)
+	EventBus.quick_restarted.connect(_on_quick_restart)
 
 func load_resources(path: String, extension: String = "") -> Dictionary:
 	var resources: Dictionary = {}
@@ -115,3 +115,12 @@ func set_level_checkpoint(checkpoint_id: int, saved_parameters: int, level_id: i
 func reset_level_checkpoint() -> void:
 	level_checkpoint.clear()
 	previous_checkpoint_id = 0
+
+func _check_modify_state() -> void:
+	if current_block_type == "None":
+		in_modify_state = false
+	else:
+		in_modify_state = true
+
+func _on_quick_restart() -> void:
+	quick_restarted = true

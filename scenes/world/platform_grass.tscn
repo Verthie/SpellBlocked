@@ -1,19 +1,27 @@
-[gd_scene load_steps=4 format=3 uid="uid://bwjltik73jd00"]
+[gd_scene load_steps=5 format=3 uid="uid://bwjltik73jd00"]
 
 [ext_resource type="Script" path="res://scenes/world/platform_grass.gd" id="1_3yubt"]
 [ext_resource type="Texture2D" uid="uid://britmyss2ro4x" path="res://assets/sprites/tilesets/platforms/Platforms [Grass].png" id="1_5vvnh"]
+[ext_resource type="Texture2D" uid="uid://crbfjnf0u1pwd" path="res://assets/sprites/tilesets/platforms/Small Platforms [Grass].png" id="3_lfm73"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_da3lp"]
-size = Vector2(20, 1)
+size = Vector2(22, 1)
 
 [node name="PlatformGrass" type="AnimatableBody2D"]
 collision_layer = 256
 collision_mask = 5
 script = ExtResource("1_3yubt")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Platform" type="Sprite2D" parent="."]
 position = Vector2(0, 3)
 texture = ExtResource("1_5vvnh")
+hframes = 3
+vframes = 5
+
+[node name="SmallPlatform" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 3)
+texture = ExtResource("3_lfm73")
 hframes = 3
 vframes = 5
 

@@ -57,6 +57,9 @@ func _input(event: InputEvent) -> void:
 		var allowed_modifiers_amount: int = Globals.allowed_modifiers.size()
 		var number_pressed: String = event.as_text()
 
+		if "+" in number_pressed:
+			number_pressed = number_pressed.split("+")[1]
+
 		if event.is_action_pressed('switch_' + number_pressed) and allowed_modifiers_amount > (int(number_pressed) - 1):
 			Globals.current_block_type = Globals.allowed_modifiers[int(number_pressed) - 1] if Globals.current_block_type != Globals.allowed_modifiers[int(number_pressed) - 1] else "None"
 
