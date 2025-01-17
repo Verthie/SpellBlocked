@@ -89,7 +89,8 @@ func set_state() -> String:
 	var new_state: String = current_state
 
 	#print(animation_playing)
-
+	#if !Globals.player_lives:
+		#new_state = "death"
 	if !animation_playing:
 		if is_on_floor() or shape_cast_2d.is_colliding():
 			if direction == 0 and abs(velocity.x) <= 10:
@@ -372,13 +373,18 @@ func _on_interactable_state_change(in_area: bool) -> void:
 
 func _on_player_death_experience(body: Node2D) -> void:
 	if $DeathArea.has_overlapping_bodies():
-		if body is TileMapLayer:
-			EventBus.object_splashed.emit(self, Vector2i(position))
+		if body is LiquidTile:
+			EventBus.object_splashed.emit(self, Vector2i(position), body)
 		else:
 			await get_tree().create_timer(0.2).timeout
 	if $DeathArea.has_overlapping_bodies() or $DeathArea.has_overlapping_areas():
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.HURT)
 		EventBus.player_died.emit()
+		animation_playing = true
+		animation_player.play("death")
+		await animation_player.animation_finished
+		animation_playing = false
+		#Globals.player_lives = false
 
 func set_wand_sprite(state: bool = true) -> void:
 	if state:

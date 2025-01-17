@@ -25,6 +25,7 @@ var game_paused: bool = false
 var input_enabled: bool = true
 var playing_cutscene: bool = false
 var quick_restarted: bool = false
+var player_lives: bool = true
 
 var casting_disabled: bool = false
 var throwing_disabled: bool = false
@@ -32,8 +33,6 @@ var modifying_disabled: bool = false
 
 var level_checkpoint: Dictionary = {}
 var previous_checkpoint_id: int = 0
-
-var liquid_height_level: int = 0
 
 var block_amount: int:
 	set(value):
