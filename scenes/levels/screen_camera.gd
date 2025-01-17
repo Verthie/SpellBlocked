@@ -21,15 +21,18 @@ var noise_y: int = 0
 ## Trauma exponent
 @export_range(1, 3, 1) var trauma_power: int = 2
 
+var desired_position: Vector2 = Vector2(0,0)
+
 ## Current shake strength
 var trauma: float = 0.0
+
+var transitioning: bool = false
 
 #func _input(event: InputEvent) -> void:
 	#if event is InputEventKey and event.pressed and event.keycode == KEY_0:
 		#add_trauma(0.2)
 
 func _ready() -> void:
-	#EventBus.player_died.connect(add_trauma.bind(0.3))
 	noise.seed = randi()
 	noise.frequency = 0.2
 
@@ -42,7 +45,7 @@ func _physics_process(_delta: float) -> void:
 
 	# Animated camera alignment on scene switch
 	var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUINT)
-	tween.tween_property(self, "global_position", _desired_position(), align_time)
+	await tween.tween_property(self, "global_position", _desired_position(), align_time).finished
 
 func add_trauma(amount: float) -> void:
 	trauma = min(trauma + amount, 1.0)

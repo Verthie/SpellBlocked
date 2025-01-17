@@ -1,5 +1,6 @@
 extends LevelCutscene
 
+@onready var cutscene_player: AnimationPlayer = $CutscenePlayer
 @onready var player: Player = $'../Player'
 
 func _ready() -> void:

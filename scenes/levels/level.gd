@@ -24,6 +24,7 @@ const BLOCK: PackedScene = preload('res://scenes/objects/block.tscn')
 @export_range(0.0, 3.0, 0.1) var restart_input_block_time: float = 0.5
 
 @onready var initial_player_position: Vector2 = $Player.position
+@onready var screen_camera: Camera2D = $ScreenCamera
 
 var warped: bool = false
 
@@ -46,6 +47,8 @@ func _ready() -> void:
 	EventBus.game_paused.connect(_level_pause)
 	EventBus.game_resumed.connect(_level_unpause)
 	EventBus.gameplay_settings_entered.connect(_on_settings_enter)
+
+	$Player.show()
 
 	Cursor.show()
 	InterfaceCursor.hide()
@@ -80,6 +83,9 @@ func _ready() -> void:
 	Globals.started_level = true
 	BgmManager.create_audio(level_music)
 
+	var screen_size: Vector2 = screen_camera.screen_size
+	screen_camera.global_position = (screen_camera.target.global_position / screen_size).floor() * screen_size + screen_size/2
+
 	if !Globals.level_checkpoint.is_empty() and Globals.level_checkpoint.keys()[0] == level_id:
 		checkpoint_parameters = Globals.level_checkpoint[level_id]
 		#print(checkpoint_parameters)
@@ -88,9 +94,6 @@ func _ready() -> void:
 				$Player.position = checkpoint_parameters[parameter]
 				#var camera_times_position_x: int = $Player.position.x / 180
 				#$ScreenCamera.position.x = camera_times_position_x * 305
-				var screen_camera: Camera2D = $ScreenCamera
-				var screen_size: Vector2 = screen_camera.screen_size
-				screen_camera.position = (screen_camera.target.global_position / screen_size).floor() * screen_size + screen_size/2
 			elif parameter == "music_clip_index":
 				BgmManager.set_interactive_audioclip(checkpoint_parameters[parameter])
 

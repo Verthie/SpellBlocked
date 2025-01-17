@@ -199,6 +199,7 @@ direction_lock={
 2d_physics/layer_11="Level Elements"
 2d_physics/layer_12="SafeGuard"
 2d_physics/layer_13="Tilemap"
+2d_physics/layer_14="InvisibleWalls"
 
 [rendering]
 

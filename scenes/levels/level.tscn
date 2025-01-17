@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b0qkkisnuydja"]
+[gd_scene load_steps=13 format=4 uid="uid://b0qkkisnuydja"]
 
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_yace1"]
 [ext_resource type="PackedScene" uid="uid://bqumck2g1lx6b" path="res://scenes/player/player.tscn" id="2_7aa5x"]
@@ -20,46 +20,60 @@ script = ExtResource("1_yace1")
 
 [node name="TileMaps" type="Node2D" parent="."]
 
-[node name="Background" type="TileMapLayer" parent="TileMaps"]
+[node name="NoCollisionPlanes" type="Node2D" parent="TileMaps"]
+
+[node name="Background" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes"]
 z_index = -10
 tile_set = ExtResource("2_nvkav")
 
-[node name="DarkFifthPlane" type="TileMapLayer" parent="TileMaps"]
+[node name="DarkenedBackgroundPlanes" type="Node2D" parent="TileMaps/NoCollisionPlanes"]
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
+
+[node name="FifthPlane" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/DarkenedBackgroundPlanes"]
 z_index = -4
 tile_set = ExtResource("3_pluxv")
 
-[node name="DarkFourthPlane" type="TileMapLayer" parent="TileMaps"]
-modulate = Color(0.670588, 0.670588, 0.670588, 1)
+[node name="FourthPlane" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/DarkenedBackgroundPlanes"]
 z_index = -4
 tile_set = ExtResource("3_pluxv")
 
-[node name="FGThirdPlane" type="TileMapLayer" parent="TileMaps"]
+[node name="BackgroundPlanes" type="Node2D" parent="TileMaps/NoCollisionPlanes"]
+
+[node name="ThirdPlane" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/BackgroundPlanes"]
 z_index = -3
+tile_set = ExtResource("4_w1n7g")
+
+[node name="SecondPlane" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/BackgroundPlanes"]
+z_index = -2
+tile_set = ExtResource("4_w1n7g")
+
+[node name="FirstPlane" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/BackgroundPlanes"]
+z_index = -1
+tile_set = ExtResource("4_w1n7g")
+
+[node name="ForegroundPlanes" type="Node2D" parent="TileMaps/NoCollisionPlanes"]
+
+[node name="BridgePlane" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/ForegroundPlanes"]
+z_index = -3
+tile_map_data = PackedByteArray("AADsAPn/AwAAAAAAAADtAPn/AwAEAAAAAADuAPn/AwAEAAAAAADvAPn/AwAFAAAAAADvAPv/AwACAAEAAADvAP3/AwACAAEAAADwAPn/AwAGAAAAAADwAPr/AwAGAAEAAADwAPv/AwADAAEAAADwAPz/AwAGAAEAAADwAP3/AwADAAEAAADwAP7/AwAGAAEAAADxAPn/AwAIAAAAAADxAPr/AwAIAAEAAADxAPv/AwAEAAEAAADxAPz/AwAIAAEAAADxAP3/AwAEAAEAAADxAP7/AwAIAAEAAADyAPn/AwAEAAAAAADyAPv/AwAFAAEAAADyAP3/AwAFAAEAAADzAPn/AwABAAAAAAA=")
 tile_set = ExtResource("3_pluxv")
 
-[node name="FGSecondPlane" type="TileMapLayer" parent="TileMaps"]
-z_index = -2
-tile_set = ExtResource("3_kclcj")
-
-[node name="FGFirstPlane" type="TileMapLayer" parent="TileMaps" groups=["Tilemaps"]]
-z_index = -1
-tile_set = ExtResource("3_kclcj")
-
-[node name="BGThirdPlane" type="TileMapLayer" parent="TileMaps"]
-z_index = -3
-tile_set = ExtResource("4_w1n7g")
-
-[node name="BGSecondPlane" type="TileMapLayer" parent="TileMaps"]
-z_index = -2
-tile_set = ExtResource("4_w1n7g")
-
-[node name="BGFirstPlane" type="TileMapLayer" parent="TileMaps"]
-z_index = -1
-tile_set = ExtResource("4_w1n7g")
-
-[node name="Decor" type="TileMapLayer" parent="TileMaps"]
+[node name="Decor" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/ForegroundPlanes"]
 tile_set = ExtResource("7_a216d")
+
+[node name="CollisionPlanes" type="Node2D" parent="TileMaps"]
+
+[node name="ThirdPlane" type="TileMapLayer" parent="TileMaps/CollisionPlanes"]
+z_index = -3
+tile_set = ExtResource("3_kclcj")
+
+[node name="SecondPlane" type="TileMapLayer" parent="TileMaps/CollisionPlanes"]
+z_index = -2
+tile_set = ExtResource("3_kclcj")
+
+[node name="FirstPlane" type="TileMapLayer" parent="TileMaps/CollisionPlanes" groups=["Tilemaps"]]
+z_index = -1
+tile_set = ExtResource("3_kclcj")
 
 [node name="LevelElements" type="Node2D" parent="."]
 
@@ -70,6 +84,8 @@ tile_set = ExtResource("7_a216d")
 [node name="Platforms" type="Node2D" parent="LevelElements"]
 
 [node name="Mechanisms" type="Node2D" parent="LevelElements"]
+
+[node name="InvisibleWalls" type="Node2D" parent="LevelElements"]
 
 [node name="Interactables" type="Node2D" parent="."]
 
@@ -84,8 +100,6 @@ tile_set = ExtResource("7_a216d")
 [node name="Player" parent="." instance=ExtResource("2_7aa5x")]
 
 [node name="Blocks" type="Node2D" parent="."]
-
-[node name="UI" parent="." instance=ExtResource("13_uyyk0")]
 
 [node name="Zones" type="Node2D" parent="."]
 
@@ -103,9 +117,10 @@ rotation = -3.14159
 position = Vector2(-32, -31)
 limit_top = -85
 limit_bottom = 185
-limit_smoothed = true
 editor_draw_limits = true
 target = NodePath("../Player")
+
+[node name="UI" parent="." instance=ExtResource("13_uyyk0")]
 
 [node name="Menu" type="CanvasLayer" parent="."]
 process_mode = 3
