@@ -89,6 +89,8 @@ tile_set = ExtResource("3_kclcj")
 
 [node name="Interactables" type="Node2D" parent="."]
 
+[node name="WorldTriggers" type="Node2D" parent="Interactables"]
+
 [node name="Checkpoints" type="Node2D" parent="Interactables"]
 
 [node name="SceneSwitchers" type="Node2D" parent="Interactables"]

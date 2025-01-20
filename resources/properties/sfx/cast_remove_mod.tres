@@ -11,5 +11,5 @@ sound_effect = ExtResource("2_35ssp")
 volume = -5
 pitch_scale = 1.0
 pitch_randomness = 0.1
-pitch_alternate = false
-alternate_pitches = Array[float]([])
+attenuation = 1.0
+max_distance = 2000.0

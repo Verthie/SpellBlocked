@@ -27,16 +27,6 @@ extends Area2D
 		only_extra_settings = false
 		notify_property_list_changed()
 
-@export var only_extra_settings: bool = false:
-	set(value):
-		if value == only_extra_settings : return
-		only_extra_settings = value
-		is_monit = false
-		is_scene_switch = false
-		is_music_clip_switch = false
-		is_checkpoint = false
-		notify_property_list_changed()
-
 @export var is_scene_switch: bool = false:
 	set(value):
 		if value == is_scene_switch : return
@@ -45,6 +35,16 @@ extends Area2D
 		is_music_clip_switch = false
 		is_checkpoint = false
 		only_extra_settings = false
+		notify_property_list_changed()
+
+@export var only_extra_settings: bool = false:
+	set(value):
+		if value == only_extra_settings : return
+		only_extra_settings = value
+		is_monit = false
+		is_scene_switch = false
+		is_music_clip_switch = false
+		is_checkpoint = false
 		notify_property_list_changed()
 
 # Dynamic export properties

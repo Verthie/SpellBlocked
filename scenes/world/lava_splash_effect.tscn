@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://ck7o524u2kd2h"]
+
+[ext_resource type="Texture2D" uid="uid://rhikubdkmkgf" path="res://assets/sprites/tilesets/foreground/Lava Bubble.png" id="1_4lawp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tv6wh"]
+atlas = ExtResource("1_4lawp")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8uejb"]
+atlas = ExtResource("1_4lawp")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uduf2"]
+atlas = ExtResource("1_4lawp")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tt6nl"]
+atlas = ExtResource("1_4lawp")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gt1ck"]
+atlas = ExtResource("1_4lawp")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vs444"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tv6wh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8uejb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uduf2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tt6nl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gt1ck")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="LavaSplashEffect" type="AnimatedSprite2D"]
+z_index = 3
+sprite_frames = SubResource("SpriteFrames_vs444")
+autoplay = "default"

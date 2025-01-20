@@ -68,6 +68,8 @@ var animation_playing: bool = false
 
 func _ready() -> void:
 	EventBus.changed_interaction_state.connect(_on_interactable_state_change)
+	EventBus.cutscene_started.connect(_on_cutscene_state.bind(true))
+	EventBus.cutscene_ended.connect(_on_cutscene_state.bind(false))
 	$DeathArea.area_entered.connect(_on_player_death_experience)
 	$DeathArea.body_entered.connect(_on_player_death_experience)
 
@@ -175,8 +177,9 @@ func check_top() -> void:
 	if shape_cast_2d.is_colliding():
 		var colliding_object: Object = shape_cast_2d.get_collider(0)
 		if colliding_object is Block:
+			var throw_direction: int = -1 if $Sprites/Wizard.flip_h else 1
 			var block: Block = colliding_object
-			block.velocity.x = mouse_direction * 300
+			block.velocity.x = throw_direction * 300
 			EventBus.block_thrown.emit()
 
 func _physics_process(delta: float) -> void:
@@ -235,8 +238,8 @@ func handle_gravity(delta: float) -> void:
 			if velocity.y > 25 and abs(get_position_delta().y) < 0.05:
 				can_jump = true
 				forced_floor_state = true
-				print(velocity)
-				print(get_position_delta())
+				#print(velocity)
+				#print(get_position_delta())
 
 		velocity.y = min(velocity.y, max_fall_speed) # Clamp prędkości spadania
 		#print(" velocity.y: ", roundf(velocity.y))
@@ -378,6 +381,7 @@ func _on_player_death_experience(body: Node2D) -> void:
 		else:
 			await get_tree().create_timer(0.2).timeout
 	if $DeathArea.has_overlapping_bodies() or $DeathArea.has_overlapping_areas():
+		Globals.input_enabled = false
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.HURT)
 		EventBus.player_died.emit()
 		animation_playing = true
@@ -391,3 +395,9 @@ func set_wand_sprite(state: bool = true) -> void:
 		$Sprites/WandPivot/Wand.show()
 	else:
 		$Sprites/WandPivot/Wand.hide()
+
+func _on_cutscene_state(state: bool = false) -> void:
+	$CollisionShape2D.disabled = state
+	$DeathArea/CollisionShape2D.disabled = state
+	$ShapeCast2D.enabled = !state
+	$WandLogic/RayCast2D.enabled = !state

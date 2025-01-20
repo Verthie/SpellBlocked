@@ -84,7 +84,7 @@ Vector2i(2, 3): {
 "to_time": 0
 },
 Vector2i(3, 2): {
-"fade_beats": 1,
+"fade_beats": 5,
 "fade_mode": 3,
 "from_time": 1,
 "to_time": 0

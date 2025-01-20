@@ -17,9 +17,7 @@ func _on_body_entered(_body: Node2D) -> void:
 		animation_player.play("press", -1, 1)
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.BUTTON_PRESS)
 		pressure_button.turned_on = true
-		for connector: LogicElement in pressure_button.connectors:
-			if connector is LogicGate:
-				connector.gate_open()
+		_trigger_mechanism(true)
 
 
 func _on_body_exited(body: Node2D) -> void:
@@ -29,6 +27,9 @@ func _on_body_exited(body: Node2D) -> void:
 	if colliding_objects.is_empty():
 		animation_player.play("press", -1, -1, true)
 		pressure_button.turned_on = false
+		_trigger_mechanism(false)
+
+func _trigger_mechanism(state: bool = false) -> void:
 		for connector: LogicElement in pressure_button.connectors:
 			if connector is LogicGate:
-				connector.gate_close()
+				connector.gate_open() if state else connector.gate_close()

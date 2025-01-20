@@ -19,7 +19,7 @@ size = Vector2(10, 6)
 
 [node name="Block" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 9607
+collision_mask = 25991
 slide_on_ceiling = false
 floor_stop_on_slope = false
 floor_max_angle = 0.0
@@ -28,6 +28,7 @@ platform_on_leave = 2
 platform_floor_layers = 4294967294
 safe_margin = 0.001
 script = ExtResource("1_h5gay")
+max_fall_speed = 400.0
 modifier_nodes = {
 "Gravity": NodePath("Modifiers/Gravity"),
 "Ice": NodePath("Modifiers/Ice"),

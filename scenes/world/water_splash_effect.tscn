@@ -1,25 +1,25 @@
 [gd_scene load_steps=8 format=3 uid="uid://cwuocybsumtvf"]
 
-[ext_resource type="Texture2D" uid="uid://ci0picpcd6yvf" path="res://assets/sprites/tilesets/foreground/Water Splash.png" id="1_o810j"]
+[ext_resource type="Texture2D" uid="uid://ci0picpcd6yvf" path="res://assets/sprites/tilesets/foreground/Water Splash.png" id="1_icec8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_76gl0"]
-atlas = ExtResource("1_o810j")
+atlas = ExtResource("1_icec8")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vbjmf"]
-atlas = ExtResource("1_o810j")
+atlas = ExtResource("1_icec8")
 region = Rect2(32, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0sj38"]
-atlas = ExtResource("1_o810j")
+atlas = ExtResource("1_icec8")
 region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3p4ah"]
-atlas = ExtResource("1_o810j")
+atlas = ExtResource("1_icec8")
 region = Rect2(64, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_slyk5"]
-atlas = ExtResource("1_o810j")
+atlas = ExtResource("1_icec8")
 region = Rect2(80, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vs444"]
@@ -45,7 +45,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="SplashEffect" type="AnimatedSprite2D"]
+[node name="WaterSplashEffect" type="AnimatedSprite2D"]
 z_index = 3
 sprite_frames = SubResource("SpriteFrames_vs444")
 autoplay = "default"

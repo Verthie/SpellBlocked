@@ -32,6 +32,7 @@ Cursor="*res://globals/cursor.tscn"
 [debug]
 
 gdscript/warnings/unused_signal=0
+gdscript/warnings/standalone_ternary=0
 gdscript/warnings/untyped_declaration=1
 gdscript/warnings/inferred_declaration=1
 gdscript/warnings/integer_division=0
@@ -186,6 +187,8 @@ direction_lock={
 
 [layer_names]
 
+2d_render/layer_1="Player"
+2d_render/layer_2="Ground"
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Ground"
 2d_physics/layer_3="Blocks"
@@ -200,6 +203,7 @@ direction_lock={
 2d_physics/layer_12="SafeGuard"
 2d_physics/layer_13="Tilemap"
 2d_physics/layer_14="InvisibleWalls"
+2d_physics/layer_15="DestructionZone"
 
 [rendering]
 
