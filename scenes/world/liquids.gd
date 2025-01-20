@@ -1,9 +1,18 @@
 class_name LiquidTile
 extends TileMapLayer
 
-const SPLASH_EFFECT: PackedScene = preload('res://scenes/world/splash_effect.tscn')
+const WATER_SPLASH_EFFECT: PackedScene = preload('res://scenes/world/water_splash_effect.tscn')
+const LAVA_SPLASH_EFFECT: PackedScene = preload('res://scenes/world/lava_splash_effect.tscn')
 
-## If this value is lower or equal to [code]0[/code] the script will automatically find the [b]liquid level[/b] using the parameters below.[br][br]Make sure [param search_start_point] is [b]not below[/b] the liquid tilemap and [param search_area_width] covers at least a part of the liquid tilemap
+enum SplashTypes{
+	WATER,
+	LAVA
+}
+
+@export var splash_type: SplashTypes = SplashTypes.WATER
+
+@export var auto_search: bool = true
+## If this value is equal to [code]0[/code] the script will automatically find the [b]liquid level[/b] using the parameters below.[br][br]Make sure [param search_start_point] is [b]not below[/b] the liquid tilemap and [param search_area_width] covers at least a part of the liquid tilemap
 @export var init_liquid_level: int = 0
 ## This refers to the point (global position) at which the search will start, search goes from left to right
 @export var search_start_point: Vector2i = Vector2i(0,-50)
@@ -17,22 +26,20 @@ func _ready() -> void:
 	var y: int = search_start_point.y
 	if largest_liquid_pool_width > search_area_width:
 		largest_liquid_pool_width = search_area_width - 1
-	if init_liquid_level <= 0:
+	if auto_search:
 		while(init_liquid_level <= 0):
 			for x: int in range(search_start_point.x, search_area_width + search_start_point.x, largest_liquid_pool_width):
 				var cell_id: int = get_cell_source_id(Vector2i(x, y))
-				if cell_id == 4:
+				if cell_id == 4 or cell_id == 1:
 					init_liquid_level = int(map_to_local(Vector2i(x, y)).y - 4)
+					splash_type = SplashTypes.WATER if cell_id == 4 else SplashTypes.LAVA
 					return
 			y += 1
-	else:
-		init_liquid_level -= 4
-	print(self, " ", init_liquid_level)
 
 func _on_object_splash(body: Node2D, splash_position: Vector2i, collider: Node2D) -> void:
 	if collider == self:
 		body.z_index = z_index - 1
-		var splash_node: AnimatedSprite2D = SPLASH_EFFECT.instantiate()
+		var splash_node: AnimatedSprite2D = WATER_SPLASH_EFFECT.instantiate() if splash_type == 0 else LAVA_SPLASH_EFFECT.instantiate()
 		splash_node.position = Vector2(splash_position.x, init_liquid_level)
 		splash_node.z_index = z_index
 		#print("body z_index: ", body.z_index, "| tilemap z_index: ", z_index, "| splash z_index: ", splash_node.z_index)

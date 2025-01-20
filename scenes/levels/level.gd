@@ -22,6 +22,8 @@ const BLOCK: PackedScene = preload('res://scenes/objects/block.tscn')
 @export var full_level_restart_on_death: bool = true
 ## The time it takes for input to be allowed after level restart
 @export_range(0.0, 3.0, 0.1) var restart_input_block_time: float = 0.5
+@export var play_level_enter_cutscene: bool = true
+@export var play_level_exit_cutscene: bool = true
 
 @onready var initial_player_position: Vector2 = $Player.position
 @onready var screen_camera: Camera2D = $ScreenCamera
@@ -49,6 +51,11 @@ func _ready() -> void:
 	EventBus.gameplay_settings_entered.connect(_on_settings_enter)
 
 	$Player.show()
+
+	if !Globals.quick_restarted and play_level_enter_cutscene:
+		$CutsceneManager.play_level_enter_cutscene()
+	elif Globals.quick_restarted:
+		Globals.quick_restarted = false
 
 	Cursor.show()
 	InterfaceCursor.hide()
@@ -83,9 +90,6 @@ func _ready() -> void:
 	Globals.started_level = true
 	BgmManager.create_audio(level_music)
 
-	var screen_size: Vector2 = screen_camera.screen_size
-	screen_camera.global_position = (screen_camera.target.global_position / screen_size).floor() * screen_size + screen_size/2
-
 	if !Globals.level_checkpoint.is_empty() and Globals.level_checkpoint.keys()[0] == level_id:
 		checkpoint_parameters = Globals.level_checkpoint[level_id]
 		#print(checkpoint_parameters)
@@ -97,6 +101,9 @@ func _ready() -> void:
 			elif parameter == "music_clip_index":
 				BgmManager.set_interactive_audioclip(checkpoint_parameters[parameter])
 
+	var screen_size: Vector2 = screen_camera.screen_size
+	screen_camera.global_position = (screen_camera.target.global_position / screen_size).floor() * screen_size + screen_size/2
+
 	if Globals.switching:
 		await get_tree().create_timer(restart_input_block_time).timeout
 		Globals.input_enabled = true
@@ -104,11 +111,6 @@ func _ready() -> void:
 	if Globals.game_paused:
 		_level_unpause()
 		Globals.game_paused = false
-
-	if !Globals.quick_restarted:
-		$CutsceneManager.play_level_enter_cutscene()
-	else:
-		Globals.quick_restarted = false
 
 func _input(event: InputEvent) -> void:
 	if !Globals.switching and !TransitionManager.transitioning:

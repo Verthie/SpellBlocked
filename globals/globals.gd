@@ -46,6 +46,8 @@ var initial_block_positions: Array[Vector2i] = []
 func _ready() -> void:
 	EventBus.changed_block_type.connect(_check_modify_state)
 	EventBus.quick_restarted.connect(_on_quick_restart)
+	EventBus.cutscene_started.connect(_on_cutscene_state_change.bind(true))
+	EventBus.cutscene_ended.connect(_on_cutscene_state_change.bind(false))
 
 func load_resources(path: String, extension: String = "") -> Dictionary:
 	var resources: Dictionary = {}
@@ -86,6 +88,10 @@ func update_volume(bus_index: int, value: int) -> void:
 	volumes[bus_index] += value
 	AudioServer.set_bus_volume_db(bus_index, volumes[bus_index])
 
+func set_volume(bus_index: int, value: int) -> void:
+	volumes[bus_index] = value
+	AudioServer.set_bus_volume_db(bus_index, volumes[bus_index])
+
 func set_pause_subtree(root: Node, pause: bool) -> void:
 	var process_setters: Array[String] = ["set_process",
 	"set_physics_process",
@@ -123,3 +129,6 @@ func _check_modify_state() -> void:
 
 func _on_quick_restart() -> void:
 	quick_restarted = true
+
+func _on_cutscene_state_change(state: bool = false) -> void:
+	playing_cutscene = state

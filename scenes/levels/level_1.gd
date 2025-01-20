@@ -22,3 +22,9 @@ func _set_area_transparency(transparency_state: bool = true) -> void:
 	var color: Color = Color('ffffff00') if transparency_state else Color('ffffffe6')
 	var tween: Tween = get_tree().create_tween()
 	tween.tween_property($TileMaps/NoCollisionPlanes/ForegroundPlanes/HiddenLocations, 'modulate', color, 0.5)
+
+func _on_visible_block_notifier_screen_exited() -> void:
+	$LevelElements/Blocks/Section8/Block7.position = Vector2i(1901, -60)
+
+func _on_world_event_trigger_area_body_entered(body: Node2D) -> void:
+	$LevelElements/Platforms/Section6a/AnimationPlayer.play('Section6')

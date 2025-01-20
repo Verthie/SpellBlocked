@@ -158,7 +158,7 @@ func set_interactive_audioclip(clip_index: int = 0, track_position: bool = true,
 			var clip_name: String = audio_stream_interactive.get_clip_name(clip_index)
 			var clip_stream: AudioStream = audio_stream_interactive.get_clip_stream(clip_index)
 			var current_clip_length: float = clip_stream.get_length()
-			print("clip name: ", clip_name, "current_clip_length: ", current_clip_length)
+			print("clip name: ", clip_name, " || clip length: ", current_clip_length)
 			if !global_clip_length:
 				global_clip_length = current_clip_length
 				#print("global_clip_length: ", global_clip_length)
@@ -211,7 +211,7 @@ func restart_interactive_audio_clip(track_position: bool = true, full_restart: b
 		var clip_name: String = audio_stream_interactive.get_clip_name(clip_index)
 		var clip_stream: AudioStream = audio_stream_interactive.get_clip_stream(clip_index)
 		var current_clip_length: float = clip_stream.get_length()
-		print("clip name: ", clip_name, "current_clip_length: ", current_clip_length)
+		print("clip name: ", clip_name, " || clip length: ", current_clip_length)
 
 		global_clip_length = current_clip_length
 
