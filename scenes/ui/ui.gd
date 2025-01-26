@@ -6,7 +6,7 @@ extends CanvasLayer
 func _ready() -> void:
 	Globals.changed_block_amount.connect(update_counter)
 	EventBus.changed_block_type.connect(_on_block_type_change)
-	EventBus.block_removed.connect(_block_removal)
+	EventBus.block_removed.connect(_block_removal.unbind(1))
 	Globals.current_block_type = "None"
 
 func set_current_ui_type() -> void:

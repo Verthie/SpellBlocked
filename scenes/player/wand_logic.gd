@@ -72,17 +72,17 @@ func handle_block_creation() -> void:
 	can_cast = false
 
 func handle_block_modification() -> void:
-	EventBus.applied_modification.emit()
 	var block: Block = received_body
 	if block.current_modifiers.size() < block.max_modifier_amount and Globals.current_block_type not in block.current_modifiers:
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_APPLY_MOD)
 		block.apply_modifier(Globals.current_block_type)
+	EventBus.applied_modification.emit(block, Globals.current_block_type)
 
 func handle_block_removal() -> void:
 	var block: Block = received_body
 	# Destroying block when not in modify state or no modifiers are applied
 	if !Globals.in_modify_state: # Removing the block instance
-		EventBus.block_removed.emit()
+		EventBus.block_removed.emit(block)
 		block.destroy()
 		Globals.block_amount += 1
 	else:
@@ -91,7 +91,7 @@ func handle_block_removal() -> void:
 			block.remove_latest_modifier()
 			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_REMOVE_MOD)
 		else: # Removing the block instance
-			EventBus.block_removed.emit()
+			EventBus.block_removed.emit(block)
 			block.destroy()
 			Globals.block_amount += 1
 

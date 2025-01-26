@@ -83,6 +83,8 @@ func _physics_process(delta: float) -> void:
 				jump_allowed = false
 			else:
 				jump_allowed = true
+		elif collision_object and collision_object.collision_layer == 256:
+			velocity.y = 0
 		else:
 			jump_allowed = true
 
