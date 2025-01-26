@@ -48,7 +48,7 @@ window/vsync/vsync_mode=0
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/Open External Editor/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/Open External Editor/plugin.cfg", "res://addons/sprite_painter/plugin.cfg")
 
 [file_customization]
 
@@ -56,6 +56,7 @@ folder_colors={
 "res://assets/animations/": "gray",
 "res://assets/bgm/": "teal",
 "res://assets/fonts/": "gray",
+"res://assets/light_textures/": "yellow",
 "res://assets/sfx/": "teal",
 "res://assets/sprites/": "red",
 "res://assets/sprites/tilesets/": "orange",
@@ -189,6 +190,9 @@ direction_lock={
 
 2d_render/layer_1="Player"
 2d_render/layer_2="Ground"
+2d_render/layer_3="Elements"
+2d_render/layer_4="BgTilemap"
+2d_render/layer_5="Level"
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Ground"
 2d_physics/layer_3="Blocks"
@@ -204,6 +208,8 @@ direction_lock={
 2d_physics/layer_13="Tilemap"
 2d_physics/layer_14="InvisibleWalls"
 2d_physics/layer_15="DestructionZone"
+2d_physics/layer_16="See Through"
+2d_physics/layer_17="CastBlocker"
 
 [rendering]
 

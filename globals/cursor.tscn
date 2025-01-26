@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://dblro3am354bj"]
+[gd_scene load_steps=12 format=3 uid="uid://dblro3am354bj"]
 
 [ext_resource type="Texture2D" uid="uid://c6dqdwenkd0up" path="res://assets/sprites/cursor/cursors.png" id="1_3kqbg"]
 [ext_resource type="Script" path="res://globals/cursor.gd" id="1_t6031"]
+[ext_resource type="Texture2D" uid="uid://cl88melxethy" path="res://assets/light_textures/light_source_24x24.png" id="3_6yahj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5bnp"]
 size = Vector2(6, 6)
@@ -182,6 +183,9 @@ _data = {
 "select": SubResource("Animation_ipphf")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1he6p"]
+size = Vector2(2, 2)
+
 [node name="Cursor" type="Area2D"]
 process_mode = 3
 collision_layer = 512
@@ -224,5 +228,21 @@ libraries = {
 [node name="ActionTimer" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
+
+[node name="LightSource" type="PointLight2D" parent="."]
+enabled = false
+energy = 0.0
+range_item_cull_mask = 12
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+shadow_item_cull_mask = 32
+texture = ExtResource("3_6yahj")
+
+[node name="ObstructionArea" type="Area2D" parent="."]
+collision_layer = 512
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ObstructionArea"]
+shape = SubResource("RectangleShape2D_1he6p")
 
 [connection signal="timeout" from="ActionTimer" to="." method="_on_timer_timeout"]

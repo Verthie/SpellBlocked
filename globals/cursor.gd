@@ -4,8 +4,9 @@ const cursor_types: Dictionary = {"Block": 0, "Select": 4}
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
-@onready var area_2d: Area2D = $'.'
 @onready var action_timer: Timer = $ActionTimer
+@onready var light_source: PointLight2D = $LightSource
+@onready var obstruction_area: Area2D = $ObstructionArea
 
 @export var blacklist: Array[String]
 
@@ -18,6 +19,7 @@ var colliding_body: Node
 var cast_allowed: bool = false
 var modification_allowed: bool = false
 var just_made_action: bool = false
+var modulate_swap: bool = false
 
 func _ready() -> void:
 	EventBus.obstructed.connect(_change_obstructed_state)
@@ -27,6 +29,7 @@ func _ready() -> void:
 	EventBus.removed_modification.connect(_play_block_cast)
 	EventBus.block_removed.connect(_on_block_removed)
 	EventBus.block_action_rejected.connect(_play_not_available)
+	EventBus.game_restarted.connect(_set_initial_values)
 	animation_player.animation_finished.connect(_reset_cursor_color.unbind(1))
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 
@@ -40,9 +43,11 @@ func _input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 
-	area_2d.position = get_global_mouse_position()
+	if Globals.mouse_enabled:
+		position = get_global_mouse_position()
 
-	if area_2d.has_overlapping_bodies():
+
+	if has_overlapping_bodies():
 		handle_collisions()
 	else:
 		if !obstructed and Globals.block_amount > 0:
@@ -61,10 +66,10 @@ func _process(_delta: float) -> void:
 
 # Kolizja kursora z obiektami fizycznymi
 func handle_collisions() -> void:
-	var objects: Array[Node2D] = area_2d.get_overlapping_bodies()
-	#print(objects)
-	var objects_names: Array = objects.map(object_to_name)
+	var objects: Array[Node2D] = get_overlapping_bodies()
 	var objects_types: Array = objects.map(object_to_type)
+	#print(objects)
+	#var objects_names: Array = objects.map(object_to_name)
 	#print(objects_names)
 	#print(objects_types)
 
@@ -82,10 +87,10 @@ func handle_collisions() -> void:
 				#colliding_body = block
 		modification_allowed = true if colliding_body is Block else false
 
-	elif objects_names.any(check_in_blacklist):
-		cast_allowed = false
-		modification_allowed = false
-		colliding_body = null
+	#elif objects_names.any(check_in_blacklist):
+		#cast_allowed = false
+		#modification_allowed = false
+		#colliding_body = null
 
 	else:
 		cast_allowed = false
@@ -102,7 +107,7 @@ func handle_gameplay_sprite() -> void:
 
 	if !animation_player.is_playing():
 		if Globals.in_modify_state:
-			if (!modification_allowed and area_2d.has_overlapping_bodies()) or obstructed:
+			if (!modification_allowed and has_overlapping_bodies()) or obstructed:
 				sprite_2d.self_modulate = Color("df989f")
 			else:
 				sprite_2d.self_modulate = Globals.block_properties[Globals.current_block_type].colour
@@ -133,7 +138,8 @@ func _on_timer_timeout() -> void:
 
 func _change_obstructed_state(state: bool) -> void:
 	obstructed = state
-	if obstructed:
+
+	if obstructed or obstruction_area.has_overlapping_bodies():
 		sprite_2d.self_modulate = Color(sprite_2d.self_modulate, 0.65)
 	else:
 		sprite_2d.self_modulate = Color(sprite_2d.self_modulate, 1)
@@ -166,3 +172,8 @@ func _play_block_cast() -> void:
 	animation_player.play('cast_create')
 	just_made_action = true
 	action_timer.start()
+
+func _set_initial_values() -> void:
+	light_source.texture_scale = 1
+	Cursor.light_source.enabled = false
+	Cursor.light_source.energy = 0

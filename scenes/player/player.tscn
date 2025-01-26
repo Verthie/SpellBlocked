@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bqumck2g1lx6b"]
+[gd_scene load_steps=28 format=3 uid="uid://bqumck2g1lx6b"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_8d035"]
 [ext_resource type="Texture2D" uid="uid://dsgob0525kdso" path="res://assets/sprites/character/Merchant.png" id="2_m6wue"]
@@ -9,6 +9,7 @@
 [ext_resource type="Animation" uid="uid://ciqhirpp2my2b" path="res://assets/animations/player/fall.res" id="5_eeu42"]
 [ext_resource type="Script" path="res://scenes/player/wand_logic.gd" id="5_nmg8e"]
 [ext_resource type="Animation" uid="uid://dvnp7uugcbww2" path="res://assets/animations/player/idle.res" id="6_7eeqf"]
+[ext_resource type="Script" path="res://scenes/player/wand_raycast.gd" id="7_4sa4l"]
 [ext_resource type="Animation" uid="uid://cwewue4vpb8yv" path="res://assets/animations/player/jump.res" id="7_nh2qm"]
 [ext_resource type="Animation" uid="uid://dibnog5m5ako0" path="res://assets/animations/player/RESET.res" id="7_p2ptt"]
 [ext_resource type="Animation" uid="uid://c6k7iy0e4av6e" path="res://assets/animations/player/cast_remove.res" id="8_5jc35"]
@@ -16,6 +17,7 @@
 [ext_resource type="Animation" uid="uid://d0wvwcie6h1ni" path="res://assets/animations/player/run.res" id="9_6votj"]
 [ext_resource type="Animation" uid="uid://cms5bi6p3bwcg" path="res://assets/animations/player/turn.res" id="10_ujvua"]
 [ext_resource type="Animation" uid="uid://dvnmgtknn2o44" path="res://assets/animations/player/turn_right.res" id="15_5fem2"]
+[ext_resource type="Texture2D" uid="uid://cl88melxethy" path="res://assets/light_textures/light_source_24x24.png" id="17_s1pc6"]
 
 [sub_resource type="Animation" id="Animation_gm61l"]
 length = 0.001
@@ -194,8 +196,8 @@ _data = {
 "turn_right": ExtResource("15_5fem2")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_28ecw"]
-size = Vector2(20, 22.62)
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_bl83a"]
+points = PackedVector2Array(0, 80, -8, 8, 8, 8)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ngrhx"]
 radius = 2.0
@@ -274,9 +276,13 @@ libraries = {
 [node name="WandLogic" type="Node2D" parent="."]
 script = ExtResource("5_nmg8e")
 
-[node name="RayCast2D" type="RayCast2D" parent="WandLogic"]
-target_position = Vector2(22, 0)
-collision_mask = 1026
+[node name="WandRayCast" type="RayCast2D" parent="WandLogic"]
+position = Vector2(1, 0)
+scale = Vector2(0.23, 1.02)
+target_position = Vector2(65.2174, 0)
+collision_mask = 66562
+collide_with_areas = true
+script = ExtResource("7_4sa4l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_mekin")
@@ -291,8 +297,8 @@ playback_auto_capture = false
 [node name="ShapeCast2D" type="ShapeCast2D" parent="."]
 position = Vector2(0, -1)
 scale = Vector2(-0.333769, -0.0735473)
-shape = SubResource("RectangleShape2D_28ecw")
-target_position = Vector2(0, 81.5801)
+shape = SubResource("ConvexPolygonShape2D_bl83a")
+target_position = Vector2(0, 11.378)
 collision_mask = 4
 
 [node name="DeathArea" type="Area2D" parent="."]
@@ -324,6 +330,14 @@ one_shot = true
 wait_time = 0.4
 one_shot = true
 
+[node name="LightSource" type="PointLight2D" parent="."]
+enabled = false
+energy = 0.0
+range_item_cull_mask = 10
+shadow_item_cull_mask = 0
+texture = ExtResource("17_s1pc6")
+
+[connection signal="spell_blocked" from="WandLogic/WandRayCast" to="WandLogic" method="_on_wand_ray_cast_spell_blocked"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="Timers/CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
 [connection signal="timeout" from="Timers/JumpBufferTimer" to="." method="_on_buffered_timer_timeout"]

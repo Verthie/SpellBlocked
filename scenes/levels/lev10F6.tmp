@@ -759,7 +759,6 @@ scale = Vector2(1, 0.984631)
 texture = SubResource("GradientTexture1D_ip215")
 
 [node name="HelperBoundryRects" type="Control" parent="." index="3"]
-visible = false
 z_index = 10
 layout_mode = 3
 anchors_preset = 0
@@ -1109,6 +1108,7 @@ shape = SubResource("RectangleShape2D_isuxm")
 position = Vector2(4578.88, -24.6001)
 is_scene_switch = true
 scene_to_switch = ExtResource("15_d7hl2")
+await_music_finish = true
 trigger_on_area_enter = false
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/SceneSwitchers/EventTriggerArea" index="1"]
@@ -1200,7 +1200,7 @@ position = Vector2(-46, -11.5)
 shape = SubResource("RectangleShape2D_7tahr")
 
 [node name="Player" parent="." index="5"]
-position = Vector2(-173, 4)
+position = Vector2(2340.81, -17)
 
 [node name="Deathzone" parent="Zones" index="0"]
 position = Vector2(0, 65)

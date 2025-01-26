@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/hazards/destructionzone.gd" id="1_4qluf"]
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_hh7ym"]
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ii52v"]
 
 [node name="Destructionzone" type="Area2D"]
 collision_layer = 16384
@@ -10,6 +10,6 @@ collision_mask = 4
 script = ExtResource("1_4qluf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("WorldBoundaryShape2D_hh7ym")
+shape = SubResource("WorldBoundaryShape2D_ii52v")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

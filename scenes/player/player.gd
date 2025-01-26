@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name Player
 
+@export var flip_on_start: bool = false
+
 @export var foot_speed: float = 140
 @export_range(0.0, 1.0, 0.025) var friction: float = 0.175
 @export_range(0.0, 1.0, 0.025) var acceleration: float = 0.125
@@ -33,6 +35,7 @@ class_name Player
 @onready var wand_pivot: Marker2D = $Sprites/WandPivot
 @onready var emote_animation: AnimationPlayer = $Sprites/Emotes/EmoteAnimation
 @onready var shape_cast_2d: ShapeCast2D = $ShapeCast2D
+@onready var light_source: PointLight2D = $LightSource
 
 var current_state: String = "idle"
 var animation_hold_states: Array = ["cast", "cast_remove", "land"]
@@ -51,6 +54,8 @@ var is_jumping: bool = false
 var was_on_floor: bool
 var just_left_ledge: bool
 var forced_floor_state: bool = false
+var can_fall_through: bool = false
+var can_see_through: bool = false
 var pushing: bool = false
 var last_colliding_block: Block
 var colliding_with_block: bool = false
@@ -68,10 +73,10 @@ var animation_playing: bool = false
 
 func _ready() -> void:
 	EventBus.changed_interaction_state.connect(_on_interactable_state_change)
-	EventBus.cutscene_started.connect(_on_cutscene_state.bind(true))
-	EventBus.cutscene_ended.connect(_on_cutscene_state.bind(false))
 	$DeathArea.area_entered.connect(_on_player_death_experience)
 	$DeathArea.body_entered.connect(_on_player_death_experience)
+	if flip_on_start:
+		flip_sprite(true)
 
 func _process(_delta: float) -> void:
 
@@ -184,7 +189,7 @@ func check_top() -> void:
 
 func _physics_process(delta: float) -> void:
 
-	if Globals.game_paused:
+	if Globals.game_paused or Globals.playing_cutscene:
 		return
 
 	if Globals.input_enabled:
@@ -270,11 +275,19 @@ func handle_fall_through() -> void:
 		last_collision = get_last_slide_collision()
 		collider = last_collision.get_collider()
 		collider_type = collider.get_class() if collider != null else ""
+		if collider_type == "StaticBody2D" and collider.collision_layer == 128:
+			can_fall_through = true
+			can_see_through = true
+		elif (collider_type == "AnimatableBody2D" and collider.collision_layer == 256) or (collider_type == "CharacterBody2D" and collider.collision_layer == 4):
+			can_see_through = true
+		else:
+			can_fall_through = false
+			can_see_through = false
 
-	if Input.is_action_just_pressed("fall_through") and is_on_floor() and collider_type == "StaticBody2D":
+	if Input.is_action_just_pressed("fall_through") and is_on_floor() and can_fall_through:
 		#print(collider.collision_layer)
 		#set_collision_mask_value(8, false)
-		position.y += 1 if collider.collision_layer == 128 else 0
+		position.y += 1
 
 	# Włączanie kolizji jak tylko gracz puści przycisk
 	#if Input.is_action_just_released("fall_through"):
@@ -396,8 +409,6 @@ func set_wand_sprite(state: bool = true) -> void:
 	else:
 		$Sprites/WandPivot/Wand.hide()
 
-func _on_cutscene_state(state: bool = false) -> void:
-	$CollisionShape2D.disabled = state
-	$DeathArea/CollisionShape2D.disabled = state
-	$ShapeCast2D.enabled = !state
-	$WandLogic/RayCast2D.enabled = !state
+func set_collisions(disable_collisions: bool = false) -> void:
+	#$CollisionShape2D.disabled = disable_collisions
+	$DeathArea/CollisionShape2D.disabled = disable_collisions

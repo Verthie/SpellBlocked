@@ -6,6 +6,7 @@ extends CanvasLayer
 func _ready() -> void:
 	Globals.changed_block_amount.connect(update_counter)
 	EventBus.changed_block_type.connect(_on_block_type_change)
+	EventBus.block_removed.connect(_block_removal)
 	Globals.current_block_type = "None"
 
 func set_current_ui_type() -> void:
@@ -37,3 +38,7 @@ func update_counter(value: int) -> void:
 
 func _on_block_type_change() -> void:
 	set_current_ui_type()
+
+func _block_removal() -> void:
+	if !visible: show()
+	#TODO some ui animations when getting a block

@@ -5,7 +5,7 @@ extends AnimatableBody2D
 @onready var small_platform: Sprite2D = $SmallPlatform
 
 @export_enum("Grass", "Stone", "Clay") var platform_type: int = 0
-@export_enum("Bare", "Grass", "Flower", "Mushroom", "Stone") var platform_variant: int = 0
+@export_enum("Bare", "Grass", "Mushroom", "Stone", "Gem") var platform_variant: int = 0
 @export_enum("Default", "Small") var platform_size: int = 0
 
 func _ready() -> void:
