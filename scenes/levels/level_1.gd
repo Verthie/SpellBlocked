@@ -48,10 +48,10 @@ func _on_section6_world_trigger_entered(_body: Node2D) -> void:
 	$LevelElements/Platforms/Section6a/AnimationPlayer2.play('section_6')
 
 func on_section6_block_entered_lava(body: Node2D) -> void:
-	_block_set_position(body, Vector2i(1448, -193))
+	_block_set_position(body, Vector2i(1440, -193))
 
 func _block_set_position(body: Block, position_value: Vector2) -> void:
-	body.position = position_value
+	body.global_position = position_value
 
 func _on_section_10_world_trigger_entered(body: Node2D) -> void:
 	if 'light_source' in body:

@@ -23,6 +23,7 @@ collision_layer = 4
 collision_mask = 25991
 slide_on_ceiling = false
 floor_stop_on_slope = false
+floor_constant_speed = true
 floor_max_angle = 0.0
 floor_snap_length = 0.0
 platform_on_leave = 2
