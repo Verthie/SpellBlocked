@@ -2,16 +2,16 @@ extends Node2D
 
 const BLOCK: PackedScene = preload('res://scenes/objects/block.tscn')
 
-@onready var ray_cast_2d: RayCast2D = $RayCast2D
+@onready var wand_ray_cast: RayCast2D = $WandRayCast
 
-@export var raycast_enabled: bool = true
-
-#var object_amount: int = 0
-var raycast_obstruction: bool = false # Zależne od kolizji raycasta
 var can_cast: bool = false # Zależne od kolizji obszaru kursora <vvv
 var can_modify: bool = false
 var received_body: Node2D
 var body_type: String = ""
+
+var cast_blocked: bool = false
+var remove_blocked: bool = false
+var modify_blocked: bool = false
 
 var block_swap_keys: Array = [KEY_1, KEY_2, KEY_3]
 
@@ -24,16 +24,16 @@ func _input(event: InputEvent) -> void:
 
 	if event.is_action_pressed('cast') or event.is_action_pressed('cast_destroy'):
 
-		if !raycast_obstruction:
+		if !wand_ray_cast.raycast_obstruction:
 
 			if event.is_action_pressed('cast'):
 
 				# Block creation functionality
-				if can_cast and Globals.block_amount > 0:
+				if can_cast and Globals.block_amount > 0 and !cast_blocked:
 					handle_block_creation()
 
 				# Applying modifications functionality
-				elif can_modify and Globals.in_modify_state and received_body is Block:
+				elif can_modify and Globals.in_modify_state and received_body is Block and !modify_blocked:
 					handle_block_modification()
 
 				else:
@@ -41,7 +41,7 @@ func _input(event: InputEvent) -> void:
 
 
 			# Block destroy and modify removal functionality
-			elif event.is_action_pressed('cast_destroy'):
+			elif event.is_action_pressed('cast_destroy') and !remove_blocked:
 				if can_modify and received_body is Block:
 					handle_block_removal()
 				else:
@@ -65,22 +65,6 @@ func _input(event: InputEvent) -> void:
 
 		EventBus.changed_block_type.emit()
 
-func _process(_delta: float) -> void:
-	handle_sight_obstruction()
-
-func handle_sight_obstruction() -> void:
-	ray_cast_2d.look_at(get_global_mouse_position())
-	ray_cast_2d.target_position.x = get_local_mouse_position().length()
-
-	if raycast_enabled:
-		if ray_cast_2d.is_colliding():
-			#print("colliding with: ", ray_cast_2d.get_collider())
-			raycast_obstruction = true
-		else:
-			raycast_obstruction = false
-
-		EventBus.obstructed.emit(raycast_obstruction)
-
 func handle_block_creation() -> void:
 	EventBus.casted.emit()
 	AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST)
@@ -100,7 +84,6 @@ func handle_block_removal() -> void:
 	if !Globals.in_modify_state: # Removing the block instance
 		EventBus.block_removed.emit()
 		block.destroy()
-		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_DESTROY)
 		Globals.block_amount += 1
 	else:
 		if !block.current_modifiers.is_empty(): # Removing block's modifier
@@ -110,7 +93,6 @@ func handle_block_removal() -> void:
 		else: # Removing the block instance
 			EventBus.block_removed.emit()
 			block.destroy()
-			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_DESTROY)
 			Globals.block_amount += 1
 
 		# Destroying block only if no modifiers are applied
@@ -125,3 +107,14 @@ func _on_cursor_state_change(colliding_body: Node, cast_allowed: bool, modificat
 	received_body = colliding_body
 	can_cast = cast_allowed
 	can_modify = modification_allowed
+
+func _on_wand_ray_cast_spell_blocked(colliding_body: Node) -> void:
+	if colliding_body and colliding_body is CastBlocker:
+		var cast_blocker: CastBlocker = colliding_body
+		cast_blocked = cast_blocker.create_block
+		remove_blocked = cast_blocker.remove_block
+		modify_blocked = cast_blocker.modify_block
+	else:
+		cast_blocked = false
+		remove_blocked = false
+		modify_blocked = false

@@ -12,7 +12,7 @@ const BLOCK: PackedScene = preload('res://scenes/objects/block.tscn')
 @export var allow_throwing: bool = true
 @export var allow_modifying: bool = true
 @export var allowed_modifiers: Array[String] = ["Ice", "Stone", "Gravity"]
-@export_range(1, 100, 1) var level_block_amount: int = 20
+@export_range(0, 100, 1) var level_block_amount: int = 20
 @export var level_music: BgmSettings.MusicType = BgmSettings.MusicType.LEVELTEST
 @export var init_cursor_position: Vector2 = Vector2(640,360)
 @export var auto_restart_on_death: bool = true
@@ -23,7 +23,6 @@ const BLOCK: PackedScene = preload('res://scenes/objects/block.tscn')
 ## The time it takes for input to be allowed after level restart
 @export_range(0.0, 3.0, 0.1) var restart_input_block_time: float = 0.5
 @export var play_level_enter_cutscene: bool = true
-@export var play_level_exit_cutscene: bool = true
 
 @onready var initial_player_position: Vector2 = $Player.position
 @onready var screen_camera: Camera2D = $ScreenCamera
@@ -77,11 +76,9 @@ func _ready() -> void:
 				modifier.hide()
 
 	Globals.block_amount = level_block_amount
-	if SceneSwitcher.current_level == null:
-		SceneSwitcher.current_level = self
 	SceneSwitcher.fallback_scene_path = scene_file_path
-	menu_scene = ResourceLoader.load('res://scenes/ui/gameplay_menu.tscn')
-	settings_scene = ResourceLoader.load('res://scenes/ui/settings_menu.tscn')
+	menu_scene = load('res://scenes/ui/gameplay_menu.tscn')
+	settings_scene = load('res://scenes/ui/settings_menu.tscn')
 	if reset_cursor_position_on_restart:
 		Input.warp_mouse(init_cursor_position)
 	else:
@@ -95,11 +92,29 @@ func _ready() -> void:
 		#print(checkpoint_parameters)
 		for parameter: String in checkpoint_parameters:
 			if parameter == "player_position":
-				$Player.position = checkpoint_parameters[parameter]
+				$Player.global_position = checkpoint_parameters[parameter]
 				#var camera_times_position_x: int = $Player.position.x / 180
 				#$ScreenCamera.position.x = camera_times_position_x * 305
 			elif parameter == "music_clip_index":
 				BgmManager.set_interactive_audioclip(checkpoint_parameters[parameter])
+			elif parameter == "cutscenes":
+				var cutscenes_dictionary: Dictionary = checkpoint_parameters[parameter]
+				print(cutscenes_dictionary)
+				if !cutscenes_dictionary.is_empty():
+					for key_animation_player: NodePath in cutscenes_dictionary:
+						var animation_player_path: String = str(key_animation_player)
+						if animation_player_path.is_relative_path():
+							#print("is relative")
+							while (animation_player_path.begins_with("../")):
+								animation_player_path = animation_player_path.erase(0, 3)
+								#print(animation_player_path)
+
+							animation_player_path.insert(1,"root/")
+
+						var animation_player: AnimationPlayer = get_node(animation_player_path)
+						print(animation_player)
+						var cutscene_name: String = cutscenes_dictionary[key_animation_player]
+						animation_player.play(cutscene_name)
 
 	var screen_size: Vector2 = screen_camera.screen_size
 	screen_camera.global_position = (screen_camera.target.global_position / screen_size).floor() * screen_size + screen_size/2
@@ -113,7 +128,7 @@ func _ready() -> void:
 		Globals.game_paused = false
 
 func _input(event: InputEvent) -> void:
-	if !Globals.switching and !TransitionManager.transitioning:
+	if !Globals.switching and !TransitionManager.transitioning and !Globals.playing_cutscene:
 		if event.is_action_pressed('restart'):
 			restarted_or_exited.emit('restart')
 			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_BACK)
@@ -129,7 +144,7 @@ func _on_wand_cast() -> void:
 	block_instance.position = get_local_mouse_position()
 	$Blocks.add_child(block_instance)
 
-func _on_checkpoint_enter(checkpoint_id: int, save_parameters: int, chosen_clip_index: int = -1) -> void:
+func _on_checkpoint_enter(checkpoint_id: int, save_parameters: int, chosen_clip_index: int = -1, player_respawn_location: Vector2 = Vector2(0,0), cutscenes: Dictionary = {}) -> void:
 	var checkpoint_clip_index: int = chosen_clip_index if chosen_clip_index >= 0 else BgmManager.current_clip_index
 
 	match save_parameters:
@@ -140,8 +155,14 @@ func _on_checkpoint_enter(checkpoint_id: int, save_parameters: int, chosen_clip_
 			BgmManager.set_checkpoint_clip_index(checkpoint_clip_index)
 			#print("chosen_clip_index: ", chosen_clip_index)
 			#print("checkpoint clip index: ", checkpoint_clip_in dex)
+		7:
+			print("saving position, music clip and cutscenes")
+			BgmManager.set_checkpoint_clip_index(checkpoint_clip_index)
 
-	Globals.set_level_checkpoint(checkpoint_id, save_parameters, level_id, $Player.position, checkpoint_clip_index)
+	if player_respawn_location == Vector2(0,0):
+		player_respawn_location = $Player.global_position
+
+	Globals.set_level_checkpoint(checkpoint_id, save_parameters, level_id, player_respawn_location, checkpoint_clip_index, cutscenes)
 
 func _on_player_death() -> void:
 	if !full_level_restart_on_death:
@@ -163,7 +184,7 @@ func _restart(transition_type: TransitionManager.ShaderTransitionType = Transiti
 
 	TransitionManager.layer = 3
 	if transition_type == TransitionManager.ShaderTransitionType.NONE:
-		SceneSwitcher.goto_scene(SceneSwitcher.current_level.scene_file_path)
+		SceneSwitcher.goto_scene(scene_file_path)
 	else:
 		TransitionManager.play_shader_transition(transition_type, true, transition_speed)
 		await TransitionManager.finished
@@ -172,7 +193,7 @@ func _restart(transition_type: TransitionManager.ShaderTransitionType = Transiti
 			get_tree().paused = false
 		else:
 			EventBus.quick_restarted.emit()
-		SceneSwitcher.goto_scene(SceneSwitcher.current_level.scene_file_path)
+		SceneSwitcher.goto_scene(scene_file_path)
 		TransitionManager.play_shader_transition(transition_type, false, transition_speed, true)
 
 

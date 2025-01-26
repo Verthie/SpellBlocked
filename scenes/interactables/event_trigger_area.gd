@@ -59,6 +59,10 @@ var checkpoint_id: int = 1
 var clip_index_on_checkpoint: int = -1
 ## The parameters that are saved when reaching checkpoint
 var save_parameters: int = 3
+## The global position in which the player will respawn on death, if unchanged the checkpoint location is applied
+var player_respawn_location: Vector2 = Vector2(0, 0)
+## Cutscenes that will play on respawn, use [NodePath] as the key in order to target the chosen [AnimationPlayer] and [String] as a value to set the desired animation
+var cutscenes: Dictionary = {}
 
 var scene_to_switch: PackedScene
 
@@ -72,7 +76,7 @@ var can_interact: bool = false
 
 #func _ready() -> void:
 	#test()
-
+#
 #func test() -> void:
 	#print( get_script().get_script_property_list())
 
@@ -89,7 +93,7 @@ func _input(event: InputEvent) -> void:
 			BgmManager.set_interactive_audioclip(clip_index)
 
 		if is_checkpoint and Globals.previous_checkpoint_id != checkpoint_id:
-				EventBus.entered_checkpoint.emit(checkpoint_id, save_parameters, clip_index_on_checkpoint)
+				EventBus.entered_checkpoint.emit(checkpoint_id, save_parameters, clip_index_on_checkpoint, player_respawn_location, cutscenes)
 
 		if is_scene_switch and scene_to_switch:
 			_enter_next_level(scene_to_switch.resource_path)
@@ -137,16 +141,26 @@ func _get_property_list():
 				"name": &"save_parameters",
 				"type": TYPE_INT,
 				"usage": PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE,
-				"hint_string": "Player Position:1,Music Clip:2,Block Instances:4,Level Block Positions:8",
+				"hint_string": "Player Position:1,Music Clip:2,Cutscenes:4,Level Block Positions:8, Block Instances:16",
 				"hint": PROPERTY_HINT_FLAGS
+			})
+			ret.append({
+				"name": &"player_respawn_location",
+				"type": TYPE_VECTOR2,
+				"usage": PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE,
+			})
+			ret.append({
+				"name": &"cutscenes",
+				"type": TYPE_DICTIONARY,
+				"usage": PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE,
 			})
 		if is_scene_switch:
 			ret.append({
 				"name": &"scene_to_switch",
 				"type": TYPE_OBJECT,
 				"usage": PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE,
-				"hint": PROPERTY_HINT_RESOURCE_TYPE,
-				"hint_string": "PackedScene"
+				"hint_string": "PackedScene",
+				"hint": PROPERTY_HINT_RESOURCE_TYPE
 			})
 		if is_monit or is_scene_switch or is_music_clip_switch or is_checkpoint or only_extra_settings:
 			ret.append({
@@ -174,7 +188,7 @@ func _on_body_entered(_body: Node2D) -> void:
 			BgmManager.triggered_clip_switch.emit(clip_index)
 
 		if is_checkpoint and Globals.previous_checkpoint_id != checkpoint_id:
-			EventBus.entered_checkpoint.emit(checkpoint_id, save_parameters, clip_index_on_checkpoint)
+			EventBus.entered_checkpoint.emit(checkpoint_id, save_parameters, clip_index_on_checkpoint, player_respawn_location, cutscenes)
 
 		if is_scene_switch and scene_to_switch:
 			_enter_next_level(scene_to_switch.resource_path)

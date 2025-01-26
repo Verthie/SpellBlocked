@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://x2n2cfn2lfgi"]
+
+[ext_resource type="Script" path="res://scenes/world/signal_state.gd" id="1_383je"]
+[ext_resource type="Texture2D" uid="uid://dediifll18pe7" path="res://assets/sprites/objects/signal_state.png" id="1_u5xj7"]
+
+[node name="SignalState" type="Node2D"]
+script = ExtResource("1_383je")
+
+[node name="SignalSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_u5xj7")
+hframes = 2

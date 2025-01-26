@@ -9,20 +9,23 @@
 [ext_resource type="PackedScene" uid="uid://c3hfa17lbuxae" path="res://scenes/hazards/deathzone.tscn" id="7_546jt"]
 [ext_resource type="TileSet" uid="uid://c7g86xemyc2us" path="res://assets/tilesets/decor.tres" id="7_a216d"]
 [ext_resource type="PackedScene" uid="uid://bkqmw36c04h36" path="res://scenes/hazards/destructionzone.tscn" id="8_x4ic2"]
+[ext_resource type="Script" path="res://scenes/levels/cutscene_manager.gd" id="12_5luhc"]
 [ext_resource type="PackedScene" uid="uid://dmi6orowpok20" path="res://scenes/levels/screen_camera.tscn" id="12_tockn"]
-[ext_resource type="Script" path="res://scenes/levels/level_cutscene.gd" id="12_wy55y"]
 [ext_resource type="PackedScene" uid="uid://clpflpxtp3g2h" path="res://scenes/ui/ui.tscn" id="13_uyyk0"]
 
 [node name="Level" type="Node2D"]
 process_mode = 1
+light_mask = 16
 position = Vector2(-128, 121)
 script = ExtResource("1_yace1")
 
 [node name="TileMaps" type="Node2D" parent="."]
+light_mask = 0
 
 [node name="NoCollisionPlanes" type="Node2D" parent="TileMaps"]
 
 [node name="Background" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes"]
+light_mask = 0
 z_index = -10
 tile_set = ExtResource("2_nvkav")
 
@@ -30,10 +33,12 @@ tile_set = ExtResource("2_nvkav")
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 
 [node name="FifthPlane" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/DarkenedBackgroundPlanes"]
+light_mask = 8
 z_index = -4
 tile_set = ExtResource("3_pluxv")
 
 [node name="FourthPlane" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/DarkenedBackgroundPlanes"]
+light_mask = 8
 z_index = -4
 tile_set = ExtResource("3_pluxv")
 
@@ -54,56 +59,76 @@ tile_set = ExtResource("4_w1n7g")
 [node name="ForegroundPlanes" type="Node2D" parent="TileMaps/NoCollisionPlanes"]
 
 [node name="BridgePlane" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/ForegroundPlanes"]
+light_mask = 8
 z_index = -3
 tile_map_data = PackedByteArray("AADsAPn/AwAAAAAAAADtAPn/AwAEAAAAAADuAPn/AwAEAAAAAADvAPn/AwAFAAAAAADvAPv/AwACAAEAAADvAP3/AwACAAEAAADwAPn/AwAGAAAAAADwAPr/AwAGAAEAAADwAPv/AwADAAEAAADwAPz/AwAGAAEAAADwAP3/AwADAAEAAADwAP7/AwAGAAEAAADxAPn/AwAIAAAAAADxAPr/AwAIAAEAAADxAPv/AwAEAAEAAADxAPz/AwAIAAEAAADxAP3/AwAEAAEAAADxAP7/AwAIAAEAAADyAPn/AwAEAAAAAADyAPv/AwAFAAEAAADyAP3/AwAFAAEAAADzAPn/AwABAAAAAAA=")
 tile_set = ExtResource("3_pluxv")
 
 [node name="Decor" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/ForegroundPlanes"]
+light_mask = 8
 tile_set = ExtResource("7_a216d")
 
 [node name="CollisionPlanes" type="Node2D" parent="TileMaps"]
 
 [node name="ThirdPlane" type="TileMapLayer" parent="TileMaps/CollisionPlanes"]
+light_mask = 2
 z_index = -3
 tile_set = ExtResource("3_kclcj")
 
 [node name="SecondPlane" type="TileMapLayer" parent="TileMaps/CollisionPlanes"]
+light_mask = 2
 z_index = -2
 tile_set = ExtResource("3_kclcj")
 
 [node name="FirstPlane" type="TileMapLayer" parent="TileMaps/CollisionPlanes" groups=["Tilemaps"]]
+light_mask = 2
 z_index = -1
 tile_set = ExtResource("3_kclcj")
 
 [node name="LevelElements" type="Node2D" parent="."]
+light_mask = 4
 
 [node name="Items" type="Node2D" parent="LevelElements"]
+light_mask = 0
 
 [node name="Blocks" type="Node2D" parent="LevelElements"]
+light_mask = 0
 
 [node name="Platforms" type="Node2D" parent="LevelElements"]
+light_mask = 0
 
 [node name="Mechanisms" type="Node2D" parent="LevelElements"]
+light_mask = 0
 
 [node name="InvisibleWalls" type="Node2D" parent="LevelElements"]
+light_mask = 0
+
+[node name="Labels" type="Node2D" parent="LevelElements"]
 
 [node name="Interactables" type="Node2D" parent="."]
+light_mask = 0
 
 [node name="WorldTriggers" type="Node2D" parent="Interactables"]
+light_mask = 0
 
 [node name="Checkpoints" type="Node2D" parent="Interactables"]
+light_mask = 0
 
 [node name="SceneSwitchers" type="Node2D" parent="Interactables"]
+light_mask = 0
 
 [node name="Signs" type="Node2D" parent="Interactables"]
+light_mask = 0
 
 [node name="InteractiveMusic" type="Node2D" parent="Interactables"]
+light_mask = 0
 
 [node name="Player" parent="." instance=ExtResource("2_7aa5x")]
 
 [node name="Blocks" type="Node2D" parent="."]
 
 [node name="Zones" type="Node2D" parent="."]
+light_mask = 0
 
 [node name="Deathzone" parent="Zones" instance=ExtResource("7_546jt")]
 position = Vector2(0, 105)
@@ -128,5 +153,5 @@ target = NodePath("../Player")
 process_mode = 3
 visible = false
 
-[node name="CutsceneManager" type="Node" parent="."]
-script = ExtResource("12_wy55y")
+[node name="CutsceneManager" type="Node2D" parent="."]
+script = ExtResource("12_5luhc")

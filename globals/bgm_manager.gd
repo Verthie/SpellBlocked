@@ -1,6 +1,8 @@
 extends Node2D
 
 signal triggered_clip_switch(clip_index: int)
+signal clip_started
+signal clip_finished
 
 var music_dict: Dictionary = {}
 @warning_ignore('untyped_declaration')
@@ -50,9 +52,14 @@ func _process(_delta: float) -> void:
 		#print("song position: ", true_position, " || song time left: ", song_time_left)
 		#print("song time left: ", song_time_left)
 
+		if true_position <= 0.02:
+			clip_started.emit()
+			#print("CLIP STARTED")
+
 		if song_time_left <= 0.02:
 			if is_filler_clip:
 				_initiate_filler_playback_position_tracking(filler_global_clip_length)
+			clip_finished.emit()
 			print("CLIP FINISHED")
 
 func create_2d_audio_at_location(location: Vector2, type: BgmSettings.MusicType) -> void:

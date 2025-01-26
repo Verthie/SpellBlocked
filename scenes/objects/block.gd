@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name Block
 
+#signal body_on_button
+
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var shape_cast_down: ShapeCast2D = $ShapeCastDown
 @onready var label: Label = $DebugLabel
@@ -145,11 +147,13 @@ func push_blocks() -> void:
 		if colliding_object is Block and abs(collision.get_normal().y) < 0.05:
 			var colliding_block: Block = colliding_object
 			if block_thrown:
-				colliding_block.velocity.x = get_real_velocity().x/2
+				colliding_block.velocity.x = get_real_velocity().x/1.6
 			else:
 				colliding_block.velocity.x = velocity.x/(colliding_block.gravity/100)
 			#print("real velocity:", get_real_velocity(), "normal:", collision.get_normal().y)
 			#print("travel:", collision_travel, "ramainder:", collision_ramainder)
+		#if colliding_object is PressureButton:
+			#body_on_button.emit()
 
 func apply_modifier(modifier_type: String) -> void:
 	if current_modifiers.is_empty():
@@ -182,6 +186,7 @@ func apply_overlay(modifier_type: String) -> void:
 	overlay.self_modulate = Color(Globals.block_properties[modifier_type].colour, Globals.block_properties[modifier_type].modifier_overlay_opacity)
 
 func destroy() -> void:
+	AudioManager.create_2d_audio_at_location(global_position, SoundEffectSettings.SoundEffectType.CAST_DESTROY)
 	queue_free()
 
 func apply_thrown_state() -> void:

@@ -23,6 +23,7 @@ var current_level_id: int = 0
 var switching: bool = false
 var game_paused: bool = false
 var input_enabled: bool = true
+var mouse_enabled: bool = true
 var playing_cutscene: bool = false
 var quick_restarted: bool = false
 var player_lives: bool = true
@@ -46,8 +47,6 @@ var initial_block_positions: Array[Vector2i] = []
 func _ready() -> void:
 	EventBus.changed_block_type.connect(_check_modify_state)
 	EventBus.quick_restarted.connect(_on_quick_restart)
-	EventBus.cutscene_started.connect(_on_cutscene_state_change.bind(true))
-	EventBus.cutscene_ended.connect(_on_cutscene_state_change.bind(false))
 
 func load_resources(path: String, extension: String = "") -> Dictionary:
 	var resources: Dictionary = {}
@@ -103,7 +102,7 @@ func set_pause_subtree(root: Node, pause: bool) -> void:
 	for setter: String in process_setters:
 		root.propagate_call(setter, [!pause])
 
-func set_level_checkpoint(checkpoint_id: int, saved_parameters: int, level_id: int = 1, player_pos: Vector2 = Vector2(0,0), music_clip_index: int = 0) -> void:
+func set_level_checkpoint(checkpoint_id: int, saved_parameters: int, level_id: int = 1, player_pos: Vector2 = Vector2(0,0), music_clip_index: int = 0, cutscenes: Dictionary = {}) -> void:
 	reset_level_checkpoint()
 	var checkpoint_parameters: Dictionary = {}
 	match saved_parameters:
@@ -111,6 +110,8 @@ func set_level_checkpoint(checkpoint_id: int, saved_parameters: int, level_id: i
 			checkpoint_parameters = {"player_position": player_pos}
 		3:
 			checkpoint_parameters = {"player_position": player_pos, "music_clip_index": music_clip_index}
+		7:
+			checkpoint_parameters = {"player_position": player_pos, "music_clip_index": music_clip_index, "cutscenes": cutscenes}
 		_:
 			pass
 	if !checkpoint_parameters.is_empty():
@@ -129,6 +130,3 @@ func _check_modify_state() -> void:
 
 func _on_quick_restart() -> void:
 	quick_restarted = true
-
-func _on_cutscene_state_change(state: bool = false) -> void:
-	playing_cutscene = state
