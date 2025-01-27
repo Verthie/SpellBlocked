@@ -1,10 +1,11 @@
 [gd_resource type="Resource" script_class="CustomResource" load_steps=2 format=3 uid="uid://ds5p78pv4dkia"]
 
-[ext_resource type="Script" path="res://resources/properties/block_types/block_properties.gd" id="1_46o1c"]
+[ext_resource type="Script" path="res://resources/scripts/block_properties.gd" id="1_46o1c"]
 
 [resource]
 script = ExtResource("1_46o1c")
-type_name = "None"
+type = 3
+type_name = "Gravity"
 friction = 0.175
 gravity = -300.0
 colour = Color(0.654813, 0.634225, 0.939261, 1)

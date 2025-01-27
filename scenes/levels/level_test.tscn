@@ -227,7 +227,7 @@ speed_scale = -0.441
 position = Vector2(0, 1)
 is_scene_switch = true
 scene_to_switch = ExtResource("9_vib8a")
-trigger_on_area_enter = true
+trigger_on_area_enter = false
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/SceneSwitchers/EventTriggerArea" index="0"]
 position = Vector2(108, -10)

@@ -66,10 +66,10 @@ func _input(event: InputEvent) -> void:
 		EventBus.changed_block_type.emit()
 
 func handle_block_creation() -> void:
-	EventBus.casted.emit()
 	AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST)
 	Globals.block_amount -= 1
 	can_cast = false
+	EventBus.casted.emit()
 
 func handle_block_modification() -> void:
 	var block: Block = received_body
@@ -82,18 +82,18 @@ func handle_block_removal() -> void:
 	var block: Block = received_body
 	# Destroying block when not in modify state or no modifiers are applied
 	if !Globals.in_modify_state: # Removing the block instance
-		EventBus.block_removed.emit(block)
 		block.destroy()
 		Globals.block_amount += 1
+		EventBus.block_removed.emit(block)
 	else:
 		if !block.current_modifiers.is_empty(): # Removing block's modifier
-			EventBus.removed_modification.emit()
 			block.remove_latest_modifier()
 			AudioManager.create_audio(SoundEffectSettings.SoundEffectType.CAST_REMOVE_MOD)
+			EventBus.removed_modification.emit(block)
 		else: # Removing the block instance
-			EventBus.block_removed.emit(block)
 			block.destroy()
 			Globals.block_amount += 1
+			EventBus.block_removed.emit(block)
 
 		# Destroying block only if no modifiers are applied
 		#if !block.current_modifiers.is_empty(): # Removing block's modifier

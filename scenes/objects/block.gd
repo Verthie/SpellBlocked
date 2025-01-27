@@ -25,6 +25,8 @@ class_name Block
 @export var modifier_nodes: Dictionary
 @export var max_modifier_amount: int = 2
 
+@export_enum("None", "Ice", "Stone", "Gravity") var starting_modifier: String = "None"
+
 var last_velocity: Vector2 = Vector2.ZERO
 
 var fall_time: float = 0.0
@@ -44,6 +46,8 @@ var object_on_top: Object
 func _ready() -> void:
 	EventBus.block_thrown.connect(apply_thrown_state)
 	apply_modifier(Globals.current_block_type)
+	if starting_modifier != "None":
+		apply_modifier(starting_modifier)
 	$SplashArea.area_entered.connect(_on_block_destruction)
 	$SplashArea.body_entered.connect(_on_block_destruction)
 
@@ -73,7 +77,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-	apply_movement(Vector2(0.0,0.0), 0.0)
+	apply_movement(Vector2(0,0), 0)
 
 	if shape_cast_down.is_colliding():
 		var collision_object: Object = shape_cast_down.get_collider(0)
@@ -83,8 +87,6 @@ func _physics_process(delta: float) -> void:
 				jump_allowed = false
 			else:
 				jump_allowed = true
-		elif collision_object and collision_object.collision_layer == 256:
-			velocity.y = 0
 		else:
 			jump_allowed = true
 

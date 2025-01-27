@@ -7,7 +7,12 @@ const ICE_BLOCK_PROPERTIES: CustomResource = preload('res://resources/properties
 const STONE_BLOCK_PROPERTIES: CustomResource = preload('res://resources/properties/block_types/stone_block_properties.tres')
 const ANTI_GRAVITY_BLOCK_PROPERTIES: CustomResource = preload('res://resources/properties/block_types/anti-gravity_block_properties.tres')
 
-const block_properties: Dictionary = {"None": DEFAULT_BLOCK_PROPERTIES, "Ice": ICE_BLOCK_PROPERTIES, "Stone": STONE_BLOCK_PROPERTIES, "Gravity": ANTI_GRAVITY_BLOCK_PROPERTIES}
+const block_properties: Dictionary = {
+	"None": DEFAULT_BLOCK_PROPERTIES,
+	"Ice": ICE_BLOCK_PROPERTIES,
+	"Stone": STONE_BLOCK_PROPERTIES,
+	"Gravity": ANTI_GRAVITY_BLOCK_PROPERTIES
+	}
 
 var volumes: Array[int] = [0, -10, -10]
 

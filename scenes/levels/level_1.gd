@@ -42,13 +42,13 @@ func _set_area_transparency(transparency_state: bool = true) -> void:
 
 func _on_visible_block_notifier_screen_exited() -> void:
 	if $Player.position.y < -125:
-		$LevelElements/Blocks/Section8/Block7.position = Vector2i(2221, -63)
+		$LevelElements/Blocks/Section8/Block7.global_position = Vector2i(2078, 59)
 
 func _on_section6_world_trigger_entered(_body: Node2D) -> void:
 	$LevelElements/Platforms/Section6a/AnimationPlayer2.play('section_6')
 
 func on_section6_block_entered_lava(body: Node2D) -> void:
-	_block_set_position(body, Vector2i(1440, -193))
+	_block_set_position(body, Vector2i(1432, -193))
 
 func _block_set_position(body: Block, position_value: Vector2) -> void:
 	body.global_position = position_value
