@@ -4,7 +4,7 @@ extends Node
 signal changed_interaction_state(in_area: bool)
 signal casted()
 signal applied_modification(block: Block, block_type: String)
-signal removed_modification()
+signal removed_modification(block: Block)
 signal block_thrown()
 signal obstructed(state: bool)
 signal changed_block_type()

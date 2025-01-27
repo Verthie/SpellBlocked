@@ -26,7 +26,7 @@ func _ready() -> void:
 	EventBus.changed_cursor_type.connect(_change_cursor_type)
 	EventBus.casted.connect(_play_block_cast)
 	EventBus.applied_modification.connect(_play_block_cast.unbind(2))
-	EventBus.removed_modification.connect(_play_block_cast)
+	EventBus.removed_modification.connect(_play_block_cast.unbind(1))
 	EventBus.block_removed.connect(_on_block_removed.unbind(1))
 	EventBus.block_action_rejected.connect(_play_not_available)
 	EventBus.game_restarted.connect(_set_initial_values)

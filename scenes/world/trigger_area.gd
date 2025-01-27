@@ -7,26 +7,25 @@ var blocks_on_button: Array[Block]
 var player_on_button: bool = false
 var colliding_objects: Array[Node2D]
 
+var block_removed: bool = false
+
 func _ready() -> void:
 	EventBus.applied_modification.connect(_on_block_modification_applied)
 	EventBus.block_removed.connect(_on_block_removed)
+	EventBus.removed_modification.connect(_on_block_modification_removed)
 	collision_mask = pressure_button.interactable_entities
-
-#func _process(delta: float) -> void:
-	#if block_on_button and block_on_button in colliding_objects:
-		#if !pressure_button.turned_on and !colliding_objects.is_empty():
-
-
 
 func _on_body_entered(body: Node2D) -> void:
 
-	if body is Block and "Stone" in body.current_modifiers:
+	if body is Block:
 		blocks_on_button.append(body)
 
 	if body is Player:
 		player_on_button = true
 
-	if !pressure_button.turned_on and (player_on_button or !blocks_on_button.is_empty()):
+	var object_on_button: bool = player_on_button or blocks_on_button.any(func(block: Block) -> bool: return "Stone" in block.current_modifiers)
+
+	if !pressure_button.turned_on and object_on_button:
 		trigger_mechanism(true)
 
 func _on_body_exited(body: Node2D) -> void:
@@ -35,8 +34,12 @@ func _on_body_exited(body: Node2D) -> void:
 
 	if body is Player:
 		player_on_button = false
+		if !blocks_on_button.any(func(block: Block) -> bool: return "Stone" in block.current_modifiers):
+			blocks_on_button.clear()
 
-	if !pressure_button.turned_on and (!player_on_button or blocks_on_button.is_empty()):
+	var no_object_on_button: bool = !player_on_button and blocks_on_button.is_empty()
+
+	if pressure_button.turned_on and no_object_on_button and !block_removed:
 		trigger_mechanism(false)
 
 func trigger_mechanism(state: bool = false) -> void:
@@ -56,6 +59,11 @@ func _on_block_modification_applied(block: Block, mod_type: String) -> void:
 func _on_block_removed(block: Block) -> void:
 	if block in blocks_on_button:
 		blocks_on_button.erase(block)
-	if pressure_button.turned_on:
-		if blocks_on_button.is_empty() and !player_on_button:
-			trigger_mechanism(false)
+	if pressure_button.turned_on and (!blocks_on_button.is_empty() or player_on_button):
+		block_removed = true
+		await get_tree().create_timer(0.3).timeout
+		block_removed = false
+
+func _on_block_modification_removed(block: Block) -> void:
+	if pressure_button.turned_on and block in blocks_on_button and "Stone" not in block.current_modifiers and !player_on_button:
+		trigger_mechanism(false)

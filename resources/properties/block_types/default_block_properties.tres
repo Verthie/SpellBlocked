@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="CustomResource" load_steps=2 format=3 uid="uid://bcjm5oey6sqhi"]
 
-[ext_resource type="Script" path="res://resources/properties/block_types/block_properties.gd" id="1_l3sl8"]
+[ext_resource type="Script" path="res://resources/scripts/block_properties.gd" id="1_411dv"]
 
 [resource]
-script = ExtResource("1_l3sl8")
-type_name = "None"
+script = ExtResource("1_411dv")
+type_name = "Ice"
 friction = 0.175
 gravity = 400.0
 colour = Color(1, 0.513726, 0.431373, 1)
