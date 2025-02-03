@@ -16,7 +16,7 @@ func get_amount() -> float:
 		if Globals.current_block_type == "Stone" and attribute_type == "gravity":
 			decorated_amount = amount
 		if Globals.current_block_type == "Gravity" and attribute_type == "gravity":
-			var multiplier_value: float = -1.0 if "Stone" not in current_modifiers else -0.1
+			var multiplier_value: float = -1.0 if "Stone" not in current_modifiers else -0.2
 			decorated_amount *= multiplier_value
 	else:
 		decorated_amount = amount

@@ -30,7 +30,7 @@ polygon = PackedVector2Array(2304, -37, 3402, -37, 3402, -101, 3614, -101, 3614,
 polygon = PackedVector2Array(2304, -11, 2304, 0, 3720, 0, 3720, -11)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e3ilh"]
-size = Vector2(20, 7)
+size = Vector2(18, 2.5)
 
 [sub_resource type="Animation" id="Animation_rv7ns"]
 length = 0.001
@@ -607,9 +607,8 @@ collision_layer = 256
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LevelElements/Platforms/Section6a/PlatformMine/StaticBody2D" index="0"]
-position = Vector2(0, 2.5)
+position = Vector2(0, 1.25)
 shape = SubResource("RectangleShape2D_e3ilh")
-one_way_collision = true
 
 [node name="PlatformMine2" parent="LevelElements/Platforms/Section6a" index="1" instance=ExtResource("9_iomvs")]
 position = Vector2(1108, -42)

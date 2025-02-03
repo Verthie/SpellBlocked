@@ -148,10 +148,10 @@ func push_blocks() -> void:
 		#var collision_travel:  = collision.get_travel()
 		#var collision_ramainder:  = collision.get_remainder()
 		#print(collision.get_normal().y)
-		if colliding_object is Block and abs(collision.get_normal().y) < 0.05:
+		if colliding_object is Block and (abs(collision.get_normal().y) < 0.05 and abs(collision.get_normal().y) > 0):
 			var colliding_block: Block = colliding_object
 			if block_thrown:
-				colliding_block.velocity.x = get_real_velocity().x/1.6
+				colliding_block.velocity.x = get_real_velocity().x/1.5
 			else:
 				colliding_block.velocity.x = velocity.x/(colliding_block.gravity/100)
 			#print("real velocity:", get_real_velocity(), "normal:", collision.get_normal().y)
