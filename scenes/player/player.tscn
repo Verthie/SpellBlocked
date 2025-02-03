@@ -338,7 +338,6 @@ shadow_item_cull_mask = 0
 texture = ExtResource("17_s1pc6")
 
 [connection signal="spell_blocked" from="WandLogic/WandRayCast" to="WandLogic" method="_on_wand_ray_cast_spell_blocked"]
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="Timers/CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
 [connection signal="timeout" from="Timers/JumpBufferTimer" to="." method="_on_buffered_timer_timeout"]
 [connection signal="timeout" from="Timers/ApexTimer" to="." method="_on_apex_timer_timeout"]

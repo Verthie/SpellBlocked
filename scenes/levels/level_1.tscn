@@ -1,6 +1,6 @@
 [gd_scene load_steps=62 format=4 uid="uid://gxi20mp6neb5"]
 
-[ext_resource type="PackedScene" uid="uid://b0qkkisnuydja" path="res://scenes/levels/level.tscn" id="1_vb02l"]
+[ext_resource type="PackedScene" uid="uid://cwuocybsumtvf" path="res://scenes/world/water_splash_effect.tscn" id="1_vb02l"]
 [ext_resource type="Script" path="res://scenes/levels/level_1.gd" id="2_bv61p"]
 [ext_resource type="PackedScene" uid="uid://dapkiadnd465c" path="res://scenes/world/bridge.tscn" id="2_qw6r7"]
 [ext_resource type="TileSet" uid="uid://cwa4cldhrpdvk" path="res://assets/tilesets/ground_nd_plane.tres" id="3_76xo4"]
@@ -14,7 +14,7 @@
 [ext_resource type="TileSet" uid="uid://c7g86xemyc2us" path="res://assets/tilesets/decor.tres" id="9_slp4g"]
 [ext_resource type="Script" path="res://scenes/levels/cutscene_manager_level1.gd" id="12_8ndi5"]
 [ext_resource type="FontFile" uid="uid://xl7g0uo2riwl" path="res://assets/fonts/You Squared.ttf" id="14_5g5rs"]
-[ext_resource type="PackedScene" uid="uid://d0rj5k1tb6gpe" path="res://scenes/levels/level_2.tscn" id="15_d7hl2"]
+[ext_resource type="PackedScene" uid="uid://dmi6orowpok20" path="res://scenes/levels/screen_camera.tscn" id="15_d7hl2"]
 [ext_resource type="Texture2D" uid="uid://c6dqdwenkd0up" path="res://assets/sprites/cursor/cursors.png" id="16_otucv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vykud"]
@@ -1204,7 +1204,9 @@ scale = Vector2(0.15999, 1.66)
 shape = SubResource("RectangleShape2D_hsnbo")
 metadata/_edit_lock_ = true
 
-[node name="HiddenAreas" type="Node2D" parent="Interactables" index="5"]
+[node name="Labels" type="Node2D" parent="Interactables" index="5"]
+
+[node name="HiddenAreas" type="Node2D" parent="Interactables" index="6"]
 
 [node name="HiddenAreaAccess" type="Area2D" parent="Interactables/HiddenAreas" index="0"]
 position = Vector2(714, 1)
