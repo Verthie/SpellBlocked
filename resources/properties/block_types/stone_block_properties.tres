@@ -4,10 +4,9 @@
 
 [resource]
 script = ExtResource("1_q04sl")
-type = 2
 type_name = "Stone"
-friction = 0.9
-gravity = 2500.0
+friction = 0.75
+gravity = 1500.0
 colour = Color(0.576471, 0.588235, 0.611765, 1)
 cursor_colour = Color(0.664731, 0.675474, 0.696948, 1)
 modifier_overlay_opacity = 0.4

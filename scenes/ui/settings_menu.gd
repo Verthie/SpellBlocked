@@ -30,7 +30,7 @@ var resolutions: Array[Vector2i] = [Vector2i(640, 360), Vector2i(960, 540), Vect
 var resolution_index: int = 2
 
 var button_array: Array[Button]
-var keyboard_key_triggers: Array[String] = ["ui_left", "ui_right", "ui_up", "ui_down"]
+var move_keys: Array = [KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_A, KEY_D, KEY_W, KEY_S]
 
 var arrow_clicked: bool = false
 var mouse_on_button: bool = false
@@ -70,7 +70,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_released('quit'):
 		_return_from_settings()
 
-	if keyboard_key_triggers.any(func(action: String) -> bool: return event.is_action_pressed(action)):
+	if event is InputEventKey and event.pressed and event.keycode in move_keys:
 		if !arrow_clicked and !mouse_on_button:
 			fullscreen_button.grab_focus()
 			fullscreen_button.add_theme_stylebox_override("focus", SETTINGS_BUTTON_FOCUS)
@@ -139,9 +139,9 @@ func _on_button_pressed(button: Button) -> void:
 func _on_mouse_entered(passed_button: Button) -> void:
 	mouse_on_button = true
 	arrow_clicked = false
-	if !passed_button.button_pressed and passed_button is ButtonSetting:
-		passed_button.add_theme_stylebox_override("focus", SETTINGS_BUTTON_FOCUS)
-	if !passed_button.has_focus() and !passed_button.is_in_group("Setting_Buttons"):
+	if !passed_button.button_pressed or (!passed_button.has_focus() and !passed_button.is_in_group("Setting_Buttons")):
+		if passed_button is ButtonSetting:
+			passed_button.add_theme_stylebox_override("focus", SETTINGS_BUTTON_FOCUS)
 		AudioManager.create_audio(SoundEffectSettings.SoundEffectType.UI_FOCUS)
 	for button: Button in button_array:
 		if button.focus_mode == FocusMode.FOCUS_ALL:
@@ -149,12 +149,14 @@ func _on_mouse_entered(passed_button: Button) -> void:
 			button.focus_mode = FocusMode.FOCUS_CLICK
 
 func _on_mouse_exited(passed_button: Button) -> void:
-	mouse_on_button = false
-	if !passed_button.button_pressed and passed_button is ButtonSetting:
-		passed_button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	for button: Button in button_array:
-		if button.focus_mode == FocusMode.FOCUS_CLICK:
-			button.focus_mode = FocusMode.FOCUS_ALL
+	if passed_button != $TextButtons/BackButton:
+		mouse_on_button = false
+		if !passed_button.button_pressed and passed_button is ButtonSetting:
+			passed_button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+		for button: Button in button_array:
+			if button.focus_mode == FocusMode.FOCUS_CLICK:
+				button.release_focus()
+				button.focus_mode = FocusMode.FOCUS_ALL
 
 func _on_button_focused(button: Button) -> void:
 	if !mouse_on_button:

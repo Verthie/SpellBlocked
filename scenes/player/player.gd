@@ -300,11 +300,15 @@ func handle_push() -> void:
 		var colliding_object: Object = collision.get_collider()
 		#print(colliding_object)
 		if colliding_object is Block:
+			var block: Block = colliding_object
 			pushing = true
-			last_colliding_block = colliding_object
+			last_colliding_block = block
 			colliding_with_block = true
 			if collision.get_normal().y == 0:
-				colliding_object.apply_movement(-collision.get_normal(), (foot_speed/5))
+				if "Stone" not in block.current_modifiers:
+					block.apply_movement(-collision.get_normal(), (foot_speed/3.5))
+				else:
+					block.apply_movement(-collision.get_normal(), (foot_speed*1.5))
 		else:
 			colliding_with_block = false
 
