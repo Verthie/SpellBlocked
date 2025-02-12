@@ -28,6 +28,7 @@ func _ready() -> void:
 	shader_dict = Globals.load_resources("res://resources/shaders/transitions/", "gdshader")
 
 func play_transition(type: TransitionType, speed: float = 1.0, backwards: bool = false, transition_color: Color = init_transition_color) -> void:
+	if type == TransitionType.NONE: return
 	var transition_name: String = str(TransitionType.keys()[type]).to_lower()
 
 	overlay.color = transition_color
@@ -43,6 +44,7 @@ func play_transition(type: TransitionType, speed: float = 1.0, backwards: bool =
 		push_error("Transition Manager failed to find this type ", transition_name)
 
 func play_shader_transition(type: ShaderTransitionType, fill: bool = true, speed: float = 1.0, backwards: bool = false, delay: float = 0.0, transition_color: Color = init_transition_color) -> void:
+	if type == ShaderTransitionType.NONE: return
 	var transition_name: String = str(ShaderTransitionType.keys()[type]).to_lower()
 
 	show()

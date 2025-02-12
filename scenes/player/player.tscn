@@ -214,8 +214,6 @@ foot_speed = 90.0
 jump_height = 20.0
 jump_time_to_peak = 0.2
 max_fall_speed = 400.0
-push_force = 1000.0
-min_push_force = 500.0
 
 [node name="Sprites" type="Node2D" parent="."]
 

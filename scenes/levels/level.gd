@@ -77,6 +77,7 @@ func _ready() -> void:
 
 	Globals.block_amount = level_block_amount
 	SceneSwitcher.fallback_scene_path = scene_file_path
+	ResourceLoader.load_threaded_request(scene_file_path)
 	menu_scene = load('res://scenes/ui/gameplay_menu.tscn')
 	settings_scene = load('res://scenes/ui/settings_menu.tscn')
 	if reset_cursor_position_on_restart:
@@ -183,18 +184,15 @@ func _restart(transition_type: TransitionManager.ShaderTransitionType = Transiti
 	Globals.input_enabled = false
 
 	TransitionManager.layer = 3
-	if transition_type == TransitionManager.ShaderTransitionType.NONE:
-		SceneSwitcher.goto_scene(scene_file_path)
+	TransitionManager.play_shader_transition(transition_type, true, transition_speed)
+	await TransitionManager.finished
+	if text_button_restart:
+		Globals.game_paused = false
+		get_tree().paused = false
 	else:
-		TransitionManager.play_shader_transition(transition_type, true, transition_speed)
-		await TransitionManager.finished
-		if text_button_restart:
-			Globals.game_paused = false
-			get_tree().paused = false
-		else:
-			EventBus.quick_restarted.emit()
-		SceneSwitcher.goto_scene(scene_file_path)
-		TransitionManager.play_shader_transition(transition_type, false, transition_speed, true)
+		EventBus.quick_restarted.emit()
+	SceneSwitcher.goto_scene(scene_file_path,true)
+	TransitionManager.play_shader_transition(transition_type, false, transition_speed, true, 0.25)
 
 
 func _level_pause() -> void:

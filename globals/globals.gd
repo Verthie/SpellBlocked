@@ -52,6 +52,7 @@ var initial_block_positions: Array[Vector2i] = []
 func _ready() -> void:
 	EventBus.changed_block_type.connect(_check_modify_state)
 	EventBus.quick_restarted.connect(_on_quick_restart)
+	EventBus.level_finished.connect(_on_level_finished)
 
 func load_resources(path: String, extension: String = "") -> Dictionary:
 	var resources: Dictionary = {}
@@ -135,3 +136,6 @@ func _check_modify_state() -> void:
 
 func _on_quick_restart() -> void:
 	quick_restarted = true
+
+func _on_level_finished() -> void:
+	reset_level_checkpoint()

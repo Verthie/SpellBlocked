@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=4 uid="uid://gxi20mp6neb5"]
+[gd_scene load_steps=67 format=4 uid="uid://gxi20mp6neb5"]
 
 [ext_resource type="PackedScene" uid="uid://b0qkkisnuydja" path="res://scenes/levels/level.tscn" id="1_vb02l"]
 [ext_resource type="Script" path="res://scenes/levels/level_1.gd" id="2_bv61p"]
@@ -13,15 +13,12 @@
 [ext_resource type="PackedScene" uid="uid://dtil4c6l65jco" path="res://scenes/world/platform_mine.tscn" id="9_iomvs"]
 [ext_resource type="TileSet" uid="uid://c7g86xemyc2us" path="res://assets/tilesets/decor.tres" id="9_slp4g"]
 [ext_resource type="Script" path="res://scenes/levels/cutscene_manager_level1.gd" id="12_8ndi5"]
+[ext_resource type="Script" path="res://scenes/levels/tutorials.gd" id="13_ev1la"]
 [ext_resource type="FontFile" uid="uid://xl7g0uo2riwl" path="res://assets/fonts/You Squared.ttf" id="14_5g5rs"]
+[ext_resource type="Texture2D" uid="uid://u6io547gyx6f" path="res://assets/ui/kb_dark_all.png" id="15_06uov"]
 [ext_resource type="PackedScene" uid="uid://d0rj5k1tb6gpe" path="res://scenes/levels/level_2.tscn" id="15_d7hl2"]
+[ext_resource type="Texture2D" uid="uid://b2oxsv10f5qxi" path="res://assets/ui/mouse.png" id="16_o3pt7"]
 [ext_resource type="Texture2D" uid="uid://c6dqdwenkd0up" path="res://assets/sprites/cursor/cursors.png" id="16_otucv"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vykud"]
-size = Vector2(14, 1)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_03gpu"]
-size = Vector2(14, 1.5)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_pysl8"]
 polygon = PackedVector2Array(2304, -37, 3402, -37, 3402, -101, 3614, -101, 3614, -21, 3698, -21, 3698, -29, 3706, -29, 3706, -121, 3618, -121, 3389, -121, 3389, -48, 2688, -48, 2304, -48)
@@ -30,7 +27,7 @@ polygon = PackedVector2Array(2304, -37, 3402, -37, 3402, -101, 3614, -101, 3614,
 polygon = PackedVector2Array(2304, -11, 2304, 0, 3720, 0, 3720, -11)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e3ilh"]
-size = Vector2(18, 2.5)
+size = Vector2(18, 2)
 
 [sub_resource type="Animation" id="Animation_rv7ns"]
 length = 0.001
@@ -175,6 +172,12 @@ colors = PackedColorArray(0, 0, 0, 0, 0.220856, 0.196399, 0.252371, 1)
 gradient = SubResource("Gradient_x5a75")
 width = 65
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vykud"]
+size = Vector2(14, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_03gpu"]
+size = Vector2(14, 1)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lrhcb"]
 size = Vector2(2, 18)
 
@@ -200,6 +203,12 @@ size = Vector2(4, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y0jj1"]
 size = Vector2(9.5, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qypbt"]
+size = Vector2(13, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t7k02"]
+size = Vector2(2, 24)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sjobh"]
 size = Vector2(13.0717, 3.34274)
@@ -461,22 +470,6 @@ splash_type = 1
 auto_search = false
 init_liquid_level = -16
 
-[node name="Section6WorldTriggerArea3" parent="TileMaps/CollisionPlanes/Liquids/Liquids4" index="0" instance=ExtResource("7_xh2va")]
-position = Vector2(1463, -14)
-collision_mask = 4
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="TileMaps/CollisionPlanes/Liquids/Liquids4/Section6WorldTriggerArea3" index="0"]
-position = Vector2(1, 4.5)
-shape = SubResource("RectangleShape2D_vykud")
-
-[node name="Section6WorldTriggerArea4" parent="TileMaps/CollisionPlanes/Liquids/Liquids4" index="1" instance=ExtResource("7_xh2va")]
-position = Vector2(1704, -14)
-collision_mask = 4
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="TileMaps/CollisionPlanes/Liquids/Liquids4/Section6WorldTriggerArea4" index="0"]
-position = Vector2(0, 4.25)
-shape = SubResource("RectangleShape2D_03gpu")
-
 [node name="ThirdPlane" parent="TileMaps/CollisionPlanes" index="1"]
 tile_map_data = PackedByteArray("AABWAPf/AAAAAAMAAABWAPj/AAAAAAEAAABWAPn/AAAAAAYAAABWAPr/AAAAAAEAAABWAPv/AAAAAAYAAABWAPz/AAAAAAEAAABWAP3/AAAAAAYAAABWAP7/AAAAAAEAAABXAPf/AAABAAMAAABXAPj/AAADAAQAAABXAPn/AAACAAUAAABXAPr/AAADAAcAAABXAPv/AAABAAUAAABXAPz/AAADAAcAAABXAP3/AAACAAQAAABXAP7/AAADAAQAAABYAPf/AAADAAMAAABYAPj/AAABAAQAAABYAPn/AAABAAcAAABYAPr/AAABAAYAAABYAPv/AAACAAQAAABYAPz/AAACAAUAAABYAP3/AAADAAEAAABYAP7/AAACAAYAAABZAPf/AAAEAAAAAABZAPj/AAAFAAYAAABZAPn/AAAFAAYAAABZAPr/AAAFAAYAAABZAPv/AAAFAAcAAABZAPz/AAAFAAQAAABZAP3/AAAEAAUAAABZAP7/AAAGAAUAAABaAPf/AAAEAAAAAABaAPj/AAAGAAYAAABaAPn/AAAEAAQAAABaAPr/AAAGAAcAAABaAPv/AAAGAAYAAABaAPz/AAAEAAQAAABaAP3/AAAEAAYAAABaAP7/AAAGAAYAAABbAPf/AAAHAAAAAABbAPj/AAAHAAYAAABbAPn/AAAHAAEAAABbAPr/AAAHAAEAAABbAPv/AAAHAAYAAABbAPz/AAAHAAEAAABbAP3/AAAHAAYAAABbAP7/AAAHAAYAAAA=")
 
@@ -603,12 +596,13 @@ position = Vector2(1368, -190)
 platform_variant = 4
 
 [node name="StaticBody2D" type="StaticBody2D" parent="LevelElements/Platforms/Section6a/PlatformMine" index="3"]
+position = Vector2(0, 1)
 collision_layer = 256
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LevelElements/Platforms/Section6a/PlatformMine/StaticBody2D" index="0"]
-position = Vector2(0, 1.25)
 shape = SubResource("RectangleShape2D_e3ilh")
+one_way_collision = true
 
 [node name="PlatformMine2" parent="LevelElements/Platforms/Section6a" index="1" instance=ExtResource("9_iomvs")]
 position = Vector2(1108, -42)
@@ -735,7 +729,84 @@ position = Vector2(-1.75, -20.2744)
 shape = SubResource("RectangleShape2D_lwm1c")
 disabled = true
 
-[node name="Cutscene Playing" type="Label" parent="LevelElements/Labels" index="0"]
+[node name="Tutorials" type="Node" parent="LevelElements/Labels" index="0"]
+script = ExtResource("13_ev1la")
+
+[node name="Tut1" type="Node2D" parent="LevelElements/Labels/Tutorials" index="0"]
+visible = false
+position = Vector2(-169, 62)
+
+[node name="Tut1" type="Label" parent="LevelElements/Labels/Tutorials/Tut1" index="0"]
+offset_left = -110.0
+offset_top = -8.0
+offset_right = 106.0
+offset_bottom = 12.0
+theme_override_fonts/font = ExtResource("14_5g5rs")
+theme_override_font_sizes/font_size = 8
+text = "Use  or  to walk"
+horizontal_alignment = 1
+
+[node name="AKey" type="Sprite2D" parent="LevelElements/Labels/Tutorials/Tut1" index="1"]
+position = Vector2(-33, -3)
+texture = ExtResource("15_06uov")
+hframes = 16
+vframes = 26
+
+[node name="DKey" type="Sprite2D" parent="LevelElements/Labels/Tutorials/Tut1" index="2"]
+position = Vector2(-1, -3)
+texture = ExtResource("15_06uov")
+hframes = 16
+vframes = 26
+frame = 48
+
+[node name="Tut2" type="Node2D" parent="LevelElements/Labels/Tutorials" index="1"]
+position = Vector2(-169, 62)
+
+[node name="Tut1" type="Label" parent="LevelElements/Labels/Tutorials/Tut2" index="0"]
+offset_left = -110.0
+offset_top = -8.0
+offset_right = 106.0
+offset_bottom = 12.0
+theme_override_fonts/font = ExtResource("14_5g5rs")
+theme_override_font_sizes/font_size = 8
+text = "Use  or   to jump"
+horizontal_alignment = 1
+
+[node name="WKey" type="Sprite2D" parent="LevelElements/Labels/Tutorials/Tut2" index="1"]
+position = Vector2(-36, -3)
+texture = ExtResource("15_06uov")
+hframes = 16
+vframes = 26
+frame = 352
+
+[node name="SpaceKey" type="Sprite2D" parent="LevelElements/Labels/Tutorials/Tut2" index="2"]
+position = Vector2(-2, -3)
+texture = ExtResource("15_06uov")
+hframes = 16
+vframes = 26
+frame = 136
+
+[node name="Tut3" type="Node2D" parent="LevelElements/Labels/Tutorials" index="2"]
+position = Vector2(467, 63)
+
+[node name="Tut1" type="Label" parent="LevelElements/Labels/Tutorials/Tut3" index="0"]
+offset_left = -110.0
+offset_top = -8.0
+offset_right = 106.0
+offset_bottom = 12.0
+theme_override_fonts/font = ExtResource("14_5g5rs")
+theme_override_font_sizes/font_size = 8
+text = "Use  to fall through"
+horizontal_alignment = 1
+
+[node name="SKey" type="Sprite2D" parent="LevelElements/Labels/Tutorials/Tut3" index="1"]
+position = Vector2(-49, -3)
+texture = ExtResource("15_06uov")
+hframes = 16
+vframes = 26
+frame = 288
+
+[node name="Cutscene Playing" type="Label" parent="LevelElements/Labels" index="1"]
 visible = false
 offset_left = 3445.0
 offset_top = -83.0
@@ -744,7 +815,7 @@ offset_bottom = -73.0
 theme = SubResource("Theme_3bari")
 text = "CUTSCENE PLAYING"
 
-[node name="Label" type="Label" parent="LevelElements/Labels" index="1"]
+[node name="Label" type="Label" parent="LevelElements/Labels" index="2"]
 offset_left = 2104.0
 offset_top = -228.0
 offset_right = 2320.0
@@ -754,6 +825,20 @@ theme_override_font_sizes/font_size = 8
 text = "That must have been painful
 Why did you do that?"
 horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="LevelElements/Labels" index="3"]
+position = Vector2(3685, -53)
+texture = ExtResource("16_o3pt7")
+hframes = 6
+vframes = 10
+frame = 14
+
+[node name="Sprite2D2" type="Sprite2D" parent="LevelElements/Labels" index="4"]
+position = Vector2(3868, -70)
+texture = ExtResource("16_o3pt7")
+hframes = 6
+vframes = 10
+frame = 13
 
 [node name="Shadows" type="Node2D" parent="." index="2"]
 position = Vector2(1508.05, 58.2718)
@@ -1003,43 +1088,71 @@ offset_bottom = 136.0
 rotation = 1.57079
 color = Color(0.760784, 0.243137, 0.513726, 0.192157)
 
-[node name="Section6WorldTriggerArea" parent="Interactables/WorldTriggers" index="0" instance=ExtResource("7_xh2va")]
+[node name="Section6WorldTriggerArea3" parent="Interactables/WorldTriggers" index="0" instance=ExtResource("7_xh2va")]
+position = Vector2(1463, -12)
+collision_mask = 4
+only_extra_settings = true
+trigger_on_area_enter = true
+one_time_trigger = false
+delay_enable = 0.0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/WorldTriggers/Section6WorldTriggerArea3" index="0"]
+position = Vector2(1, 0.5)
+shape = SubResource("RectangleShape2D_vykud")
+
+[node name="Section6WorldTriggerArea4" parent="Interactables/WorldTriggers" index="1" instance=ExtResource("7_xh2va")]
+position = Vector2(1704, -11)
+collision_mask = 4
+only_extra_settings = true
+trigger_on_area_enter = true
+one_time_trigger = false
+delay_enable = 0.0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/WorldTriggers/Section6WorldTriggerArea4" index="0"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_03gpu")
+
+[node name="Section6WorldTriggerArea" parent="Interactables/WorldTriggers" index="2" instance=ExtResource("7_xh2va")]
 position = Vector2(1410, -101.339)
 only_extra_settings = true
 trigger_on_area_enter = true
 one_time_trigger = true
+delay_enable = 0.0
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/WorldTriggers/Section6WorldTriggerArea" index="0"]
 position = Vector2(-1, 1.33868)
 shape = SubResource("RectangleShape2D_lrhcb")
 
-[node name="Section10WorldTriggerArea" parent="Interactables/WorldTriggers" index="1" instance=ExtResource("7_xh2va")]
+[node name="Section10WorldTriggerArea" parent="Interactables/WorldTriggers" index="3" instance=ExtResource("7_xh2va")]
 visible = false
 position = Vector2(2631, -23.3737)
 only_extra_settings = true
 trigger_on_area_enter = true
 one_time_trigger = false
+delay_enable = 0.0
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/WorldTriggers/Section10WorldTriggerArea" index="1"]
 position = Vector2(1023, -32.6263)
 shape = SubResource("RectangleShape2D_f5elw")
 
-[node name="Section11WorldTriggerArea" parent="Interactables/WorldTriggers" index="2" instance=ExtResource("7_xh2va")]
+[node name="Section11WorldTriggerArea" parent="Interactables/WorldTriggers" index="4" instance=ExtResource("7_xh2va")]
 position = Vector2(3299, -22)
 only_extra_settings = true
 trigger_on_area_enter = true
 one_time_trigger = true
+delay_enable = 0.0
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/WorldTriggers/Section11WorldTriggerArea" index="1"]
 position = Vector2(-268, 11)
 shape = SubResource("RectangleShape2D_rf8up")
 
-[node name="ExitArea" parent="Interactables/WorldTriggers" index="3" instance=ExtResource("7_xh2va")]
+[node name="ExitArea" parent="Interactables/WorldTriggers" index="5" instance=ExtResource("7_xh2va")]
 position = Vector2(4292, -19.0151)
 scale = Vector2(32.2747, -0.00958956)
 only_extra_settings = true
 trigger_on_area_enter = true
 one_time_trigger = true
+delay_enable = 0.0
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="Interactables/WorldTriggers/ExitArea" index="0"]
 position = Vector2(0.800049, -0.500008)
@@ -1137,6 +1250,80 @@ trigger_on_area_enter = false
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/SceneSwitchers/EventTriggerArea" index="1"]
 position = Vector2(1.37109, -0.399902)
 shape = SubResource("RectangleShape2D_y0jj1")
+
+[node name="Section1" type="Node" parent="Interactables/Signs" index="0"]
+
+[node name="Sign1a" parent="Interactables/Signs/Section1" index="0" node_paths=PackedStringArray("node_holder") instance=ExtResource("7_xh2va")]
+position = Vector2(-301, 122)
+node_holder = NodePath("../../../../LevelElements/Labels/Tutorials/Tut1")
+only_extra_settings = true
+trigger_on_area_enter = true
+one_time_trigger = false
+delay_enable = 1.5
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/Signs/Section1/Sign1a" index="1"]
+position = Vector2(0.5, -5)
+shape = SubResource("RectangleShape2D_qypbt")
+
+[node name="Sign1b" parent="Interactables/Signs/Section1" index="1" node_paths=PackedStringArray("node_holder") instance=ExtResource("7_xh2va")]
+position = Vector2(-234, 121.678)
+node_holder = NodePath("../../../../LevelElements/Labels/Tutorials/Tut1")
+only_extra_settings = true
+trigger_on_area_enter = true
+one_time_trigger = false
+delay_enable = 0.0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/Signs/Section1/Sign1b" index="1"]
+position = Vector2(-1.41937, -4.67764)
+shape = SubResource("RectangleShape2D_t7k02")
+
+[node name="Sign2a" parent="Interactables/Signs/Section1" index="2" node_paths=PackedStringArray("node_holder") instance=ExtResource("7_xh2va")]
+position = Vector2(-157, 122)
+node_holder = NodePath("../../../../LevelElements/Labels/Tutorials/Tut2")
+only_extra_settings = true
+trigger_on_area_enter = true
+one_time_trigger = false
+delay_enable = 0.0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/Signs/Section1/Sign2a" index="1"]
+position = Vector2(0.5, -5)
+shape = SubResource("RectangleShape2D_qypbt")
+
+[node name="Sign2b" parent="Interactables/Signs/Section1" index="3" node_paths=PackedStringArray("node_holder") instance=ExtResource("7_xh2va")]
+position = Vector2(-228, 122)
+node_holder = NodePath("../../../../LevelElements/Labels/Tutorials/Tut2")
+only_extra_settings = true
+trigger_on_area_enter = true
+one_time_trigger = false
+delay_enable = 0.0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/Signs/Section1/Sign2b" index="1"]
+position = Vector2(-1.41937, -4.67764)
+shape = SubResource("RectangleShape2D_t7k02")
+
+[node name="Sign3a" parent="Interactables/Signs/Section1" index="4" node_paths=PackedStringArray("node_holder") instance=ExtResource("7_xh2va")]
+position = Vector2(579, 42)
+node_holder = NodePath("../../../../LevelElements/Labels/Tutorials/Tut3")
+only_extra_settings = true
+trigger_on_area_enter = true
+one_time_trigger = false
+delay_enable = 0.0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/Signs/Section1/Sign3a" index="1"]
+position = Vector2(0.5, -5)
+shape = SubResource("RectangleShape2D_qypbt")
+
+[node name="Sign3b" parent="Interactables/Signs/Section1" index="5" node_paths=PackedStringArray("node_holder") instance=ExtResource("7_xh2va")]
+position = Vector2(500, 74)
+node_holder = NodePath("../../../../LevelElements/Labels/Tutorials/Tut3")
+only_extra_settings = true
+trigger_on_area_enter = true
+one_time_trigger = false
+delay_enable = 0.0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/Signs/Section1/Sign3b" index="1"]
+position = Vector2(-1.41937, -4.67764)
+shape = SubResource("RectangleShape2D_t7k02")
 
 [node name="EventTriggerArea" parent="Interactables/InteractiveMusic" index="0" instance=ExtResource("7_xh2va")]
 position = Vector2(1428, -216)
@@ -1348,9 +1535,9 @@ scale = Vector2(28.125, 6.32813)
 texture = SubResource("GradientTexture2D_8738t")
 metadata/_edit_lock_ = true
 
-[connection signal="body_entered" from="TileMaps/CollisionPlanes/Liquids/Liquids4/Section6WorldTriggerArea3" to="." method="on_section6_block_entered_lava"]
-[connection signal="body_entered" from="TileMaps/CollisionPlanes/Liquids/Liquids4/Section6WorldTriggerArea4" to="." method="on_section6_block_entered_lava"]
 [connection signal="screen_exited" from="LevelElements/Blocks/Section8/Block7/VisibleOnScreenNotifier2D" to="." method="_on_visible_block_notifier_screen_exited"]
+[connection signal="body_entered" from="Interactables/WorldTriggers/Section6WorldTriggerArea3" to="." method="_on_section6_block_entered_lava"]
+[connection signal="body_entered" from="Interactables/WorldTriggers/Section6WorldTriggerArea4" to="." method="_on_section6_block_entered_lava"]
 [connection signal="body_entered" from="Interactables/WorldTriggers/Section6WorldTriggerArea" to="." method="_on_section6_world_trigger_entered"]
 [connection signal="body_entered" from="Interactables/WorldTriggers/Section10WorldTriggerArea" to="." method="_on_section_10_world_trigger_entered"]
 [connection signal="body_exited" from="Interactables/WorldTriggers/Section10WorldTriggerArea" to="." method="_on_section_10_world_trigger_exited"]

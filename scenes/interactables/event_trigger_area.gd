@@ -1,15 +1,11 @@
 @tool
+class_name EventTriggerArea
 extends Area2D
+
+@export var node_holder: Node
 
 ## Events that allow to trigger different actions (actions 1 & 3, 1 & 2 can be combined)
 @export_category("Events")
-@export var is_monit: bool = false:
-	set(value):
-		if value == is_monit : return
-		is_monit = value
-		is_scene_switch = false
-		only_extra_settings = false
-		notify_property_list_changed()
 
 @export var is_music_clip_switch: bool = false:
 	set(value):
@@ -31,7 +27,6 @@ extends Area2D
 	set(value):
 		if value == is_scene_switch : return
 		is_scene_switch = value
-		is_monit = false
 		is_music_clip_switch = false
 		is_checkpoint = false
 		only_extra_settings = false
@@ -41,14 +36,13 @@ extends Area2D
 	set(value):
 		if value == only_extra_settings : return
 		only_extra_settings = value
-		is_monit = false
 		is_scene_switch = false
 		is_music_clip_switch = false
 		is_checkpoint = false
 		notify_property_list_changed()
 
 # Dynamic export properties
-var label_to_display: Label
+var node_to_display: Node
 
 ## The index of a clip to switch to when reaching area
 var clip_index: int = 0
@@ -70,11 +64,19 @@ var scene_to_switch: PackedScene
 var trigger_on_area_enter: bool = true
 ## Frees the area node after triggering
 var one_time_trigger: bool = true
+## The time after which the node is enabled after being ready
+var delay_enable: float = 0.0
 
 # Local properties
 var can_interact: bool = false
 
-#func _ready() -> void:
+func _ready() -> void:
+	if delay_enable > 0:
+		monitoring = false
+		monitorable = false
+		await get_tree().create_timer(delay_enable).timeout
+		monitoring = true
+		monitorable = true
 	#test()
 #
 #func test() -> void:
@@ -82,12 +84,12 @@ var can_interact: bool = false
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed('interact') and can_interact:
-
-		if is_monit:
-			if !label_to_display.visible:
-				label_to_display.show()
-			else:
-				label_to_display.hide()
+#
+		#if is_monit:
+			#if !node_to_display.visible:
+				#label_to_display.show()
+			#else:
+				#label_to_display.hide()
 
 		if is_music_clip_switch:
 			BgmManager.set_interactive_audioclip(clip_index)
@@ -98,22 +100,13 @@ func _input(event: InputEvent) -> void:
 		if is_scene_switch and scene_to_switch:
 			_enter_next_level(scene_to_switch.resource_path)
 
-		if one_time_trigger and !is_monit and !is_scene_switch:
+		if one_time_trigger and !is_scene_switch:
 			queue_free()
 
 @warning_ignore('untyped_declaration')
 func _get_property_list():
 	if Engine.is_editor_hint():
 		var ret: Array = []
-		if is_monit:
-			ret.append({
-			"name": &"label_to_display",
-			"type": TYPE_OBJECT,
-			"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE,# | PROPERTY_USAGE_INTERNAL,
-			"hint": PROPERTY_HINT_NODE_TYPE,
-			"hint_string": "Label"
-			 })
-			one_time_trigger = false
 		if is_music_clip_switch and !is_checkpoint:
 			ret.append({
 				"name": &"clip_index",
@@ -162,7 +155,7 @@ func _get_property_list():
 				"hint_string": "PackedScene",
 				"hint": PROPERTY_HINT_RESOURCE_TYPE
 			})
-		if is_monit or is_scene_switch or is_music_clip_switch or is_checkpoint or only_extra_settings:
+		if is_scene_switch or is_music_clip_switch or is_checkpoint or only_extra_settings:
 			ret.append({
 				"name": &"trigger_on_area_enter",
 				"type": TYPE_BOOL,
@@ -174,15 +167,20 @@ func _get_property_list():
 				"type": TYPE_BOOL,
 				"usage": PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE,
 			})
+		if only_extra_settings:
+			ret.append({
+				"name": &"delay_enable",
+				"type": TYPE_FLOAT,
+				"usage": PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE,
+				"hint_string": "0.0, 10.0",
+				"hint": PROPERTY_HINT_RANGE
+			})
 		return ret
 
 func _on_body_entered(_body: Node2D) -> void:
 	can_interact = true
 	if trigger_on_area_enter:
 		can_interact = false
-
-		if is_monit and !label_to_display.visible:
-			label_to_display.show()
 
 		if is_music_clip_switch:
 			BgmManager.triggered_clip_switch.emit(clip_index)
@@ -193,7 +191,7 @@ func _on_body_entered(_body: Node2D) -> void:
 		if is_scene_switch and scene_to_switch:
 			_enter_next_level(scene_to_switch.resource_path)
 
-		if one_time_trigger and !is_monit and !is_scene_switch:
+		if one_time_trigger and !is_scene_switch:
 			queue_free()
 
 	else:
@@ -201,11 +199,10 @@ func _on_body_entered(_body: Node2D) -> void:
 
 func _on_body_exited(_body: Node2D) -> void:
 	can_interact = false
-	if trigger_on_area_enter:
-		if is_monit and label_to_display.visible:
-			label_to_display.hide()
-	else:
+	if !trigger_on_area_enter:
 		EventBus.changed_interaction_state.emit(false)
+	else:
+		pass
 
 func _enter_next_level(level_path: String) -> void:
 	Globals.switching = true
