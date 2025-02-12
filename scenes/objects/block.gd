@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-	apply_movement(Vector2(0,0), 0)
+	apply_movement(Vector2(0,0).normalized(), 0)
 
 	if shape_cast_down.is_colliding():
 		var collision_object: Object = shape_cast_down.get_collider(0)
@@ -148,7 +148,7 @@ func push_blocks() -> void:
 		#var collision_travel:  = collision.get_travel()
 		#var collision_ramainder:  = collision.get_remainder()
 		#print(collision.get_normal().y)
-		if colliding_object is Block and (abs(collision.get_normal().y) < 0.05 and abs(collision.get_normal().y) > 0):
+		if colliding_object is Block and abs(collision.get_normal().y) < 0.05:
 			var colliding_block: Block = colliding_object
 			if block_thrown:
 				colliding_block.velocity.x = get_real_velocity().x/1.5

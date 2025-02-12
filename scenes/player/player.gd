@@ -19,8 +19,8 @@ class_name Player
 @export var fall_acceleration: bool = false
 @export var fall_acceleration_rate: float = 20
 
-@export var push_force: float = 15.0
-@export var min_push_force: float = 10.0
+#@export var push_force: float = 15.0
+#@export var min_push_force: float = 10.0
 
 @onready var jump_velocity: float = ((2.0 * jump_height) / jump_time_to_peak) * -1.0
 @onready var jump_gravity: float = (2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
@@ -133,7 +133,7 @@ func handle_animation() -> void:
 	handle_sprite_flip()
 
 	if current_state != set_state():
-		#print(current_state, " ", set_state())
+		print(current_state, " ", set_state())
 		current_state = set_state()
 
 		animation_player.play(current_state)
@@ -243,6 +243,7 @@ func handle_gravity(delta: float) -> void:
 			if velocity.y > 25 and abs(get_position_delta().y) < 0.05:
 				can_jump = true
 				forced_floor_state = true
+				print('forced floor state')
 				#print(velocity)
 				#print(get_position_delta())
 
@@ -305,10 +306,7 @@ func handle_push() -> void:
 			last_colliding_block = block
 			colliding_with_block = true
 			if collision.get_normal().y == 0:
-				if "Stone" not in block.current_modifiers:
-					block.apply_movement(-collision.get_normal(), (foot_speed/3.5))
-				else:
-					block.apply_movement(-collision.get_normal(), (foot_speed*1.5))
+				block.apply_movement(-collision.get_normal(), (foot_speed/4))
 		else:
 			colliding_with_block = false
 
