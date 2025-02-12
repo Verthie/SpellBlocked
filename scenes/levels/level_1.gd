@@ -48,7 +48,7 @@ func _on_section6_world_trigger_entered(_body: Node2D) -> void:
 	$LevelElements/Platforms/Section6a/AnimationPlayer2.play('section_6')
 
 func _on_section6_block_entered_lava(body: Node2D) -> void:
-	_block_set_position(body, Vector2i(1432, -193))
+	_block_set_position(body, Vector2i(1407, -193))
 
 func _block_set_position(body: Block, position_value: Vector2) -> void:
 	body.global_position = position_value
