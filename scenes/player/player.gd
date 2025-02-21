@@ -133,7 +133,7 @@ func handle_animation() -> void:
 	handle_sprite_flip()
 
 	if current_state != set_state():
-		print(current_state, " ", set_state())
+		#print(current_state, " ", set_state())
 		current_state = set_state()
 
 		animation_player.play(current_state)
@@ -243,7 +243,7 @@ func handle_gravity(delta: float) -> void:
 			if velocity.y > 25 and abs(get_position_delta().y) < 0.05:
 				can_jump = true
 				forced_floor_state = true
-				print('forced floor state')
+				#print('forced floor state')
 				#print(velocity)
 				#print(get_position_delta())
 

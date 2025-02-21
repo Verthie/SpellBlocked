@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bwjltik73jd00" path="res://scenes/world/platform_grass.tscn" id="4_0kios"]
 [ext_resource type="PackedScene" uid="uid://civyoie87sako" path="res://scenes/world/pressure_button.tscn" id="6_udfql"]
 [ext_resource type="PackedScene" uid="uid://bmqvj3qr8ic40" path="res://scenes/world/gate_rune.tscn" id="7_sm5ob"]
-[ext_resource type="PackedScene" uid="uid://clqno6sljmhsn" path="res://scenes/levels/level_3.tscn" id="10_velau"]
+[ext_resource type="PackedScene" uid="uid://ci5p2tdc7kiqp" path="res://scenes/levels/level_test.tscn" id="10_3toe0"]
 
 [sub_resource type="Animation" id="Animation_ffuxy"]
 length = 0.001
@@ -250,7 +250,7 @@ shape = SubResource("RectangleShape2D_7fi5j")
 [node name="EventTriggerArea" parent="Interactables/SceneSwitchers" index="0" instance=ExtResource("3_ihkia")]
 position = Vector2(100.25, -81.5)
 is_scene_switch = true
-scene_to_switch = ExtResource("10_velau")
+scene_to_switch = ExtResource("10_3toe0")
 trigger_on_area_enter = false
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Interactables/SceneSwitchers/EventTriggerArea" index="1"]
