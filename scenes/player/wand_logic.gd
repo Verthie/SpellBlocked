@@ -17,6 +17,8 @@ var block_swap_keys: Array = [KEY_1, KEY_2, KEY_3]
 
 func _ready() -> void:
 	EventBus.cursor_changed_state.connect(_on_cursor_state_change)
+	EventBus.level_finished.connect(_revert_modifier_mode)
+	EventBus.level_exited.connect(_revert_modifier_mode)
 
 func _input(event: InputEvent) -> void:
 	if !Globals.input_enabled or Globals.game_paused or Globals.casting_disabled:
@@ -118,3 +120,7 @@ func _on_wand_ray_cast_spell_blocked(colliding_body: Node) -> void:
 		cast_blocked = false
 		remove_blocked = false
 		modify_blocked = false
+
+func _revert_modifier_mode() -> void:
+	Globals.current_block_type = "None"
+	EventBus.changed_block_type.emit()

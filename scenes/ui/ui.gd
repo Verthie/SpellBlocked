@@ -5,7 +5,7 @@ extends CanvasLayer
 
 func _ready() -> void:
 	Globals.changed_block_amount.connect(update_counter)
-	EventBus.changed_block_type.connect(_on_block_type_change)
+	EventBus.changed_block_type.connect(set_current_ui_type)
 	EventBus.block_removed.connect(_block_removal.unbind(1))
 	Globals.current_block_type = "None"
 
@@ -35,9 +35,6 @@ func update_counter(value: int) -> void:
 		amount.self_modulate = Color("ffa8a8")
 	elif value > 0 and amount.self_modulate == Color("ffa8a8"):
 		amount.self_modulate = Color("ffffff")
-
-func _on_block_type_change() -> void:
-	set_current_ui_type()
 
 func _block_removal() -> void:
 	if !visible: show()
