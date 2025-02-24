@@ -145,8 +145,8 @@ func _on_wand_cast() -> void:
 	block_instance.position = get_local_mouse_position()
 	$Blocks.add_child(block_instance)
 
-func _on_checkpoint_enter(checkpoint_id: int, save_parameters: int, chosen_clip_index: int = -1, player_respawn_location: Vector2 = Vector2(0,0), cutscenes: Dictionary = {}) -> void:
-	var checkpoint_clip_index: int = chosen_clip_index if chosen_clip_index >= 0 else BgmManager.current_clip_index
+func _on_checkpoint_enter(checkpoint_id: int, save_parameters: int, clip_index: int = -1, respawn_location: Vector2 = Vector2(0,0), cutscenes: Dictionary = {}) -> void:
+	var checkpoint_clip_index: int = clip_index if clip_index >= 0 else BgmManager.current_clip_index
 
 	match save_parameters:
 		1:
@@ -154,16 +154,16 @@ func _on_checkpoint_enter(checkpoint_id: int, save_parameters: int, chosen_clip_
 		3:
 			print("saving position and music clip")
 			BgmManager.set_checkpoint_clip_index(checkpoint_clip_index)
-			#print("chosen_clip_index: ", chosen_clip_index)
+			#print("clip_index: ", clip_index)
 			#print("checkpoint clip index: ", checkpoint_clip_in dex)
 		7:
 			print("saving position, music clip and cutscenes")
 			BgmManager.set_checkpoint_clip_index(checkpoint_clip_index)
 
-	if player_respawn_location == Vector2(0,0):
-		player_respawn_location = $Player.global_position
+	if respawn_location == Vector2(0,0):
+		respawn_location = $Player.global_position
 
-	Globals.set_level_checkpoint(checkpoint_id, save_parameters, level_id, player_respawn_location, checkpoint_clip_index, cutscenes)
+	Globals.set_level_checkpoint(checkpoint_id, save_parameters, level_id, respawn_location, checkpoint_clip_index, cutscenes)
 
 func _on_player_death() -> void:
 	if !full_level_restart_on_death:
@@ -179,14 +179,14 @@ func _on_player_death() -> void:
 			Globals.switching = false
 			await restarted_or_exited
 
-func _restart(transition_type: TransitionManager.ShaderTransitionType = TransitionManager.ShaderTransitionType.NONE, transition_speed: float = 1.0, text_button_restart: bool = false) -> void:
+func _restart(transition_type: TransitionManager.ShaderTransitionType = TransitionManager.ShaderTransitionType.NONE, transition_speed: float = 1.0, menu_restart: bool = false) -> void:
 	Globals.switching = true
 	Globals.input_enabled = false
 
 	TransitionManager.layer = 3
 	TransitionManager.play_shader_transition(transition_type, true, transition_speed)
 	await TransitionManager.finished
-	if text_button_restart:
+	if menu_restart:
 		Globals.game_paused = false
 		get_tree().paused = false
 	else:
