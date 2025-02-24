@@ -28,7 +28,6 @@ var current_level_id: int = 0
 var switching: bool = false
 var game_paused: bool = false
 var input_enabled: bool = true
-var mouse_enabled: bool = true
 var playing_cutscene: bool = false
 var quick_restarted: bool = false
 var player_lives: bool = true

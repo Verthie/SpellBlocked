@@ -37,7 +37,7 @@ func play_section_11_cutscene(area_song_time_left: float) -> void:
 	$'../LevelElements/Mechanisms/Section11/GateRune2'.gate_on()
 	await BgmManager.clip_started
 	#INFO The Main Cutscene
-	Globals.mouse_enabled = false
+	Cursor.mouse_enabled = false
 	cursor_sprite.global_position = Cursor.global_position
 	cursor_sprite.show()
 	Cursor.hide()
@@ -71,7 +71,7 @@ func play_section_11_cutscene(area_song_time_left: float) -> void:
 	player.current_state = "cast_remove"
 	player.animation_player.play("cast_remove")
 	await player.animation_player.animation_finished
-	Globals.mouse_enabled = true
+	Cursor.mouse_enabled = true
 	Input.warp_mouse(Vector2(640,360))
 	Globals.playing_cutscene = false
 	await get_tree().create_timer(0.1).timeout

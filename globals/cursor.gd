@@ -20,6 +20,7 @@ var cast_allowed: bool = false
 var modification_allowed: bool = false
 var just_made_action: bool = false
 var modulate_swap: bool = false
+var mouse_enabled: bool = true
 
 func _ready() -> void:
 	EventBus.obstructed.connect(_change_obstructed_state)
@@ -43,9 +44,8 @@ func _input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 
-	if Globals.mouse_enabled:
+	if mouse_enabled:
 		position = get_global_mouse_position()
-
 
 	if has_overlapping_bodies():
 		handle_collisions()
@@ -116,13 +116,6 @@ func handle_gameplay_sprite() -> void:
 		elif !cast_allowed and !Globals.in_modify_state:
 			sprite_2d.self_modulate = Color("df989f")
 
-func change_cursor_color(color: Color = Color("ffffff")) -> void:
-	current_cursor_color = color
-	sprite_2d.self_modulate = color
-
-func _reset_cursor_color() -> void:
-	sprite_2d.self_modulate = current_cursor_color
-
 # Funkcja przyjmująca tablicę obiektów i zwracająca tablicę nazw typów obiektów
 func object_to_type(object: Node2D) -> String:
 	return object.get_class()
@@ -132,6 +125,13 @@ func object_to_name(object: Node2D) -> String:
 
 func check_in_blacklist(object_name: String) -> bool:
 	return object_name in blacklist
+
+func change_cursor_color(color: Color = Color("ffffff")) -> void:
+	current_cursor_color = color
+	sprite_2d.self_modulate = color
+
+func _reset_cursor_color() -> void:
+	sprite_2d.self_modulate = current_cursor_color
 
 func _on_timer_timeout() -> void:
 	just_made_action = false
