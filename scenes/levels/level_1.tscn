@@ -274,8 +274,10 @@ colors = PackedColorArray(0.121569, 0.121569, 0.121569, 0.627451)
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_8738t"]
 gradient = SubResource("Gradient_asp18")
 
-[node name="Level1" instance=ExtResource("1_vb02l")]
+[node name="Level1" node_paths=PackedStringArray("next_level_area") instance=ExtResource("1_vb02l")]
 script = ExtResource("2_bv61p")
+debug_enabled = true
+next_level_area = NodePath("Interactables/SceneSwitchers/EventTriggerArea")
 level_id = 1
 allow_casting = false
 allow_modifying = false
