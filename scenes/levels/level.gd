@@ -6,6 +6,10 @@ signal restarted_or_exited(action: String)
 const GAMEPLAY_MENU_PATH: String = 'res://scenes/ui/gameplay_menu.tscn'
 const BLOCK: PackedScene = preload('res://scenes/objects/block.tscn')
 
+@export_category("Developer Options")
+@export var debug_enabled: bool = false
+@export var next_level_area: EventTriggerArea
+
 @export_category("Level Settings")
 @export var level_id: int = 0
 @export var allow_casting: bool = true
@@ -139,6 +143,8 @@ func _input(event: InputEvent) -> void:
 				_level_pause()
 			else:
 				_level_unpause()
+		elif debug_enabled and next_level_area != null and event is InputEventKey and event.pressed and event.keycode == KEY_EQUAL:
+			next_level_area._enter_next_level(next_level_area.scene_to_switch.resource_path)
 
 func _on_wand_cast() -> void:
 	var block_instance: Block = BLOCK.instantiate()

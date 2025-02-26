@@ -18,6 +18,8 @@ func _input(event: InputEvent) -> void:
 				_level_pause()
 			else:
 				_level_unpause()
+		elif debug_enabled and next_level_area != null and event is InputEventKey and event.pressed and event.keycode == KEY_EQUAL:
+			next_level_area._enter_next_level(next_level_area.scene_to_switch.resource_path)
 
 func _on_hidden_area_access_body_entered(body: Node2D) -> void:
 	if body is Block:
