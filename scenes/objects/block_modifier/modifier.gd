@@ -3,6 +3,7 @@ extends Node
 @export var attribute_decorator_scene: PackedScene = preload('res://scenes/objects/block_modifier/attribute_decorator.tscn')
 @export var modifier: CustomResource
 
+# target - Attributes node/attribute_container.gd
 func apply(target: Node) -> void:
 	#print("---APPLYING MODIFIER---")
 	_modifier(target, "friction")
@@ -21,7 +22,7 @@ func remove(target: Node) -> void:
 
 func _modifier(target: Node, attribute: String) -> void:
 	var attribute_decorator: Node = attribute_decorator_scene.instantiate()
-	attribute_decorator.decoratee = target.get(attribute)
+	attribute_decorator.decoratee = target.get(attribute) # Attributes.get(attribute) - (attribute eg.: 'friction', 'gravity')
 	attribute_decorator.modifier_name = modifier.type_name
 	attribute_decorator.amount = modifier.friction if attribute == "friction" else modifier.gravity
 	attribute_decorator.attribute_type = attribute

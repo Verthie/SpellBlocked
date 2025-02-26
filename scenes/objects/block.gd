@@ -12,11 +12,11 @@ class_name Block
 @onready var attributes: Node = $Attributes
 
 @export_category("Horizontal Movement")
-@export_range(0.0, 1.0, 0.025) var friction: float = 0.175
+var friction: float = 0.175
 
-@export_category("Gravity")
+@export_category("Fall")
 @export var max_fall_speed: float = 500
-@export var gravity: float = 400
+var gravity: float = 400
 
 @export var fall_acceleration: bool = false
 @export var fall_acceleration_rate: float = 20
@@ -46,6 +46,8 @@ var object_on_top: Object
 func _ready() -> void:
 	EventBus.block_thrown.connect(apply_thrown_state)
 	apply_modifier(Globals.current_block_type)
+	friction = attributes.friction.get_amount()
+	gravity = attributes.gravity.get_amount()
 	if starting_modifier != "None":
 		apply_modifier(starting_modifier)
 	$SplashArea.area_entered.connect(_on_block_destruction)
