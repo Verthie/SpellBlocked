@@ -43,7 +43,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 
-	# Animated camera alignment on scene switch
+	# Animated camera alignment to current boundry
 	var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUINT)
 	await tween.tween_property(self, "global_position", _desired_position(), align_time).finished
 
