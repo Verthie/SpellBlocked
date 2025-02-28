@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://d0rj5k1tb6gpe"]
+[gd_scene load_steps=26 format=4 uid="uid://d0rj5k1tb6gpe"]
 
 [ext_resource type="PackedScene" uid="uid://b0qkkisnuydja" path="res://scenes/levels/level.tscn" id="1_6233b"]
 [ext_resource type="Script" path="res://scenes/levels/level_2.gd" id="2_i0cwv"]
@@ -6,9 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://x2n2cfn2lfgi" path="res://scenes/world/signal_state.tscn" id="3_1rl3o"]
 [ext_resource type="PackedScene" uid="uid://basva0kjq5yyt" path="res://scenes/world/cast_blocker.tscn" id="3_di0xi"]
 [ext_resource type="PackedScene" uid="uid://ckr102h8pc7gf" path="res://scenes/interactables/event_trigger_area.tscn" id="3_ihkia"]
+[ext_resource type="TileSet" uid="uid://cwa4cldhrpdvk" path="res://assets/tilesets/ground_nd_plane.tres" id="3_tva46"]
 [ext_resource type="PackedScene" uid="uid://bwjltik73jd00" path="res://scenes/world/platform_grass.tscn" id="4_0kios"]
 [ext_resource type="PackedScene" uid="uid://civyoie87sako" path="res://scenes/world/pressure_button.tscn" id="6_udfql"]
 [ext_resource type="PackedScene" uid="uid://bmqvj3qr8ic40" path="res://scenes/world/gate_rune.tscn" id="7_sm5ob"]
+[ext_resource type="PackedScene" uid="uid://c8a4g8m722h4" path="res://scenes/world/mushroom_pad.tscn" id="9_ciaxy"]
 [ext_resource type="PackedScene" uid="uid://ci5p2tdc7kiqp" path="res://scenes/levels/level_test.tscn" id="10_3toe0"]
 
 [sub_resource type="Animation" id="Animation_ffuxy"]
@@ -121,7 +123,12 @@ metadata/_edit_lock_ = true
 [node name="FirstPlane" parent="TileMaps/NoCollisionPlanes/BackgroundPlanes" index="2"]
 tile_map_data = PackedByteArray("AAAMAPT/AAACAAAAAAAMAPX/AAACAAEAAAAMAPb/AAACAAIAAAANAPT/AAADAAAAAAANAPX/AAADAAEAAAANAPb/AAADAAIAAAALAPT/AAABAAAAAAALAPX/AAABAAEAAAALAPb/AAABAAIAAAA=")
 
-[node name="BridgePlane" parent="TileMaps/NoCollisionPlanes/ForegroundPlanes" index="0"]
+[node name="FirstPlane" type="TileMapLayer" parent="TileMaps/NoCollisionPlanes/ForegroundPlanes" index="0"]
+z_index = -1
+tile_map_data = PackedByteArray("AADr//T/AQAAAAEAAFA=")
+tile_set = ExtResource("3_tva46")
+
+[node name="BridgePlane" parent="TileMaps/NoCollisionPlanes/ForegroundPlanes" index="1"]
 tile_map_data = PackedByteArray("AADsAPn/AwAAAAAAAADtAPn/AwAEAAAAAADuAPn/AwAEAAAAAADvAPn/AwAFAAAAAADvAPv/AwACAAEAAADvAP3/AwACAAEAAADwAPn/AwAGAAAAAADwAPr/AwAGAAEAAADwAPv/AwADAAEAAADwAPz/AwAGAAEAAADwAP3/AwADAAEAAADwAP7/AwAGAAEAAADxAPn/AwAIAAAAAADxAPr/AwAIAAEAAADxAPv/AwAEAAEAAADxAPz/AwAIAAEAAADxAP3/AwAEAAEAAADxAP7/AwAIAAEAAADyAPn/AwAEAAAAAADyAPv/AwAFAAEAAADyAP3/AwAFAAEAAADzAPn/AwABAAAAAADr/wQAAwADAAAAAADs/wQAAwAEAAAAAADt/wQAAwAJAAAAAADu/wQAAwAKAAAAAADq/wQAAwACAAAAAADq//j/AwACAAAAAADr//j/AwADAAAAAADs//j/AwAEAAAAAADt//j/AwAJAAAAAADu//j/AwAKAAAAAAA=")
 
 [node name="Bridge" parent="TileMaps/NoCollisionPlanes/ForegroundPlanes/BridgePlane" index="0" instance=ExtResource("2_v3la6")]
@@ -212,6 +219,13 @@ offset_top = -22.0
 offset_right = 26.0
 offset_bottom = 32.0
 color = Color(1, 1, 1, 0.172549)
+
+[node name="MushroomPads" type="Node2D" parent="LevelElements" index="6"]
+
+[node name="MushroomPad" parent="LevelElements/MushroomPads" index="0" instance=ExtResource("9_ciaxy")]
+z_index = -1
+position = Vector2(-155, -92)
+rotation = -4.71238
 
 [node name="PlatformAnimate" parent="Interactables/WorldTriggers" index="0" instance=ExtResource("3_ihkia")]
 position = Vector2(-84, 28)

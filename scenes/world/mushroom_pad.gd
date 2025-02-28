@@ -18,8 +18,6 @@ func _on_body_entered(body: Node2D) -> void:
 	if body is Block:
 		if "Stone" not in body.current_modifiers:
 			apply_velocity_impulse(body, impulse_force)
-		else:
-			apply_velocity_impulse(body, impulse_force*1.3)
 
 		animation_player.play("bounce")
 		AudioManager.create_2d_audio_at_location(global_position, SoundEffectSettings.SoundEffectType.BLOCK_JUMP_PAD)
